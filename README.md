@@ -17,7 +17,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        python-version: [3.7, 3.8]
+        python-version: [3.7]
     steps:
       - uses: actions/checkout@v2
 #       - name: Install Python 3
