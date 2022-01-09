@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  latter:
+    image: harbor.dndev.pw:4443/mysns/web:latest
+    restart: always
+    # 필요시 볼륨 마운팅
+    # volumes: 
+    #   - /dev:/dev
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1 
+    ports:
+      - 80:80
+      # 인증서 준비될 경우 반영
+      # - 443:443
+    deploy:
+      replicas: 1
+    environment:
+      - SERVICE=production
+    networks:
+      - bridge
+
+networks:
+  bridge:
+    external:
+      name: bridge
