@@ -7,20 +7,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class ManageController {
+public class baseController {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(ManageController.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(baseController.class);
 
     // @Autowired
     // manageService service;
 
     @RequestMapping("/")
-    public String snsBoard(Model model){
+    public ModelAndView snsBoard(Model model){
         System.out.println("접근");
         LOGGER.info("LOGGER");
-        return "welcome";
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("index");
+        return modelAndView;
     }
 
 }
