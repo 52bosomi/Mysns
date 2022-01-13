@@ -1,6 +1,6 @@
 package com.app.mysns.controller;
 
-import com.app.mysns.service.manageService;
+// import com.app.mysns.service.manageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,8 @@ public class ManageController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(ManageController.class);
 
-    @Autowired
-    manageService service;
+    // @Autowired
+    // manageService service;
 
     @RequestMapping("/")
     public String snsBoard(Model model){
