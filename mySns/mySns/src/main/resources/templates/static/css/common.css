@@ -6,58 +6,73 @@
 }
 /* The side navigation menu */
 .sidenav {
-height: 100%; /* 100% Full-height */
-width: 0; /* 0 width - change this with JavaScript */
-position: fixed; /* Stay in place */
-z-index: 100; /* Stay on top */
-top: 0; /* Stay at the top */
-left: 0;
-background-color: #111; /* Black*/
-overflow-x: hidden; /* Disable horizontal scroll */
-padding-top: 60px; /* Place content 60px from the top */
-transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 100; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #111; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
 
 /* The navigation menu links */
 .sidenav a {
-padding: 8px 8px 8px 32px;
-text-decoration: none;
-font-size: 25px;
-color: #818181;
-display: block;
-transition: 0.3s;
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
 }
 
 /* When you mouse over the navigation links, change their color */
 .sidenav a:hover {
-color: #f1f1f1;
+  color: #f1f1f1;
 }
 
 /* Position and style the close button (top right corner) */
 .sidenav .closebtn {
-position: absolute;
-top: 0;
-right: 25px;
-font-size: 36px;
-margin-left: 50px;
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
-.sidenav {padding-top: 15px;}
-.sidenav a {font-size: 18px;}
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
 }
 
 @-webkit-keyframes FadeIn { 
-0% { opacity:0; -webkit-transform:scale(.1);}
-85% {opacity:1; -webkit-transform:scale(1.05);}
-100% {-webkit-transform:scale(1); }
+  0% { opacity:0; -webkit-transform:scale(.1);}
+  85% {opacity:1; -webkit-transform:scale(1.05);}
+  100% {-webkit-transform:scale(1); }
 }
 
 #btn_toggle { -webkit-animation: FadeIn 0.8s linear; }
 .common_title {
-font-size: 1.6rem;
-width: 16rem;
-margin : 0px 10px;
-font-weight: bold;
+  font-size: 1.6rem;
+  width: 16rem;
+  margin : 0px 10px;
+  font-weight: bold;
+}
+/* 연동 되어 있을 경우에만 표시 */
+.sync {
+  color: black !important;
+  -webkit-filter: none;
+  filter: none;
+}
+/* 연동되어 있지 않은 부분에 대해 표시 */
+.unsync {
+  color: gray !important;
+  -webkit-filter: grayscale(100%);
+  filter: gray;
+}
+html {
+  font-family: 'NanumSquareRoundExtraBold' !important;
 }

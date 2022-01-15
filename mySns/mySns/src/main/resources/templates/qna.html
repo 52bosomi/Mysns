@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>MySNS - Profile</title>
+	<title>MySNS - Q&A</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -18,8 +18,8 @@
 	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link rel="stylesheet" type="text/css" href="css/profile.css">
 	<link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" type="text/css" href="css/qna.css">
 	
 </head>
 <body>
@@ -39,21 +39,14 @@
 			<span class="sr-only">Toggle Menu</span>
 		</button>
 		<div class="container-login100">
-			<div class="wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30 profile">
+			<div class="wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30 qna">
 				<form class="login100-form validate-form text-left">
 					
 
-					<div class="flex-c">
-						<div class="mr-5">
-							<img src="images/hdh.jpg" alt="" srcset="" style="height:10rem;width:10rem; border-radius:20%;">
-							<div class="m-2 mt-4 font-weight-bold h6">
-								안녕 내 이름은 포도야
-							</div>
-						</div>
-						
-						<div class="ml-5">
-							<canvas width="180" height="180" id="myChart"></canvas>
-						</div>
+					<div class="flex-c w-100">
+						<p class="h1 m-4">
+							Anything Question to us
+						</p>
 					</div>
 					<hr>
 					<div class="flex-c p-2 w-100">
@@ -61,71 +54,70 @@
 						<button type="button" class="btn btn-primary btn-lg float-left btn_search">
 							Search
 						</button>
-						<button onclick="location.href='./connect.html'" type="button" class="btn btn-primary float-right btn_add" style="padding: 0 !important;">
+						<button type="button" class="btn btn-primary float-right btn_add" style="padding: 0 !important;">
 							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
 								<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
 							</svg>
 						</button>
+						<button type="button" class="btn btn-primary btn-lg float-left btn_search">
+							Show [mine|all]
+						</button>
 					</div>
+
 					
+					<hr>
+					<!-- 연동중인 로고 표시 -->
 					<div class="flex-c p-2 w-100">
-						<table class="table table-striped mt-3">
+						<table class="table table-striped">
 							<thead>
 								<tr>
 									<th scope="col">#</th>
-									<th scope="col">Site</th>
-									<th scope="col">Sync SNS Login</th>
+									<th scope="col">Question</th>
+									<th scope="col">Written</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
-									<th scope="row">3</th>
-									<td>youtube.com</td>
-									<td>
-										<img class="mr-1 ml-1" src="images/icons/icon-insta.png" alt="INSTAGRAM" width="35px" height="35px" class="m-t-5">
-									</td>
+									<th scope="row">1</th>
+									<td>Mark</td>
+									<td>Otto</td>
 								</tr>
 								<tr>
 									<th scope="row">2</th>
-									<td>coupang.com</td>
-									<td>
-										<img class="mr-1 ml-1" src="images/icons/icon-naver.png" alt="NAVER" width="35px" height="35px" class="m-t-5">
-									</td>
+									<td>Jacob</td>
+									<td>Thornton</td>
 								</tr>
 								<tr>
-									<th scope="row">1</th>
-									<td class="text-danger font-weight-bold">ikea.com</td>
-									<td>
-										<img class="mr-1 ml-1" src="images/icons/icon-facebook.png" alt="FACEBOOK" width="35px" height="35px" class="m-t-5">
-										<img class="mr-1 ml-1" src="images/icons/icon-naver.png" alt="NAVER" width="35px" height="35px" class="m-t-5">
-									</td>
+									<th scope="row">3</th>
+									<td>Larry</td>
+									<td>the Bird</td>
 								</tr>
 							</tbody>
 						</table>
-
-						
+					</div>
+					<hr>
+					<div class="flex-c p-2 w-100">
+						<nav aria-label="Page navigation example">
+							<ul class="pagination">
+								<li class="page-item">
+									<a class="page-link" href="#" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span>
+										<span class="sr-only">Previous</span>
+									</a>
+								</li>
+								<li class="page-item active"><a class="page-link" href="#">1</a></li>
+								<li class="page-item"><a class="page-link" href="#">2</a></li>
+								<li class="page-item"><a class="page-link" href="#">3</a></li>
+								<li class="page-item">
+									<a class="page-link" href="#" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span>
+										<span class="sr-only">Next</span>
+									</a>
+								</li>
+							</ul>
+						</nav>
 					</div>
 				</form>
-			</div>
-		</div>
-	</div>
-	<!-- Modal -->
-	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					...
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -138,6 +130,6 @@
 	<script src="vendor/countdowntime/countdowntime.js"></script>
 	<script src="js/main.js"></script>
 	<script src="js/common.js"></script>
-	<script src="js/profile.js"></script>
+	<script src="js/qna.js"></script>
 </body>
 </html>

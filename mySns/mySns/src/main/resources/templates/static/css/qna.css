@@ -1,14 +1,16 @@
-.profile {
+
+
+.qna {
 	width: 40rem;
 }
 
-.profile_info {
+.qna_info {
 	margin: 1.5rem;
 	width: 10rem;
 	height: 10rem;
 }
 
-.profile_info > span {
+.qna_info > span {
 	margin-top: 18rem
 }
 

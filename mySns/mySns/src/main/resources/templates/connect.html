@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>MySNS - about us</title>
+	<title>MySNS - Sync</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-
+	
 	<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css" rel="stylesheet">
+	
+	<!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css"> -->
 	<link rel="icon" type="image/png" href="images/icons/phodo.ico"/>
 	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
@@ -17,8 +19,9 @@
 	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link rel="stylesheet" type="text/css" href="css/about.css">
 	<link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" type="text/css" href="css/connect.css">
+
 </head>
 <body>
 	
@@ -31,77 +34,63 @@
 		<a href="./about.html">About us</a>
 		<a href="./index.html">Logout</a>
 	</div>
+	<!-- Use any element to open the sidenav -->
+	<!-- <span onclick="openNav()">=</span> -->
+	
 	<div id="main">
 		<button type="button" id="btn_toggle" onclick="openNav()" class="btn btn-white">
 			<i class="fa fa-bars"></i>
 			<span class="sr-only">Toggle Menu</span>
 		</button>
 		<div class="container-login100">
-			<div class="wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30 about">
+			<div class="wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30">
 				<form class="login100-form validate-form text-left">
+					
 
-					<div class="flex-c mt-5">
-						<div class="m-2 mt-4 font-weight-bold h1">
-							MySNS
-						</div>
+					<div class="flex-c p-2">
+						<img src="images/podo.jpg" alt="" srcset="" style="height:15rem;width:15rem; border-radius:20%;">
 					</div>
-					<div class="flex-c mt-4 h6">
-						많은 SNS 로그인을 사용하는 사용자입니다
-						<br>
-						가끔 어떠한 사이트에 어떠한 로그인이 사용했는지 기억이 안나더라구요
-						<br>
-						이미 계정 있는데 다른 계정으로 또하고, 나중에 알고
-						<br>
-						자기 자신의 기억력을 믿기보다 컴퓨터를 믿기 위해 만들었습니다
+					<div class="flex-c p-2 mt-4">
+						<strong >연결할 SNS 를 선택헤주세요</strong>
 					</div>
-
+					
 					<hr>
-
-					<div class="flex-l mt-5">
-						<div class="mr-5">
-							<img src="images/hdh.jpg" alt="" srcset="" style="height:10rem;width:10rem; border-radius:20%;">
-						</div>
-						<div class="m-2 mt-4 font-weight-bold h4">
-							안녕 내 이름은 희진이야
-							<p class="mt-4 h5">희진</p>
-						</div>
-					</div>
-
-					<div class="flex-l mt-5">
-						<div class="mr-5">
-							<img src="images/hdh.jpg" alt="" srcset="" style="height:10rem;width:10rem; border-radius:20%;">
-						</div>
-						<div class="m-2 mt-4 font-weight-bold h4">
-							안녕 내 이름은 인석이야
-							<p class="mt-4 h5">인석</p>
+					<!-- unsync, sync 부분 연동 상태에 따라 클래스 지정 필요 -->
+					<div class="flex-c p-2 w-100">
+						<img src="images/icons/icon-naver.png" alt="NAVER" width="35px" height="35px" class="m-t-5 sync">
+						<p class="common_title">Naver</p>
+						<div class="flex-r">
+							<label class="switch">
+								<input type="checkbox" name="sync_type" class="form-check-input cheeckbox_type" value="naver">
+								<span class="slider round"></span>
+							</label>
 						</div>
 					</div>
-
-					<div class="flex-l mt-5">
-						<div class="mr-5">
-							<img src="images/hdh.jpg" alt="" srcset="" style="height:10rem;width:10rem; border-radius:20%;">
-						</div>
-						<div class="m-2 mt-4 font-weight-bold h4">
-							안녕 내 이름은 가희이야
-							<p class="mt-4 h5">가희</p>
-						</div>
-					</div>
-
-					<div class="flex-l mt-5">
-						<div class="mr-5">
-							<img src="images/hdh.jpg" alt="" srcset="" style="height:10rem;width:10rem; border-radius:20%;">
-						</div>
-						<div class="m-2 mt-4 font-weight-bold h4">
-							안녕 내 이름은 동화이야
-							<p class="mt-4 h5">동화</p>
+					<div class="flex-c p-2 w-100">
+						<img src="images/icons/icon-insta.png" alt="INSTAGRAM" width="35px" height="35px" class="m-t-5 unsync">
+						<p class="common_title">Instagram</p>
+						<div class="flex-r">
+							<label class="switch">
+								<input type="checkbox" name="sync_type" class="form-check-input cheeckbox_type" value="instagram">
+								<span class="slider round"></span>
+							</label>
 						</div>
 					</div>
-
+					<div class="flex-c p-2 w-100">
+						<img src="images/icons/icon-facebook.png" alt="FACEBOOK" width="35px" height="35px" class="m-t-5 unsync">
+						<p class="common_title">Facebook</p>
+						<div class="flex-r">
+							<label class="switch">
+								<input type="checkbox" name="sync_type" class="form-check-input cheeckbox_type" value="facebook">
+								<span class="slider round"></span>
+							</label>
+						</div>
+					</div>
 				</form>
 			</div>
 		</div>
 	</div>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 	<script src="vendor/animsition/js/animsition.min.js"></script>
 	<script src="vendor/select2/select2.min.js"></script>
