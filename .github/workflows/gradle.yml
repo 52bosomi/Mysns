@@ -21,7 +21,9 @@ jobs:
       run: chmod +x ./mySns/mySns/gradlew
       
     - name: Build with Gradle
-      run: ./mySns/mySns/gradlew clean build
+      run: |
+        cd mySns/mySns
+        ./gradlew clean build
   build-if-failed:
     runs-on: ubuntu-latest
     needs: [build]
