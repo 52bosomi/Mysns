@@ -11,6 +11,4 @@ public class MySnsApplication {
 
 		System.out.println("started web sever !!!");
 	}
-
-
 }
