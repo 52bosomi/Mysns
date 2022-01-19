@@ -5,17 +5,27 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "java",
-      "name": "Launch Current File",
+      "type": "pwa-node",
+      "name": "Launch Program",
       "request": "launch",
-      "mainClass": "${file}"
+      "mainClass": "${file}",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${file}"
     },
-    {
-      "type": "java",
-      "name": "Launch MySnsApplication",
-      "request": "launch",
-      "mainClass": "com.app.mysns.MySnsApplication",
-      "projectName": "mySns"
-    }
+    // {
+    //   "type": "java",
+    //   "name": "Launch Current File",
+    //   "request": "launch",
+    //   "mainClass": "${file}"
+    // },
+    // {
+    //   "type": "java",
+    //   "name": "Launch MySnsApplication",
+    //   "request": "launch",
+    //   "mainClass": "com.app.mysns.MySnsApplication",
+    //   "projectName": "mySns"
+    // }
   ]
 }
