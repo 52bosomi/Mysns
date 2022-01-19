@@ -146,3 +146,4 @@ dist
 # custom
 scraping/screenshot
 .vscode/
+# scraping/sample_data/
