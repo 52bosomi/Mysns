@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.mysns.dao.ManageDao">
+
+    <select id="dbtest" resultType="com.app.mysns.dto.TypeDto">
+        SELECT * FROM sns_type
+    </select>
+
+    <insert id="mailAccept" parameterType="map">
+        INSERT INTO home_user (
+            username,
+            password,
+            name,
+            use_facebook,
+            access_facebook,
+            refresh_facebook,
+            use_instagram,
+            access_instagram,
+            use_naver,
+            access_naver,
+            refresh_naver,
+            updated_at,
+            created_at
+
+        ) VALUES (
+            #{username},
+            #{password},
+            #{name},
+            #{use_facebook},
+            #{access_facebook},
+            #{refresh_facebook},
+            #{use_instagram},
+            #{access_instagram},
+            #{use_naver},
+            #{access_naver},
+            #{refresh_naver},
+            #{updated_at},
+            #{created_at}
+         )
+    </insert>
+</mapper>
