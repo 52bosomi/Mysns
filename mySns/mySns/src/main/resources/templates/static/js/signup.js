@@ -6,9 +6,9 @@ function send_email() {
   console.log('request to email')
   $.ajax({
     async : false,
-    url:'/auth/email/send', // 요청 할 주소
+    url:'/auth/email/signup', // 요청 할 주소
     type:'POST', // GET, PUT
-    data: username,
+    data: { username : username },
     contentType : 'application/json',
     dataType:'json',// xml, json, script, html
     beforeSend:function(x) {
