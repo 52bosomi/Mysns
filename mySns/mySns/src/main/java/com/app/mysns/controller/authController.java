@@ -34,8 +34,8 @@ import groovyjarjarpicocli.CommandLine.Model;
 public class authController {
 
     private static final String TEMPLATE_NAME = "signup";
-    private static final String SPRING_LOGO_IMAGE = "templates/images/spring.png";
-    private static final String PNG_MIME = "image/png";
+    private static final String SPRING_LOGO_IMAGE = "templates/static/images/phodo.jpg";
+    private static final String PNG_MIME = "image/jpg";
     private static final String MAIL_SUBJECT = "Registration Confirmation";
   
     // private final MailGunConfig config;
@@ -71,7 +71,7 @@ public class authController {
         ctx.setVariable("springLogo", SPRING_LOGO_IMAGE);
         ctx.setVariable("url", confirmationUrl);
 
-        final String htmlContent = this.htmlTemplateEngine.process(TEMPLATE_NAME, ctx);
+        final String htmlContent = this.htmlTemplateEngine.process("email/signup.html", ctx);
 
         email.setText(htmlContent, true);
 

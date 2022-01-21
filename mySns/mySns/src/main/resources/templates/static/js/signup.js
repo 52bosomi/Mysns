@@ -9,7 +9,8 @@ function send_email() {
     url:'/auth/email/send', // 요청 할 주소
     type:'POST', // GET, PUT
     data: username,
-    dataType:'text',// xml, json, script, html
+    contentType : 'application/json',
+    dataType:'json',// xml, json, script, html
     beforeSend:function(x) {
       console.log(x)
     },// 서버 요청 전 호출 되는 함수 return false; 일 경우 요청 중단
