@@ -12,6 +12,5 @@ import java.util.HashMap;
 public interface ManageDao {
 
     ArrayList<TypeDto> dbtest();
-
     void mailAccept(HashMap<String,Object> map);
 }
