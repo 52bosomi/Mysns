@@ -40,7 +40,6 @@ jobs:
     - name: web port open test
       run: |
         wget http://localhost:8888
-        mkdir 
         
     - uses: actions/upload-artifact@v2
       with:
