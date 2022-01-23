@@ -6,12 +6,8 @@ RUN apt-get update -y && \
 COPY . /app
 RUN ls -al /app
 RUN ls -al /app/mySns/mySns/build/libs
-RUN target=''
-RUN files=`ls /app/mySns/mySns/build/libs/*.jar`
-RUN for f in `ls /app/mySns/mySns/build/libs/*.jar`; do target=`echo $f`; done
-RUN cp $targets /app/mysns.jar
-RUN ls -al /app
-# COPY $target /app/mysns.jar
+RUN cp /app/mySns/mySns/build/libs/mysns.jar /app/mysns.jar
 EXPOSE 80
+EXPOSE 443
 ENTRYPOINT [ "java" ]
 CMD [ "-jar /app/mysns.jar" ]
