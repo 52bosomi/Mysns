@@ -1,31 +1,20 @@
 package com.app.mysns.controller;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.mail.MessagingException;
-// import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import com.app.mysns.dto.ClientDto;
+import com.app.mysns.dto.Restful;
+import com.app.mysns.service.MailService;
 
-// import com.app.mysns.config.MailGunConfig;
-// import com.app.mysns.dto.TypeDto;
-// import com.app.mysns.service.ManageService;
+import org.springframework.beans.factory.annotation.Autowired;
 
-// import org.apache.ibatis.mapping.Environment;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-
 import groovyjarjarpicocli.CommandLine.Model;
 
 
@@ -33,58 +22,26 @@ import groovyjarjarpicocli.CommandLine.Model;
 @Controller
 public class authController {
 
-    private static final String TEMPLATE_NAME = "signup";
-    private static final String SPRING_LOGO_IMAGE = "templates/static/images/phodo.jpg";
-    private static final String PNG_MIME = "image/jpg";
-    private static final String MAIL_SUBJECT = "Registration Confirmation";
-  
-    // private final MailGunConfig config;
-    private final JavaMailSender mailSender;
-    private final TemplateEngine htmlTemplateEngine;
-
+    @Autowired
+    private MailService mailService;
     // private final Logger logger = LoggerFactory.getLogger(authController.class);
 
-    public authController(JavaMailSender mailSender, TemplateEngine htmlTemplateEngine) {
-        this.mailSender = mailSender;
-        this.htmlTemplateEngine = htmlTemplateEngine;
-      }
+    public authController(TemplateEngine htmlTemplateEngine, MailService mailService) {
+        this.mailService = mailService;
+    }
 
-    
-    @PostMapping("/auth/email/send")
-    public ResponseEntity<Object> register(@RequestBody String username)
+    // @RestController    
+    @PostMapping("/auth/email/signup")
+    public ResponseEntity<Object> register(@RequestBody ClientDto client)
         throws MessagingException, UnsupportedEncodingException {
-        
-        String confirmationUrl = "http://localhost:8888/auth/email/check";
-        // String mailFrom = config.mailGunAPIFrom();
-        // String mailFromName = config.mailGunAPIFromName();
 
-        final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
-        final MimeMessageHelper email;
-        email = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-
-        email.setTo(username);
-        email.setSubject(MAIL_SUBJECT);
-        // email.setFrom(new InternetAddress(mailFrom, mailFromName));
-
-        final Context ctx = new Context(LocaleContextHolder.getLocale());
-        ctx.setVariable("email", username);
-        ctx.setVariable("springLogo", SPRING_LOGO_IMAGE);
-        ctx.setVariable("url", confirmationUrl);
-
-        final String htmlContent = this.htmlTemplateEngine.process("email/signup.html", ctx);
-
-        email.setText(htmlContent, true);
-
-        ClassPathResource clr = new ClassPathResource(SPRING_LOGO_IMAGE);
-
-        email.addInline("springLogo", clr, PNG_MIME);
-
-        mailSender.send(mimeMessage);
-
-        Map<String, String> body = new HashMap<>();
-        body.put("message", "User created successfully.");
-        
-        return new ResponseEntity<>(body, HttpStatus.OK);
+        try {
+            boolean rs = this.mailService.SendEmailSignup(client.getUsername());
+            return rs ? new ResponseEntity<>(new Restful().Data("Sucessful send email"), HttpStatus.OK) : new ResponseEntity<>(new Restful().Data("Sending failed"), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            // TODO : 로깅 남겨야 함
+            return new ResponseEntity<>(new Restful().Error("failed send email"), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // @Autowired

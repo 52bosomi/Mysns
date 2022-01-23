@@ -1,6 +1,6 @@
 package com.app.mysns.controller;
 
-import com.app.mysns.dto.TypeDto;
+import com.app.mysns.dto.SnSTypeDto;
 // import com.app.mysns.dto.ClientDto;
 import com.app.mysns.service.ManageService;
 import org.slf4j.Logger;
@@ -36,9 +36,9 @@ public class baseController {
 
     @RequestMapping("/db")
     public void dbTest(Model model){
-        System.out.println("DB 테스트");
-        ArrayList<TypeDto> result =  service.dbtest();
-        logger.info("db 접속"+result);
+        // System.out.println("DB 테스트");
+        // ArrayList<SnSTypeDto> result =  service.dbtest();
+        // logger.info("db 접속"+result);
 
     }
 
@@ -49,9 +49,9 @@ public class baseController {
     }
     @RequestMapping("/mailAccept")
     public void mailAccept(Model model,@RequestParam("username") String username ){
-        System.out.println("유저 이름 또는 email : "+username);
+        // System.out.println("유저 이름 또는 email : "+username);
 
-        service.mailAccept(username);
+        // service.mailAccept(username);
     }
 
 

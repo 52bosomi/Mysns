@@ -1,7 +1,7 @@
 package com.app.mysns.service;
 
 import com.app.mysns.dao.ManageDao;
-import com.app.mysns.dto.TypeDto;
+import com.app.mysns.dto.SnSTypeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,25 +15,25 @@ public class ManageService {
     @Autowired
     private ManageDao dao;
 
-    public ArrayList<TypeDto> dbtest() {
-        ArrayList<TypeDto> result =  dao.dbtest();
-        return result;
-    }
+    // public ArrayList<TypeDto> dbtest() {
+    //     ArrayList<TypeDto> result =  dao.dbtest();
+    //     return result;
+    // }
 
-    //받은 메일
-    public void mailAccept(String username) {
-        String test = "1234";
-        Long datetime = System.currentTimeMillis();
-        Timestamp timestamp = new Timestamp(datetime);
-        HashMap<String,Object> map = new HashMap<String, Object>();
-        map.put("username",username);
-        map.put("password",test);
-        map.put("name",test);
-        map.put("phone",test);
-        map.put("updated_at",timestamp);
-        map.put("created_at",timestamp);
+    // //받은 메일
+    // public void mailAccept(String username) {
+    //     String test = "1234";
+    //     Long datetime = System.currentTimeMillis();
+    //     Timestamp timestamp = new Timestamp(datetime);
+    //     HashMap<String,Object> map = new HashMap<String, Object>();
+    //     map.put("username",username);
+    //     map.put("password",test);
+    //     map.put("name",test);
+    //     map.put("phone",test);
+    //     map.put("updated_at",timestamp);
+    //     map.put("created_at",timestamp);
 
 
-        dao.mailAccept(map);
-    }
+    //     dao.mailAccept(map);
+    // }
 }
