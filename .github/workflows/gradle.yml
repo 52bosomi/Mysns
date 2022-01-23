@@ -44,7 +44,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: mysns.jar
-        path: $target
+        path: mySns/mySns/build/libs/**
         
   build-if-failed:
     runs-on: ubuntu-latest
