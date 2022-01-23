@@ -29,10 +29,13 @@ jobs:
       env:
         CHECK_EXCUTEABLE: 1    
       run: |
-        cd mySns/mySns
-        ls -al
-        cd build/libs
-        ls -al
+        target=''
+        files=`ls mySns/mySns/build/libs/*.jar`
+        for f in $files
+        do
+           target=`echo $f`
+        done
+        echo $target
         curl localhost:8888
 
 #     - name: Self Killer
