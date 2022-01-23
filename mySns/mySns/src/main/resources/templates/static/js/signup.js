@@ -6,6 +6,8 @@ function send_email() {
   $('#spinner').show();
   $('#checker').hide();
   $('#btn_send').prop('disabled', true)
+  $('#username').prop('disabled', true)
+  
   
 
   console.log('request to email')
@@ -13,7 +15,7 @@ function send_email() {
     async : true,
     url:'/auth/email/signup', // 요청 할 주소
     type:'POST', // GET, PUT
-    data: { username : username },
+    data: JSON.stringify({ username : username }),
     contentType : 'application/json',
     dataType:'json',// xml, json, script, html
     beforeSend:function(x) {
@@ -21,11 +23,13 @@ function send_email() {
     },// 서버 요청 전 호출 되는 함수 return false; 일 경우 요청 중단
     success:function(x) {
       $('#checker').show();
-      console.log()
+      $('#btn_send_text').text('Sent!')
       alert(x.data);
     },// 요청 완료 시
     error:function(x) {
       console.log(x)
+      $('#username').prop('disabled', false)
+      $('#btn_send_text').text('Resend Email')
       alert('마..ㅅX.... 발송 실패함');
     },// 요청 실패.
     complete:function(x) {

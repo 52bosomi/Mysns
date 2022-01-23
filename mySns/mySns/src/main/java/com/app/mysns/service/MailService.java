@@ -13,7 +13,7 @@ import org.thymeleaf.context.Context;
 public class MailService {
 
 
-    private static final String SPRING_LOGO_IMAGE = "templates/static/images/phodo.jpg";
+    private static final String PHODO_IMAGE = "templates/static/images/phodo.jpg";
   
     private final JavaMailSender mailSender;
     private final TemplateEngine htmlTemplateEngine;
@@ -34,12 +34,12 @@ public class MailService {
         
         email = new MimeMessageHelper(mimeMessage, true, "UTF-8");
         email.setTo(username);
-        email.setSubject("Welcome !!, plz follower sign up URL");
+        email.setSubject("Welcome !!, plz follow sign up URL");
         // email.setFrom(new InternetAddress("no-reply@mysns.info", "MySNS"));
         
         final Context ctx = new Context(LocaleContextHolder.getLocale());
         ctx.setVariable("email", username);
-        ctx.setVariable("phodo", SPRING_LOGO_IMAGE);
+        ctx.setVariable("phodo", PHODO_IMAGE);
         
         // change url for production
         ctx.setVariable("url", "http://localhost:8888/auth/email/check");
@@ -47,8 +47,8 @@ public class MailService {
         email.setText(this.htmlTemplateEngine.process("email/signup.html", ctx), true);
         
         // 마스코트 이미지 넣기
-        ClassPathResource clr = new ClassPathResource(SPRING_LOGO_IMAGE);
-        email.addInline("springLogo", clr, "image/jpg");
+        ClassPathResource clr = new ClassPathResource(PHODO_IMAGE);
+        email.addInline("phodo", clr, "image/jpg");
         
         // 슝슝 전송~
         mailSender.send(mimeMessage);

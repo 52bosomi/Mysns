@@ -11,15 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 import org.thymeleaf.TemplateEngine;
 import groovyjarjarpicocli.CommandLine.Model;
 
 
 // @RestController
 @Controller
+@RequestMapping("/auth")
 public class authController {
 
     @Autowired
@@ -30,8 +34,7 @@ public class authController {
         this.mailService = mailService;
     }
 
-    // @RestController    
-    @PostMapping("/auth/email/signup")
+    @PostMapping("/email/signup")
     public ResponseEntity<Object> register(@RequestBody ClientDto client)
         throws MessagingException, UnsupportedEncodingException {
 
@@ -49,43 +52,43 @@ public class authController {
 
     // 인증 관련 처리 컨트롤러
 
-    @RequestMapping("/auth/signup")
+    @RequestMapping("/signup")
     public String signup(Model model){
         System.out.println("client redirect to signup");
         return "signup";
     }
 
-    @RequestMapping("/auth/login")
+    @RequestMapping("/login")
     public String login(Model model){
         System.out.println("client redirect to login");
         return "login";
     }
 
-    @RequestMapping("/auth/logout")
+    @RequestMapping("/logout")
     public String logout(Model model){
         System.out.println("client redirect to logout");
         return "default";
     }
 
-    @RequestMapping("/auth/phone/send")
+    @RequestMapping("/phone/send")
     public String phoneSend(Model model){
         System.out.println("client redirect to phone");
         return "default";
     }
 
-    @RequestMapping("/auth/phone/check")
+    @RequestMapping("/phone/check")
     public String phoneCheck(Model model){
         System.out.println("client redirect to phone");
         return "default";
     }
 
-    @RequestMapping("/auth/email/send")
+    @RequestMapping("/email/send")
     public String emailSend(Model model){
         System.out.println("client redirect to email");
         return "default";
     }
 
-    @RequestMapping("/auth/email/check")
+    @RequestMapping("/email/check")
     public String emailCheck(Model model){
         System.out.println("client redirect to email");
         return "default";
