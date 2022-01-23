@@ -1,10 +1,12 @@
 name: Java CI with Gradle
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  # Triggers the workflow on push or pull request events but only for the main branch
+  create:
+    tags:
+      - 'v*'
+#   pull_request:
+#     branches: [ main ]
 
 jobs:
   build:
