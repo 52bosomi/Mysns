@@ -1,15 +1,12 @@
 FROM ubuntu:18.04
 
 # MAINTANER mysns
-
 RUN apt-get update -y && \
-    apt-get install -y python3-pip
+    apt-get install -y openjdk-8-jdk
 
-COPY 03_web/anc.letter/requirements.txt /app/requirements.txt
-# RUN cert.sh
-WORKDIR /app
-RUN pip3 install -r /app/requirements.txt
 COPY . /app
+COPY ./mySns/mySns/build/libs/*.jar /app/mysns.jar
+RUN ls -al /app/
 EXPOSE 80
-ENTRYPOINT [ "python3" ]
-CMD [ "03_web/anc.letter/app.py" ]
+ENTRYPOINT [ "java" ]
+CMD [ "-jar /app/mysns.jar" ]
