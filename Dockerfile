@@ -4,6 +4,7 @@ FROM ubuntu:18.04
 RUN apt-get update -y && \
     apt-get install -y openjdk-8-jdk
 RUN target=''
+RUN ls -al .
 RUN files=`ls mySns/mySns/build/libs/*.jar`
 RUN for f in $files
 RUN do
