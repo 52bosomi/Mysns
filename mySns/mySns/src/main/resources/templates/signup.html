@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}">
-
     <th:block layout:fragment="content">
         <div class="container-login100">
             <div class="wrap-login100 p-l-55 p-r-55 p-t-80 p-b-30">
@@ -19,10 +18,22 @@
     
                     <div class="container-login100-form-btn">
                         <!-- <input type="submit" value="Send email" > -->
-                        <button class="login100-form-btn" onclick="send_email()">
-                            Send email
+                        <button class="login100-form-btn" id="btn_send" onclick="send_email()">
+                            <span class="mr-2">Send email</span>
+                            <div id="spinner" class="spinner-border text-light" role="status" style="width:15px; height:15px;">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            
+                            <div class="wrapper" id="checker">
+                                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                    <!-- <circle class="checkmark_circle" cx="26" cy="26" r="25" fill="none" /> -->
+                                    <path class="checkmark_check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />    
+                                
+                            </svg>
+                        </div>
                         </button>
                     </div>
+                    
                     <hr>
                     <div class="text-center">
                         <a href="./login" class="txt2 hov1">
@@ -32,6 +43,8 @@
                 </div>
             </div>
         </div>
+        <!-- css -->
+        <link rel="stylesheet" type="text/css" href="/css/signup.css">
         <!-- js -->
         <script src="/js/signup.js"></script>
     </th:block>

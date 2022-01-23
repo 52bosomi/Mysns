@@ -26,8 +26,12 @@ public class baseController {
 
     @RequestMapping("/")
     public String snsBoard(Model model){
-        System.out.println("MVC 테스트");
-        return "default";
+        // 로그인시 인증 여부 검증
+        boolean isAuth = false;
+        if(isAuth) {
+            return "login";
+        }
+        return "login";
     }
 
     @RequestMapping("/db")
