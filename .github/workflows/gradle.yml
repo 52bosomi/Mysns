@@ -29,6 +29,8 @@ jobs:
       env:
         CHECK_EXCUTEABLE: 1    
       run: |
+        cd mySns/mySns
+        ls -al
         cd build/libs
         ls -al
         curl localhost:8888
