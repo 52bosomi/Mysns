@@ -65,7 +65,7 @@ jobs:
 #           SLACK_ICON: https://github.com/rtCamp.png?size=48 # later add favicon
           SLACK_TITLE: 'Preexcute python script was failed'
           SLACK_MESSAGE: ${{ github.event.head_commit.title }} ${{ github.event.head_commit.message }}
-          SLACK_USERNAME: ANC-mysns-Podo
+          SLACK_USERNAME: MySNS-Podo
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
   deploy:
     needs: build
@@ -111,9 +111,9 @@ jobs:
           password: ${{ secrets.HARBOR_BOT_PW }}
       # start build and push
       - name: Build the tagged Docker image
-        run: docker build . --file Dockerfile --tag harbor.dndev.pw:4443/anc/mysns:latest
+        run: docker build . --file Dockerfile --tag harbor.dndev.pw:4443/mysns/web:latest
       - name: Push the tagged Docker image
-        run: docker push harbor.dndev.pw:4443/anc/mysns:latest
+        run: docker push harbor.dndev.pw:4443/mysns/web:latest
         
   deploy-if-failed:
     runs-on: ubuntu-latest
@@ -132,7 +132,7 @@ jobs:
 #           SLACK_ICON: https://github.com/rtCamp.png?size=48 # later add favicon
           SLACK_TITLE: 'failed docker image deploy to harbor'
           SLACK_MESSAGE: ${{ github.event.head_commit.title }} ${{ github.event.head_commit.message }}
-          SLACK_USERNAME: Smart-ANC-bot
+          SLACK_USERNAME: MySNS-bot
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
   apply:
     # The type of runner that the job will run on
@@ -151,9 +151,9 @@ jobs:
         env:
           SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
 #           SLACK_ICON: https://github.com/rtCamp.png?size=48 # later add favicon
-          SLACK_TITLE: 'deployed new version for anc letter project'
+          SLACK_TITLE: 'deployed new version for MySNS project'
           SLACK_MESSAGE: ${{ github.event.head_commit.title }} ${{ github.event.head_commit.message }}
-          SLACK_USERNAME: Smart-ANC-bot
+          SLACK_USERNAME: MySNS-bot
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
   
   apply-if-failed:
@@ -173,5 +173,5 @@ jobs:
 #           SLACK_ICON: https://github.com/rtCamp.png?size=48 # later add favicon
           SLACK_TITLE: 'WEBHOOK apply was failed'
           SLACK_MESSAGE: ${{ github.event.head_commit.title }} ${{ github.event.head_commit.message }}
-          SLACK_USERNAME: Smart-ANC-bot
+          SLACK_USERNAME: MySNS-bot
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
