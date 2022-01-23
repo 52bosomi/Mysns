@@ -41,6 +41,11 @@ jobs:
       run: |
         wget http://localhost:8888
         
+    - uses: actions/upload-artifact@v2
+      with:
+        name: mysns.jar
+        path: $target
+        
   build-if-failed:
     runs-on: ubuntu-latest
     needs: [build]
