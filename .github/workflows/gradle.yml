@@ -40,15 +40,13 @@ jobs:
     - name: web port open test
       run: |
         wget http://localhost:8888
+        mkdir 
         
     - uses: actions/upload-artifact@v2
       with:
         name: mysns.jar
         path: mySns/mySns/build/libs/**
-    # file cache
-    - uses: actions/download-artifact@v2
-      with:
-        path: /app/mySns/mySns/build/libs/
+    
         
   build-if-failed:
     runs-on: ubuntu-latest
@@ -78,6 +76,15 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      - name: make dir
+      - run: |
+          mkdir -p mySns/mySns/build/libs
+          ls -al mySns/mySns/build/libs
+          
+      # file cache
+      - uses: actions/download-artifact@v2
+        with:
+          path: mySns/mySns/build/libs/
 
       # Runs a single command using the runners shell
       - name: Set-Version
