@@ -24,6 +24,18 @@ jobs:
       run: |
         cd mySns/mySns
         ./gradlew clean build
+   
+    - name: Run Tests
+      env:
+        CHECK_EXCUTEABLE: 1    
+      run: |
+        ls -al
+        curl localhost:8888
+
+#     - name: Self Killer
+#       run: |
+#         wget http://localhost:8888
+        
   build-if-failed:
     runs-on: ubuntu-latest
     needs: [build]
