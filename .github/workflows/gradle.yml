@@ -95,3 +95,64 @@ jobs:
         run: docker build . --file Dockerfile --tag harbor.dndev.pw:4443/anc/mysns:latest
       - name: Push the tagged Docker image
         run: docker push harbor.dndev.pw:4443/anc/mysns:latest
+        
+  deploy-if-failed:
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    if: always() && (needs.deploy.result == 'failure')
+    steps:
+      - name: failed docker image deploy to harbor
+        env:
+          NEEDS_CONTEXT: ${{ toJSON(needs) }}
+        run: |
+          echo "$NEEDS_CONTEXT"
+      - name: Slack Notification Failed
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_COLOR: '#FF2D00' # or a specific color like 'good' or '#ff00ff'
+#           SLACK_ICON: https://github.com/rtCamp.png?size=48 # later add favicon
+          SLACK_TITLE: 'failed docker image deploy to harbor'
+          SLACK_MESSAGE: ${{ github.event.head_commit.title }} ${{ github.event.head_commit.message }}
+          SLACK_USERNAME: Smart-ANC-bot
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  apply:
+    # The type of runner that the job will run on
+    needs: deploy
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Runs a single command using the runners shell
+      - name: Webhook
+        run: curl -s -d "payload={\"feel\":\"WTF\"}" "${{ secrets.WEB_HOOK_TARGET }}"
+      
+      - uses: actions/checkout@v2
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+#           SLACK_ICON: https://github.com/rtCamp.png?size=48 # later add favicon
+          SLACK_TITLE: 'deployed new version for anc letter project'
+          SLACK_MESSAGE: ${{ github.event.head_commit.title }} ${{ github.event.head_commit.message }}
+          SLACK_USERNAME: Smart-ANC-bot
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  
+  apply-if-failed:
+    runs-on: ubuntu-latest
+    needs: [apply]
+    if: always() && (needs.apply.result == 'failure')
+    steps:
+      - name: WEBHOOK apply was failed
+        env:
+          NEEDS_CONTEXT: ${{ toJSON(needs) }}
+        run: |
+          echo "$NEEDS_CONTEXT"
+      - name: Slack Notification Failed
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_COLOR: '#FF2D00' # or a specific color like 'good' or '#ff00ff'
+#           SLACK_ICON: https://github.com/rtCamp.png?size=48 # later add favicon
+          SLACK_TITLE: 'WEBHOOK apply was failed'
+          SLACK_MESSAGE: ${{ github.event.head_commit.title }} ${{ github.event.head_commit.message }}
+          SLACK_USERNAME: Smart-ANC-bot
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
