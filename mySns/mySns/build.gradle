@@ -5,8 +5,12 @@ plugins {
 }
 
 group = 'com.spring.mysns'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 sourceCompatibility = '1.8'
+// https://earth-95.tistory.com/132
+jar {
+	enabled = false
+}
 
 configurations {
 	compileOnly {
