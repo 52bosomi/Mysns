@@ -23,8 +23,7 @@ const scraper = async() => {
         await page.click("button[type=submit]");
         await page.waitForNavigation();
 
-        await page.goto('https://www.facebook.com/settings?tab=applications&ref=settings');
-        await page.waitFor(500);
+        await page.goto('https://www.facebook.com/settings?tab=applications&ref=settings', {waitUntil: "networkidle2"});
 
         const xpath = './/div[@class="' + process.env.MAIN_CLASS + '"]/div/div/div/div/div/div/span[@class="' + process.env.SPAN_CLASS + '"]';
         
