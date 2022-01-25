@@ -8,8 +8,6 @@ function send_email() {
   $('#btn_send').prop('disabled', true)
   $('#username').prop('disabled', true)
   
-  
-
   console.log('request to email')
   $.ajax({
     async : true,
