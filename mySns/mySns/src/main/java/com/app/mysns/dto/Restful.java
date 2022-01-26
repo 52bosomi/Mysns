@@ -1,5 +1,8 @@
 package com.app.mysns.dto;
 
+import lombok.Data;
+
+@Data
 public class Restful {
 
     private String data;

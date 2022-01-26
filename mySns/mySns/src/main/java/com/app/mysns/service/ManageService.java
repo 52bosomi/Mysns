@@ -1,7 +1,7 @@
 package com.app.mysns.service;
 
 import com.app.mysns.dao.ManageDao;
-import com.app.mysns.dto.TypeDto;
+import com.app.mysns.dto.SnsTypeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +15,12 @@ public class ManageService {
     @Autowired
     private ManageDao dao;
 
-    public ArrayList<TypeDto> dbtest() {
-        ArrayList<TypeDto> result =  dao.dbtest();
+    public ArrayList<SnsTypeDto> dbtest() {
+        ArrayList<SnsTypeDto> result =  dao.dbtest();
         return result;
     }
 
-    //받은 메일
+    // //받은 메일
     public void mailAccept(String username) {
         String test = "1234";
         Long datetime = System.currentTimeMillis();

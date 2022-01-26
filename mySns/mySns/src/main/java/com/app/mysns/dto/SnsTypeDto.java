@@ -1,22 +1,23 @@
 package com.app.mysns.dto;
 
-public class TypeDto {
+import lombok.Data;
+
+@Data
+public class SnsTypeDto {
     private int id;
     private String name;
     private String description;
 
     public int getId() {
-        return id;
+        return this.id;
     }
-
-    public void setId(int id) {
+    public void setid(int id) {
         this.id = id;
     }
 
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -24,7 +25,6 @@ public class TypeDto {
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }

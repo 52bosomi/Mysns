@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.mysns.dao.ManageDao">
 
-    <select id="dbtest" resultType="com.app.mysns.dto.TypeDto">
+    <select id="dbtest" resultType="com.app.mysns.dto.SnsTypeDto">
         SELECT * FROM sns_type
     </select>
 
