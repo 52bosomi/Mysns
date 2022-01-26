@@ -22,7 +22,6 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
 public class ThymeleafViewResolverConfig  {
-
 	private static final String ENCODING = "UTF-8";
 
 	@Bean

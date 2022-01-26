@@ -1,7 +1,6 @@
 package com.app.mysns.service;
 
 import com.app.mysns.dto.ClientDto;
-import com.sun.tools.javac.comp.Todo;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -11,9 +10,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.context.Context;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 @Service
 public class MailService {
@@ -67,3 +63,4 @@ public class MailService {
 
 
 }
+

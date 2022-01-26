@@ -7,7 +7,6 @@ import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.app.mysns.dto.ClientDto;
 import com.app.mysns.dto.Restful;
 import com.app.mysns.service.MailService;
@@ -39,7 +38,6 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-
     public AuthController(TemplateEngine htmlTemplateEngine, MailService mailService) {
         this.mailService = mailService;
     }
@@ -56,7 +54,6 @@ public class AuthController {
             return new ResponseEntity<>(new Restful().Error("failed send email"), HttpStatus.BAD_REQUEST);
         }
     }
-
 
     // 인증 관련 처리 컨트롤러
 
