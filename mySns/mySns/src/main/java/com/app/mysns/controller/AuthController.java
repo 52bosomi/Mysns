@@ -63,8 +63,8 @@ public class AuthController {
         return "signup";
     }
 
-    @RequestMapping(value = "/loginPage")
-    public String loginPage(Model model,HttpServletRequest request){
+    @RequestMapping(value = "/login")
+    public String login(Model model,HttpServletRequest request){
         //쿠키삭제여부보기
         Cookie[] cookies = request.getCookies();
         if(cookies != null){
@@ -94,10 +94,10 @@ public class AuthController {
             }
         }
         //쿠키가 없으면 로그인 페이지로
-        return "redirect:/auth/loginPage";
+        return "redirect:/auth/login";
     }
 
-    @RequestMapping("/login")
+    @RequestMapping("/")
     public String login(Model model, HttpServletResponse response,
                         @RequestParam("username") String username,
                         @RequestParam("pw") String pw) throws IOException {
@@ -108,7 +108,7 @@ public class AuthController {
         if(same){
             return "redirect:/auth/dashboard";
         }
-        return "redirect:/auth/loginPage";
+        return "redirect:/auth/login";
     }
 
     @RequestMapping("/logout")
@@ -124,7 +124,7 @@ public class AuthController {
                 response.addCookie(cookies[i]); // 응답에 추가하여 만료시키기.
             }
         }
-        return "redirect:/auth/loginPage";
+        return "redirect:/auth/login";
     }
 
     @RequestMapping("/phone/send")
@@ -166,8 +166,8 @@ public class AuthController {
         int success = authService.emailJoin(userEmail,username,pw);
         if(success > 0){//회원가입성공
             System.out.println("회원가입 성공");
-            return "login";
+            return "redirect:/auth/login";
         }//회원가입실패
-        return "signup";
+        return "redirect:/auth/signup";
     }
 }
