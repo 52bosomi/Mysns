@@ -1,31 +1,26 @@
 <!DOCTYPE html>
-<html
-  lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>MySNS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
-
 </head>
 
 <body class="nav-md">
 <div class="container body footer_fixed">
     <div class="main_container">
         <!-- top navigation -->
-        <header th:replace="fragments/header"></header>
+        <th:block th:replace="fragments/header :: headerFragment"></th:block>
         <!-- /top navigation -->
 
         <!-- page content -->
         <div layout:fragment="content"></div>
-        <footer th:replace="fragments/footer"></footer>
+        <!-- page content -->
+        <th:block th:replace="fragments/footer :: footerFragment"></th:block>
+        <!-- <footer th:replace="fragments/footer"></footer> -->
 
     </div>
 </div>

@@ -1,86 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>MySNS - Signup</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css" rel="stylesheet">
-	<link rel="icon" type="image/png" href="images/icons/phodo.ico"/>
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link rel="stylesheet" type="text/css" href="css/common.css">
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-9FVDFV1SLW"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
-
-		gtag('config', 'G-9FVDFV1SLW');
-	</script>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout"
+	  layout:decorate="~{layout/default_layout}">
+<th:block layout:fragment="content">
 	<div class="container-login100">
 		<div class="wrap-login100 p-l-55 p-r-55 p-t-80 p-b-30">
-			<form action="/mailAccept"  method="post"  class="login100-form validate-form" >
-
-				<span class="login100-form-title p-b-37">
-					MySNS
-				</span>
+			<div class="login100-form validate-form" >
+                    <span class="login100-form-title p-b-37">
+                        MySNS
+                    </span>
 
 				<div class="wrap-input100 validate-input m-b-20" data-validate="Enter username or email">
-					<input class="input100" type="text" name="username" placeholder="username or email">
+					<input class="input100" type="text" id="username" name="username" placeholder="username or email" >
 					<span class="focus-input100"></span>
 				</div>
 
 				<div class="container-login100-form-btn">
-					<input type="submit" value="Send email" >
-					<!--<button class="login100-form-btn" onclick="send_email()">
-						Send email
-					</button>-->
+					<!-- <input type="submit" value="Send email" > -->
+					<button class="login100-form-btn" id="btn_send" onclick="send_email()">
+						<span class="mr-2" id="btn_send_text">Send email</span>
+						<div id="spinner" class="spinner-border text-light" role="status" style="width:15px; height:15px;">
+							<span class="sr-only">Loading...</span>
+						</div>
+
+						<div class="wrapper" id="checker">
+							<svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+								<!-- <circle class="checkmark_circle" cx="26" cy="26" r="25" fill="none" /> -->
+								<path class="checkmark_check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+							</svg>
+						</div>
+					</button>
 				</div>
+
 				<hr>
 				<div class="text-center">
-					<a href="./index.html" class="txt2 hov1">
+					<a href="./login" class="txt2 hov1">
 						Sign In
 					</a>
 				</div>
-			</form>
+			</div>
 		</div>
 	</div>
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-	<script src="vendor/animsition/js/animsition.min.js"></script>
-	<script src="vendor/select2/select2.min.js"></script>
-	<script src="vendor/daterangepicker/moment.min.js"></script>
-	<script src="vendor/daterangepicker/daterangepicker.js"></script>
-	<script src="vendor/countdowntime/countdowntime.js"></script>
-	<script src="js/main.js"></script>
-	<script src="js/signup.js"></script>
-
-	<script type="text/javascript" th:inline="javascript">
-
-		/*<![CDATA[*/
-		function joinSubmit(){
-
-
-
-		}
-
-
-		/*]]*/
-
-	</script>
-
-
-</script>
-</body>
+	<!-- css -->
+	<link rel="stylesheet" type="text/css" href="/css/signup.css">
+	<!-- js -->
+	<script src="/js/signup.js"></script>
+</th:block>
 </html>
