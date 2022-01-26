@@ -24,9 +24,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -35,7 +32,8 @@ import groovyjarjarpicocli.CommandLine.Model;
 
 // @RestController
 @Controller
-public class authController {
+@RequestMapping("/auth")
+public class AuthController {
 
     private static final String SPRING_LOGO_IMAGE = "templates/static/images/phodo.jpg";
     private static final String MAIL_SUBJECT = "Registration Confirmation";
@@ -46,10 +44,8 @@ public class authController {
     
 
     // private final Logger logger = LoggerFactory.getLogger(authController.class);
-
-    public authController(JavaMailSender mailSender, TemplateEngine htmlTemplateEngine) {
-        this.mailSender = mailSender;
-        this.htmlTemplateEngine = htmlTemplateEngine;
+    public AuthController(TemplateEngine htmlTemplateEngine, MailService mailService) {
+        this.mailService = mailService;
     }
 
     // @RestController    

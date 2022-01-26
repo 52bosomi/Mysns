@@ -17,9 +17,10 @@ import java.util.ArrayList;
 // import java.util.HashMap;
 
 @Controller
-public class baseController {
+@RequestMapping("/") // base is start with root(/)
+public class BaseController {
 
-    private final Logger logger = LoggerFactory.getLogger(baseController.class);
+    private final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
     @Autowired
     private ManageService service;
@@ -43,12 +44,28 @@ public class baseController {
         System.out.println("mailLogin 테스트");
         return "signup";
     }
+
     @RequestMapping("/mailAccept")
     public void mailAccept(Model model,@RequestParam("username") String username ){
         System.out.println("유저 이름 또는 email : "+username);
 
         service.mailAccept(username);
     }
+
+    // 기본 보여주는 페이지
+    @RequestMapping("/welcome")
+    public String welcome(Model model){
+        System.out.println("welcome init");
+        return "welcome";
+    }
+
+    // 기본 보여주는 페이지
+    @RequestMapping("/about")
+    public String about(Model model){
+        System.out.println("about init");
+        return "about";
+    }
+    
 
 
 }
