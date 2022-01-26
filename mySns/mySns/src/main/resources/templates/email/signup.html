@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:remove="all"></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body style="font-family: calibri, 'DejaVu Sans', Arial, Helvetica, sans-serif; text-align:left !important; width:460px;">
+<h1>Confirm your account</h1>
+<br>
+<!-- <hr style="width:400px;"> -->
+<br>
+<div>Welcome to MySNS <b th:text="${email}">name</b> !</div>
+<p>
+  Your account has been created on our platform. here is your login information
+  <br/><br/>
+  Email address : <b th:text="${email}">email</b><br/>
+  <br/>
+  To confirm the validity of your email address, please click on the link below
+</p>
+<br>
+<!-- <hr style="width:400px;"> -->
+<br>
+<p style="margin-top:20px;">
+  <a style="width:400px; border-radius: 10px; padding: 10px; background-color: #000;border: solid 1px #000;background-color: #000;text-decoration: none;color: #fff;font-weight: bold;" class="link" id="link" href="#" th:href="${url}">
+    Confirm account
+  </a>
+</p>
+<br>
+<p>
+  <!-- <img src="/images/podo.jpg" data-th-src="|cid:phodo|" height="80" /> -->
+  <img data-th-src="|cid:phodo|" height="80"  style="padding-left: 20px;"/>
+</p>
+<p>
+  Regards, The MySNS Team
+</p>
+</body>
+</html>

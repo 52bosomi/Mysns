@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.mysns.dao.ManageDao">
+
+    <select id="dbtest" resultType="com.app.mysns.dto.SnsTypeDto">
+        SELECT * FROM sns_type
+    </select>
+
+    <insert id="mailAccept" parameterType="map">
+        INSERT INTO client (
+            username,
+            password,
+            name,
+            phone,
+            updated_at,
+            created_at
+        ) VALUES (
+            #{username},
+            #{password},
+            #{name},
+            #{phone},
+            #{updated_at},
+            #{created_at}
+         )
+    </insert>
+</mapper>
