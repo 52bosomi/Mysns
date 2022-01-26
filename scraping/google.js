@@ -118,9 +118,10 @@ if(process.env.NODE_ENV !== 'production') {
     console.log(rt_data)
   } catch (e) {
     console.log(e)
+  } finally {
     browser ? await browser.close() : ''
   }
-  console.log('End!!!')
+  console.log('End!!!', new Date())
 })()
 
 // description!!

@@ -14,6 +14,7 @@
     "puppeteer-extra": "^3.2.3",
     "puppeteer-extra-plugin-adblocker": "^2.12.0",
     "puppeteer-extra-plugin-stealth": "^2.9.0",
+    "sockjs-client": "^1.5.2",
     "xvfb": "^0.4.0"
   }
 }
