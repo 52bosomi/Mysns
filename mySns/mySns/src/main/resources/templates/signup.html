@@ -1,24 +1,60 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout"
-	  layout:decorate="~{layout/default_layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}">
 <th:block layout:fragment="content">
 	<div class="container-login100">
 		<div class="wrap-login100 p-l-55 p-r-55 p-t-80 p-b-30">
 			<div class="login100-form validate-form" >
-                    <span class="login100-form-title p-b-37">
-                        MySNS
-                    </span>
+				<span class="login100-form-title p-b-37">
+						MySNS
+				</span>
 
-				<div class="wrap-input100 validate-input m-b-20" data-validate="Enter username or email">
+				<!-- 만약 이메일 인증하는 경우라면 아래 레이아웃 표시 -->
+				<div th:if="${isAuth} == false" class="wrap-input100 validate-input m-b-20" data-validate="Enter username or email">
 					<input class="input100" type="text" id="username" name="username" placeholder="username or email" >
 					<span class="focus-input100"></span>
 				</div>
-
-				<div class="container-login100-form-btn">
-					<!-- <input type="submit" value="Send email" > -->
+				<!-- 추가 입력  -->
+				<div th:if="${isAuth} == true" class="wrap-input100 validate-input m-b-20" data-validate="" onclick="$('#name').focus();" style="cursor: pointer;">
+					<input class="input100" type="text" id="username"  name="username" th:value="${username}" placeholder="username or email" disabled="true">
+					<span class="focus-input100"></span>
+				</div>
+				<div th:if="${isAuth} == true" class="wrap-input100 validate-input m-b-20" data-validate="이름을 입력하세요">
+					<input class="input100" type="text" id="name" name="name" placeholder="이름이 뭐에요?" >
+					<span class="focus-input100"></span>
+				</div>
+				<div th:if="${isAuth} == true" class="wrap-input100 validate-input m-b-20" data-validate="전화번호를 입력하세요">
+					<input class="input100" type="text" id="phone" name="phone" placeholder="전화번호도~" >
+					<span class="focus-input100"></span>
+				</div>
+				<div th:if="${isAuth} == true" class="wrap-input100 validate-input m-b-20" data-validate="비밀번호를 입력하세요">
+					<input class="input100" type="text" id="password" name="password" placeholder="쉿!!!, 비밀번호" >
+					<span class="focus-input100"></span>
+				</div>
+				<div th:if="${isAuth} == true" class="wrap-input100 validate-input m-b-20" data-validate="비밀번호를 다시 입력하세요">
+					<input class="input100" type="text" id="password_repeat" name="password_repeat" placeholder="비밀번호 한번더~~" >
+					<span class="focus-input100"></span>
+				</div>
+				
+				<!-- 이메일 발송 버튼 -->
+				<div class="container-login100-form-btn" th:if="${isAuth} == false">
 					<button class="login100-form-btn" id="btn_send" onclick="send_email()">
 						<span class="mr-2" id="btn_send_text">Send email</span>
+						<div id="spinner" class="spinner-border text-light" role="status" style="width:15px; height:15px;">
+							<span class="sr-only">Loading...</span>
+						</div>
+
+						<div class="wrapper" id="checker">
+							<svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+								<!-- <circle class="checkmark_circle" cx="26" cy="26" r="25" fill="none" /> -->
+								<path class="checkmark_check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+							</svg>
+						</div>
+					</button>
+				</div>
+				<!-- 회원 가입 버튼 -->
+				<div class="container-login100-form-btn" th:unless="${isAuth} == false">
+					<button class="login100-form-btn" id="btn_send" onclick="send_join()">
+						<span class="mr-2" id="btn_send_text">Sign up</span>
 						<div id="spinner" class="spinner-border text-light" role="status" style="width:15px; height:15px;">
 							<span class="sr-only">Loading...</span>
 						</div>

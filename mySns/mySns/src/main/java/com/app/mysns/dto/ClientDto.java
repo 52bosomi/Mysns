@@ -13,6 +13,13 @@ public class ClientDto {
     private String phone;
     private Timestamp updated_at;
     private Timestamp created_at;
+
+    public ClientDto(String username, String password, String name, String phone) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+    }
     
     public int getId() {
         return this.id;

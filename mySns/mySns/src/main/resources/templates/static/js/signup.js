@@ -1,7 +1,7 @@
 function send_email() {
 
   let username = $('#username').val()
-  if(!username) { return alert('required username via email'); }
+  if(!username) { alert('required username via email'); return false }
 
   $('#spinner').show();
   $('#checker').hide();
@@ -41,43 +41,52 @@ $('#spinner').hide();
 $('#checker').hide();
 
 
-function joinSubmit(){
+function send_join(){
 
-  let pw1 = $("#pw").val();
-  let pw2 = $("#pw2").val();
+  let name = $("#name").val();
+  let phone = $("#phone").val();
   let username = $("#username").val();
-  let userEmail = $("#userEmail").val();
-  console.log(userEmail);
+  let password = $("#password").val();
+  let password_repeat = $("#password_repeat").val();
 
-  if(username.length == 0){
-    alert("이름을 입력해주세요.");
-    return false;
-  }
-  if(pw1.length == 0 || pw2.length == 0 ){
-    alert("비밀번호를 입력해주세요.");
-    return false;
-  }
+  if(!name) { return alert('이름을 입력해주세요') }
+  if(!phone) { return alert('전화번호를 입력해주세요') }
+  if(!password) { return alert('비밀번호를 입력해주세요') }
+  if(!password_repeat) { return alert('비밀번호 확인을 입력해주세요') }
+  if(password != password_repeat) { return alert('비밀번호가 서로 일치하지 않습니다') }
 
-  if(pw1 != pw2){
-    alert("비밀번호가 일치하지 않습니다.");
-    return false;
-  }
-  if(username.length > 0 && pw1 == pw2 && pw1.length > 0 && pw2.length > 0 ){
-    alert("회원가입이 완료되었습니다! 반갑습니다 "+username+"님 ~")
-    return true;
-  }
+  console.log('request to signup')
 
-}
+  let body = { username : username, password : password, phone : phone, name : name }
 
-function chkPw(){
-  let pw1 = $("#pw").val();
-  let pw2 = $("#pw2").val();
+  // 보내기 전 패스워드 암호화
+  // body.password = body.password
 
-  if(pw1 != pw2){
-    $("#checkMessage").html("비밀번호가 일치하지 않습니다.");
-  }else{
-    $("#checkMessage").html("");
-  }
+  $.ajax({
+    async : true,
+    url:'/auth/email/join', // 요청 할 주소
+    type:'POST', // GET, PUT
+    data: JSON.stringify(body),
+    contentType : 'application/json',
+    dataType:'json',// xml, json, script, html
+    beforeSend:function(x) {
+      console.log(x)
+    },// 서버 요청 전 호출 되는 함수 return false; 일 경우 요청 중단
+    success:function(x) {
+      $('#checker').show();
+      $('#btn_send_text').text('Sent!')
+      alert(x.data);
+    },// 요청 완료 시
+    error:function(x) {
+      console.log(x)
+      $('#username').prop('disabled', false)
+      $('#btn_send_text').text('Resend Email')
+    },// 요청 실패.
+    complete:function(x) {
+      $('#btn_send').prop('disabled', false)
+      $('#spinner').hide();
+    }// 요청의 실패, 성공과 상관 없이 완료 될 경우 호출
+  });
 
 }
 

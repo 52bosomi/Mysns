@@ -21,5 +21,5 @@ public class Restful {
 
     public Restful Error(String reason) { this.reason = reason; this.isError = true; return this; }
     public Restful Data(String data) { this.data = data; return this; }
-
+    public Restful Data() { return this; }
 }

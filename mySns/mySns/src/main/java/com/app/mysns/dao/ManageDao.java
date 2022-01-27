@@ -12,11 +12,12 @@ import java.util.List;
 
 @Repository
 public interface ManageDao {
+    
+    boolean AddClient(ClientDto user);
 
     ArrayList<SnsTypeDto> dbtest();
     void mailAccept(HashMap<String,Object> map);
 
-    int emailJoin(ClientDto user);
 
     ClientDto login(String username);
 }

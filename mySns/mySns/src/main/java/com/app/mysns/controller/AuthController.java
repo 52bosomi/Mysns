@@ -3,6 +3,9 @@ package com.app.mysns.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +15,7 @@ import com.app.mysns.dto.Restful;
 import com.app.mysns.service.MailService;
 
 import com.app.mysns.service.AuthService;
-import com.app.mysns.service.UserSha256;
+// import com.app.mysns.service.UserSha256;
 import org.apache.catalina.connector.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.TemplateEngine;
@@ -58,9 +62,12 @@ public class AuthController {
     // 인증 관련 처리 컨트롤러
 
     @RequestMapping("/signup")
-    public String signup(Model model){
+    public ModelAndView signup(Model model){
         System.out.println("client redirect to signup");
-        return "signup";
+
+        ModelAndView rv = new ModelAndView("signup");
+        rv.addObject("isAuth", false);
+        return rv;
     }
 
     @RequestMapping(value = "/login")
@@ -102,12 +109,13 @@ public class AuthController {
                         @RequestParam("username") String username,
                         @RequestParam("pw") String pw) throws IOException {
         System.out.println("client redirect to login");
+
         System.out.println("로그인 시도: "+username+"/"+pw);
-        boolean same = authService.login(username,pw,response);
-        System.out.println("로그인 성공 : " + same);
-        if(same){
-            return "redirect:/auth/dashboard";
-        }
+        // boolean same = authService.login(username, response);
+        // System.out.println("로그인 성공 : " + same);
+        // if(same){
+        //     return "redirect:/auth/dashboard";
+        // }
         return "redirect:/auth/login";
     }
 
@@ -146,28 +154,45 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/email/check" , method = RequestMethod.GET)
-    public ModelAndView emailCheck(@RequestParam("email") String email){
-        ModelAndView mav = new ModelAndView();
-        System.out.println("사용자 이메일"+email);
+    public ModelAndView emailCheck(@RequestParam("username") String username){
+        ModelAndView rv = new ModelAndView();
+
+        System.out.println("사용자 이메일 : "+username);
         System.out.println("client redirect to email");
-        mav.addObject("email",email);
-        mav.setViewName("signupForm");
-        return mav;
+
+        rv.addObject("username", username);
+        rv.addObject("isAuth", true);
+        rv.setViewName("signup");
+        return rv;
     }
 
     @RequestMapping(value = "/email/join" , method = RequestMethod.POST)
-    public String emailJoin(Model model,
-                            @RequestParam("userEmail")String userEmail,
-                            @RequestParam("username")String username,
-                            @RequestParam("pw")String pw){
-        logger.info("회원가입 정보 : "+ userEmail+"/"+username+"/"+pw);
+    public ResponseEntity emailJoin(@RequestBody Map<String, Object> client) {
+        // 여기서 패스워드는 1차 암호화 되어서 전송됨
+        logger.info("회원가입 정보");
+        logger.info("username : " + client.get("username"));
+        logger.info("password : " + client.get("password"));
+        logger.info("name : " + client.get("name"));
+        logger.info("phone : " + client.get("phone"));
         System.out.println("client redirect to login");
 
-        int success = authService.emailJoin(userEmail,username,pw);
-        if(success > 0){//회원가입성공
-            System.out.println("회원가입 성공");
-            return "redirect:/auth/login";
-        }//회원가입실패
-        return "redirect:/auth/signup";
+        
+
+        // rv : return value
+        HashMap<String, Boolean> rv = new HashMap<>();
+        ClientDto newClient = new ClientDto(
+            client.get("username").toString(),
+            client.get("password").toString(),
+            client.get("name").toString(),
+            client.get("phone").toString()
+        );
+        
+        // 회원가입성공 여부 리턴
+        if(authService.emailJoin(newClient)) {
+            rv.put("siginup", true);
+            return new ResponseEntity<>(new Restful().Data(rv.toString()), HttpStatus.OK);
+        }
+        rv.put("siginup", false);
+        return new ResponseEntity<>(new Restful().Data(rv.toString()), HttpStatus.OK);
     }
 }
