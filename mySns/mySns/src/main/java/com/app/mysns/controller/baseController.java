@@ -33,7 +33,16 @@ public class BaseController {
     private ManageService service;
 
     @RequestMapping("/")
-    public String snsBoard(Model model){
+    public String index(Model model){
+        // TODO : 로그인시 인증 여부 검증 필요
+        // boolean isAuth = false;
+        // if(isAuth) {  }
+        // return "index";
+        return "redirect:/auth/login";
+    }
+
+    @RequestMapping("/login")
+    public String login(Model model){
         // TODO : 로그인시 인증 여부 검증 필요
         // boolean isAuth = false;
         // if(isAuth) {  }

@@ -72,7 +72,12 @@ public class AuthController {
         return rv;
     }
 
-    @RequestMapping(value = "/login")
+    @RequestMapping(value = "/login" , method = RequestMethod.GET)
+    public String index() {
+        return "login";
+    }
+
+    @RequestMapping(value = "/login" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public String login(@RequestBody ClientDto client, HttpServletRequest request, HttpServletResponse response) {
 
         // 쿠키 삭제 여부 검증
