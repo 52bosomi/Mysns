@@ -37,6 +37,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class SecureUtilsService {
 
     public String getSecurePassword(String password, String salt) {

@@ -1,11 +1,13 @@
 package com.app.mysns.dto;
 
+import com.google.gson.Gson;
+
 import lombok.Data;
 
 @Data
 public class Restful {
 
-    private String data;
+    private static String data;
     private Boolean isError = false;
     private String reason;
 
@@ -22,4 +24,23 @@ public class Restful {
     public Restful Error(String reason) { this.reason = reason; this.isError = true; return this; }
     public Restful Data(String data) { this.data = data; return this; }
     public Restful Data() { return this; }
+
+    public static <T> T ToData(String value, Class<T> clazz) {
+        return new Gson().fromJson(value, clazz);
+        // return clazz.cast(value);
+    }
+    
+    public static <T> T ToData(Class<T> clazz) {
+        return new Gson().fromJson(data, clazz);
+        // return clazz.cast(value);
+    }
+    
+    // public Object ToData(Class<T> c) { return new Gson().fromJson(this.data, c) ; }
+    // public Object ToData(String data) { return new Gson().fromJson(data, T.getType()) ; }
+    public String ToJson() { return new Gson().toJson(data) ; }
+    public String ToJson(Object data) { return new Gson().toJson(data) ; }
+
+    //String -> Class new GsonBuilder().create().fromJson(json, classOfT);
+    //Class -> String new GsonBuilder().create().toJson(classOfT);
+
 }

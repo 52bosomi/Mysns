@@ -44,7 +44,7 @@ public class MailService {
             ctx.setVariable("phodo", PHODO_IMAGE);
 
             // change url for production
-            ctx.setVariable("url", "http://localhost:8888/auth/email/check?email="+username);
+            ctx.setVariable("url", "http://localhost:8888/auth/email/check?username="+username);
             email.setText(this.htmlTemplateEngine.process("email/signup.html", ctx), true);
 
             // 마스코트 이미지 넣기

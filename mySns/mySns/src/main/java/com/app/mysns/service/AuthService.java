@@ -22,10 +22,10 @@ public class AuthService {
         this.util = util;
     }
 
-    public ArrayList<SnsTypeDto> dbtest() {
-        ArrayList<SnsTypeDto> result =  dao.dbtest();
-        return result;
-    }
+    // public ArrayList<SnsTypeDto> dbtest() {
+    //     ArrayList<SnsTypeDto> result =  dao.dbtest();
+    //     return result;
+    // }
 
     public boolean emailJoin(ClientDto client) {
         //암호화시키기 ,SHA256 암호화 사용
@@ -44,20 +44,25 @@ public class AuthService {
         client.setUpdated_at(timestamp);
 
         // DB에 저장하는 로직 타기, DTO 사용
-        return dao.AddClient(client);
+        return dao.CreateClient(client);
+    }
+
+    public ClientDto checkDuplicate(String username) {
+
+        ClientDto client = dao.FindClient(username);
+        if(client == null || client.getIdx() < 1) { return null; }
+        // DB에 저장하는 로직 타기, DTO 사용
+        return client;
     }
 
     // 쿠키를 저장해야 해서 HttpServletResponse 같이 파라미터로 전달
     public boolean login (ClientDto client, HttpServletResponse response) {
 
 
-        // System.out.println("1차 로그인 비밀번호 : " + client.getPassword());
-        // String password = UserSha256.encrypt(client.getPassword());
-        // String password = util.getSecurePassword(client.getPassword(), client.getUsername());
-        // System.out.println("2차 로그인 비밀번호 : " + password);
-
         System.out.println("요청 비밀번호 : " + client.getUsername());
         System.out.println("요청 비밀번호 : " + client.getPassword());
+        System.out.println("요청 비밀번호 암호화 : " + util.getSecurePassword(client.getPassword(), client.getUsername()));
+        
 
         ClientDto loginInfo = dao.login(client.getUsername());
 
@@ -67,24 +72,8 @@ public class AuthService {
         System.out.println("DB 비밀번호 : " + password);
 
         if(username.equals(client.getUsername()) && password.equals(util.getSecurePassword(client.getPassword(), client.getUsername()))) {
-            // 필요시 나중에 시간 검증용
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            String uuid = util.SHA256(username + "." + timestamp.toString()) + "." + timestamp.toString();
-
-            System.out.println("쿠키 토큰 UUID : " + uuid);
-            Cookie cookie = new Cookie("mysns_uuid", uuid);
-            
-            System.out.println("쿠키 : " + cookie);
-
-            cookie.setComment("mysns auth code for login");
-            // 글로벌
-            cookie.setPath("/"); 
-            // 유효시간: 30분
-            cookie.setMaxAge(60 * 30);
-            response.addCookie(cookie);
             return true;
         }
-
         return false;
     }
 }

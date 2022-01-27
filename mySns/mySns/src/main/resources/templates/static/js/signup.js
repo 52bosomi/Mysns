@@ -22,13 +22,14 @@ function send_email() {
     success:function(x) {
       $('#checker').show();
       $('#btn_send_text').text('Sent!')
-      alert(x.data);
+      alert(x.isError ? x.reason : x.data);
     },// 요청 완료 시
     error:function(x) {
-      console.log(x)
+      console.log('failed', x)
       $('#username').prop('disabled', false)
       $('#btn_send_text').text('Resend Email')
-      alert('마..ㅅX.... 발송 실패함');
+      alert(x.responseJSON.isError ? x.responseJSON.reason : x.responseJSON.data);
+      // alert('마..ㅅX.... 발송 실패함');
     },// 요청 실패.
     complete:function(x) {
       $('#btn_send').prop('disabled', false)
@@ -74,13 +75,14 @@ function send_join(){
     },// 서버 요청 전 호출 되는 함수 return false; 일 경우 요청 중단
     success:function(x) {
       $('#checker').show();
-      $('#btn_send_text').text('Sent!')
-      alert(x.data);
+      $('#btn_send_text').text('Signup Successful')
+      alert(x.isError ? x.reason : x.data);
     },// 요청 완료 시
     error:function(x) {
-      console.log(x)
+      console.log('failed', x)
       $('#username').prop('disabled', false)
-      $('#btn_send_text').text('Resend Email')
+      $('#btn_send_text').text('Signup Failed')
+      alert(x.responseJSON.isError ? x.responseJSON.reason : x.responseJSON.data);
     },// 요청 실패.
     complete:function(x) {
       $('#btn_send').prop('disabled', false)

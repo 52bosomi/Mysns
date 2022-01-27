@@ -3,6 +3,8 @@ package com.app.mysns.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.security.Timestamp;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.app.mysns.dto.ClientDto;
 import com.app.mysns.dto.Restful;
 import com.app.mysns.service.MailService;
-
+import com.app.mysns.service.SecureUtilsService;
 import com.app.mysns.service.AuthService;
 // import com.app.mysns.service.UserSha256;
 import org.apache.catalina.connector.Response;
@@ -22,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
@@ -30,7 +33,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.TemplateEngine;
 import groovyjarjarpicocli.CommandLine.Model;
 
-
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
@@ -38,12 +40,12 @@ public class AuthController {
 
     @Autowired
     private MailService mailService;
-
-    @Autowired
     private AuthService authService;
+    private SecureUtilsService secureUtilsService;
 
-    public AuthController(TemplateEngine htmlTemplateEngine, MailService mailService) {
+    public AuthController(TemplateEngine htmlTemplateEngine, MailService mailService, SecureUtilsService secureUtilsService) {
         this.mailService = mailService;
+        this.secureUtilsService = secureUtilsService;
     }
 
     @PostMapping("/email/signup")
@@ -62,7 +64,7 @@ public class AuthController {
     // 인증 관련 처리 컨트롤러
 
     @RequestMapping("/signup")
-    public ModelAndView signup(Model model){
+    public ModelAndView signup(Model model) {
         System.out.println("client redirect to signup");
 
         ModelAndView rv = new ModelAndView("signup");
@@ -71,14 +73,52 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/login")
-    public String login(Model model,HttpServletRequest request){
-        //쿠키삭제여부보기
-        Cookie[] cookies = request.getCookies();
-        if(cookies != null){
-            for(Cookie cookie : cookies){
-                System.out.println(cookie.getName());
+    public String login(@RequestBody ClientDto client, HttpServletRequest request, HttpServletResponse response) {
 
+        // 쿠키 삭제 여부 검증
+        Cookie[] cookies = request.getCookies();
+        boolean isLogin = false;
+
+        if(cookies != null) {
+            for(Cookie c : cookies) {
+                System.out.println(c.getName());
+
+                if(c.getName().startsWith("mysns.")) {
+                    String[] data = c.getValue().split(".");
+                    if(data.length > 2) {
+                        String uuid = secureUtilsService.SHA256(client.getUsername() + "." + data[2].toString()) + "." + data[2].toString();
+                        if(data[1] == uuid) {
+                            isLogin = true;
+                            break;
+                        }
+                    }   
+                }
             }
+        }
+
+
+        // 로그인일경우 새로운 쿠키 생성
+        // 쿠키로 로그인 여부는 보안상 좋지 않음, 지향하지 않는 추세
+        if(isLogin) {
+            // 필요시 나중에 시간 검증용
+            Instant instant = Instant.now();
+            long timeStampSeconds = instant.getEpochSecond();
+            // Timestamp timestamp = new Timestamp(timeStampSeconds);
+            String uuid = "mysns." + secureUtilsService.SHA256(client.getUsername() + "." + timeStampSeconds) + "." + timeStampSeconds;
+
+            System.out.println("쿠키 토큰 UUID : " + uuid);
+            Cookie cookie = new Cookie("mysns_uuid", uuid);
+            
+            System.out.println("쿠키 : " + cookie);
+
+            cookie.setComment("mysns auth code for login");
+            // 글로벌
+            cookie.setPath("/"); 
+            // 유효시간: 30분
+            cookie.setMaxAge(60 * 30);
+            response.addCookie(cookie);
+            System.out.println("client redirect to welcome");
+            return "welcome";
         }
         System.out.println("client redirect to login");
         return "login";
@@ -86,10 +126,10 @@ public class AuthController {
 
     //웰컴으로 가는 controller 여기서 쿠키가 없으면 다른데로 보내준다.
     @RequestMapping("/dashboard")
-    public String dashboard(HttpServletRequest request){
+    public String dashboard(HttpServletRequest request) {
         System.out.println("대시보드 컨트롤러 진입");
         Cookie[] cookies= request.getCookies(); // 모든 쿠키 가져오기
-        if(cookies!=null){
+        if(cookies!=null) {
             for (Cookie c : cookies) {
                 String name = c.getName(); // 쿠키 이름 가져오기
                 String value = c.getValue(); // 쿠키 값 가져오기
@@ -113,14 +153,14 @@ public class AuthController {
         System.out.println("로그인 시도: "+username+"/"+pw);
         // boolean same = authService.login(username, response);
         // System.out.println("로그인 성공 : " + same);
-        // if(same){
+        // if(same) {
         //     return "redirect:/auth/dashboard";
         // }
         return "redirect:/auth/login";
     }
 
     @RequestMapping("/logout")
-    public String logout(Model model, HttpServletRequest request,HttpServletResponse response){
+    public String logout(Model model, HttpServletRequest request,HttpServletResponse response) {
         System.out.println("client redirect to logout");
         //쿠키삭제
         Cookie[] cookies = request.getCookies(); // 모든 쿠키의 정보를 cookies에 저장
@@ -136,25 +176,25 @@ public class AuthController {
     }
 
     @RequestMapping("/phone/send")
-    public String phoneSend(Model model){
+    public String phoneSend(Model model) {
         System.out.println("client redirect to phone");
         return "default";
     }
 
     @RequestMapping("/phone/check")
-    public String phoneCheck(Model model){
+    public String phoneCheck(Model model) {
         System.out.println("client redirect to phone");
         return "default";
     }
 
     @RequestMapping("/email/send")
-    public String emailSend(Model model){
+    public String emailSend(Model model) {
         System.out.println("client redirect to email");
         return "default";
     }
 
     @RequestMapping(value = "/email/check" , method = RequestMethod.GET)
-    public ModelAndView emailCheck(@RequestParam("username") String username){
+    public ModelAndView emailCheck(@RequestParam("username") String username) {
         ModelAndView rv = new ModelAndView();
 
         System.out.println("사용자 이메일 : "+username);
@@ -166,33 +206,26 @@ public class AuthController {
         return rv;
     }
 
-    @RequestMapping(value = "/email/join" , method = RequestMethod.POST)
-    public ResponseEntity emailJoin(@RequestBody Map<String, Object> client) {
+    @RequestMapping(value = "/email/join" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity emailJoin(@RequestBody ClientDto client) {
         // 여기서 패스워드는 1차 암호화 되어서 전송됨
         logger.info("회원가입 정보");
-        logger.info("username : " + client.get("username"));
-        logger.info("password : " + client.get("password"));
-        logger.info("name : " + client.get("name"));
-        logger.info("phone : " + client.get("phone"));
+        logger.info("username : " + client.getUsername());
+        logger.info("password : " + client.getPassword());
+        logger.info("name : " + client.getName());
+        logger.info("phone : " + client.getPhone());
         System.out.println("client redirect to login");
 
-        
-
-        // rv : return value
-        HashMap<String, Boolean> rv = new HashMap<>();
-        ClientDto newClient = new ClientDto(
-            client.get("username").toString(),
-            client.get("password").toString(),
-            client.get("name").toString(),
-            client.get("phone").toString()
-        );
+        // 중복 체크
+        if(authService.checkDuplicate(client.getUsername()) != null) {
+            return new ResponseEntity<>(new Restful().Error("Exising user"), HttpStatus.BAD_REQUEST);
+        }
         
         // 회원가입성공 여부 리턴
-        if(authService.emailJoin(newClient)) {
-            rv.put("siginup", true);
-            return new ResponseEntity<>(new Restful().Data(rv.toString()), HttpStatus.OK);
+        if(authService.emailJoin(client)) {
+            // 생성된 패스워드는 초기화
+            return new ResponseEntity<>(new Restful().Data("Create Sucessful"), HttpStatus.OK);
         }
-        rv.put("siginup", false);
-        return new ResponseEntity<>(new Restful().Data(rv.toString()), HttpStatus.OK);
+        return new ResponseEntity<>(new Restful().Error("create user failed"), HttpStatus.BAD_REQUEST);
     }
 }

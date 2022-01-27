@@ -3,10 +3,12 @@ package com.app.mysns.dto;
 import java.sql.Timestamp;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class ClientDto {
-    private int id;
+    private long idx;
     private String username;
     private String password;
     private String name;
@@ -14,18 +16,18 @@ public class ClientDto {
     private Timestamp updated_at;
     private Timestamp created_at;
 
-    public ClientDto(String username, String password, String name, String phone) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.phone = phone;
-    }
+    // public ClientDto(String username, String password, String name, String phone) {
+    //     this.username = username;
+    //     this.password = password;
+    //     this.name = name;
+    //     this.phone = phone;
+    // }
     
-    public int getId() {
-        return this.id;
+    public long getIdx() {
+        return this.idx;
     }
-    public void setid(int id) {
-        this.id = id;
+    public void setIdx(long idx) {
+        this.idx = idx;
     }
 
     public String getUsername() {

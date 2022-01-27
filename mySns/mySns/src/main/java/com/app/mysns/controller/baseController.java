@@ -1,5 +1,6 @@
 package com.app.mysns.controller;
 
+import com.app.mysns.dto.ClientDto;
 import com.app.mysns.dto.SnsTypeDto;
 // import com.app.mysns.dto.ClientDto;
 import com.app.mysns.service.ManageService;
@@ -44,7 +45,7 @@ public class BaseController {
     @RequestMapping("/db")
     public void dbTest(Model model){
         System.out.println("DB 테스트");
-        ArrayList<SnsTypeDto> result =  service.dbtest();
+        ArrayList<ClientDto> result =  service.ListClient();
         logger.info("db 접속"+result);
     }
 
@@ -54,12 +55,12 @@ public class BaseController {
         return "signup";
     }
 
-    @RequestMapping("/mailAccept")
-    public void mailAccept(Model model,@RequestParam("username") String username ){
-        System.out.println("유저 이름 또는 email : "+username);
+    // @RequestMapping("/mailAccept")
+    // public void mailAccept(Model model,@RequestParam("username") String username ){
+    //     System.out.println("유저 이름 또는 email : "+username);
 
-        service.mailAccept(username);
-    }
+    //     service.mailAccept(username);
+    // }
 
     // 기본 보여주는 페이지
     @RequestMapping("/welcome")
