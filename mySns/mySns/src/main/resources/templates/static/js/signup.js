@@ -70,10 +70,10 @@ function send_join(){
     data: JSON.stringify(body),
     contentType : 'application/json',
     dataType:'json',// xml, json, script, html
-    beforeSend:function(x) {
+    beforeSend : function(x) {
       console.log(x)
     },// 서버 요청 전 호출 되는 함수 return false; 일 경우 요청 중단
-    success:function(x) {
+    success : function(x) {
       $('#checker').show();
       $('#btn_send_text').text('Signup Successful')
       alert(x.isError ? x.reason : x.data);

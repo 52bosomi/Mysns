@@ -3,6 +3,7 @@ package com.app.mysns.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.http.HttpHeaders;
 import java.security.Timestamp;
 import java.time.Instant;
 import java.util.HashMap;
@@ -18,7 +19,6 @@ import com.app.mysns.service.MailService;
 import com.app.mysns.service.SecureUtilsService;
 import com.app.mysns.service.AuthService;
 // import com.app.mysns.service.UserSha256;
-import org.apache.catalina.connector.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.TemplateEngine;
@@ -43,9 +42,10 @@ public class AuthController {
     private AuthService authService;
     private SecureUtilsService secureUtilsService;
 
-    public AuthController(TemplateEngine htmlTemplateEngine, MailService mailService, SecureUtilsService secureUtilsService) {
+    public AuthController(TemplateEngine htmlTemplateEngine, MailService mailService, SecureUtilsService secureUtilsService, AuthService authService) {
         this.mailService = mailService;
         this.secureUtilsService = secureUtilsService;
+        this.authService = authService;
     }
 
     @PostMapping("/email/signup")
@@ -53,6 +53,12 @@ public class AuthController {
             throws MessagingException, UnsupportedEncodingException {
 
         try {
+            // 중복 체크
+            if(authService.checkDuplicate(client.getUsername()) != null) {
+                return new ResponseEntity<>(new Restful().Error("Exising user"), HttpStatus.BAD_REQUEST);
+            }
+
+            // 
             boolean rs = this.mailService.SendEmailSignup(client.getUsername());
             return rs ? new ResponseEntity<>(new Restful().Data("Sucessful send email"), HttpStatus.OK) : new ResponseEntity<>(new Restful().Data("Sending failed"), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
@@ -78,11 +84,11 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/login" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String login(@RequestBody ClientDto client, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity login(@RequestBody ClientDto client, HttpServletRequest request, HttpServletResponse response) {
 
         // 쿠키 삭제 여부 검증
         Cookie[] cookies = request.getCookies();
-        boolean isLogin = false;
+        boolean isRquiredLogin = true;
 
         if(cookies != null) {
             for(Cookie c : cookies) {
@@ -93,7 +99,7 @@ public class AuthController {
                     if(data.length > 2) {
                         String uuid = secureUtilsService.SHA256(client.getUsername() + "." + data[2].toString()) + "." + data[2].toString();
                         if(data[1] == uuid) {
-                            isLogin = true;
+                            isRquiredLogin = false;
                             break;
                         }
                     }   
@@ -104,7 +110,14 @@ public class AuthController {
 
         // 로그인일경우 새로운 쿠키 생성
         // 쿠키로 로그인 여부는 보안상 좋지 않음, 지향하지 않는 추세
-        if(isLogin) {
+        if(isRquiredLogin) {
+
+            // 로그인 검증
+            boolean isLoginSuccess = authService.login(client);
+            if(!isLoginSuccess) {
+                return new ResponseEntity<>(new Restful().Error("Login failed"), HttpStatus.OK);
+            }
+
             // 필요시 나중에 시간 검증용
             Instant instant = Instant.now();
             long timeStampSeconds = instant.getEpochSecond();
@@ -123,31 +136,37 @@ public class AuthController {
             cookie.setMaxAge(60 * 30);
             response.addCookie(cookie);
             System.out.println("client redirect to welcome");
-            return "welcome";
+
+            return new ResponseEntity<>(new Restful().Data("login successful"), HttpStatus.OK);
+
+            // return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).header(HttpHeaders.LOCATION, "/welcome").build();
+            // return "redirect:/welcome";
+        } else {
+            return new ResponseEntity<>(new Restful().Error("login failed"), HttpStatus.BAD_REQUEST);
         }
-        System.out.println("client redirect to login");
-        return "login";
+
+        
     }
 
     //웰컴으로 가는 controller 여기서 쿠키가 없으면 다른데로 보내준다.
-    @RequestMapping("/dashboard")
-    public String dashboard(HttpServletRequest request) {
-        System.out.println("대시보드 컨트롤러 진입");
-        Cookie[] cookies= request.getCookies(); // 모든 쿠키 가져오기
-        if(cookies!=null) {
-            for (Cookie c : cookies) {
-                String name = c.getName(); // 쿠키 이름 가져오기
-                String value = c.getValue(); // 쿠키 값 가져오기
-                System.out.println("쿠키이름"+name);
-                if (name.equals("userName")) {
-                    //쿠키가있으면 welcome 페이지로
-                    return "welcome";
-                }
-            }
-        }
-        //쿠키가 없으면 로그인 페이지로
-        return "redirect:/auth/login";
-    }
+    // @RequestMapping("/dashboard")
+    // public String dashboard(HttpServletRequest request) {
+    //     System.out.println("대시보드 컨트롤러 진입");
+    //     Cookie[] cookies= request.getCookies(); // 모든 쿠키 가져오기
+    //     if(cookies!=null) {
+    //         for (Cookie c : cookies) {
+    //             String name = c.getName(); // 쿠키 이름 가져오기
+    //             String value = c.getValue(); // 쿠키 값 가져오기
+    //             System.out.println("쿠키이름"+name);
+    //             if (name.equals("userName")) {
+    //                 //쿠키가있으면 welcome 페이지로
+    //                 return "welcome";
+    //             }
+    //         }
+    //     }
+    //     //쿠키가 없으면 로그인 페이지로
+    //     return "redirect:/auth/login";
+    // }
 
     @RequestMapping("/")
     public String login(Model model, HttpServletResponse response,
@@ -167,16 +186,32 @@ public class AuthController {
     @RequestMapping("/logout")
     public String logout(Model model, HttpServletRequest request,HttpServletResponse response) {
         System.out.println("client redirect to logout");
-        //쿠키삭제
-        Cookie[] cookies = request.getCookies(); // 모든 쿠키의 정보를 cookies에 저장
-        if (cookies != null) { // 쿠키가 한개라도 있으면 실행
-            for (int i = 0; i < cookies.length; i++) {
-                cookies[i].setValue(null);
-                cookies[i].setMaxAge(0); // 유효시간을 0으로 설정
-                cookies[i].setPath("/");
-                response.addCookie(cookies[i]); // 응답에 추가하여 만료시키기.
+
+        // 쿠키 삭제 여부 검증
+        Cookie[] cookies = request.getCookies();
+        boolean isRquiredLogin = true;
+
+        if(cookies != null) {
+            for(Cookie c : cookies) {
+                System.out.println(c.getName());
+
+                if(c.getName().startsWith("mysns.")) {
+                    c.setValue(null);
+                    c.setMaxAge(0); // 유효시간을 0으로 설정
+                    c.setPath("/");
+                }
             }
         }
+        
+        // 쿠키 삭제
+        Cookie cookie = new Cookie("mysns_uuid", null);
+        cookie.setMaxAge(0);
+        cookie.setSecure(true);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        //add cookie to response
+        response.addCookie(cookie);
+
         return "redirect:/auth/login";
     }
 
@@ -199,7 +234,7 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/email/check" , method = RequestMethod.GET)
-    public ModelAndView emailCheck(@RequestParam("username") String username) {
+    public ModelAndView emailCheck(@RequestParam(required = false) String username) {
         ModelAndView rv = new ModelAndView();
 
         System.out.println("사용자 이메일 : "+username);

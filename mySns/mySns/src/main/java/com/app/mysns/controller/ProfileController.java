@@ -23,7 +23,7 @@ public class ProfileController {
 
     @GetMapping("")
     public String index(Model model){
-        System.out.println("client redirect to signup");
+        System.out.println("client redirect to profile");
         return "profile";
     }
 }

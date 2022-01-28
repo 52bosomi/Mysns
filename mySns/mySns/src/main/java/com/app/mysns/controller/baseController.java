@@ -73,18 +73,22 @@ public class BaseController {
 
     // 기본 보여주는 페이지
     @RequestMapping("/welcome")
-    public String welcome(Model model){
+    public String welcome(){
         System.out.println("welcome init");
         return "welcome";
     }
 
     // 기본 보여주는 페이지
     @RequestMapping("/about")
-    public String about(Model model){
+    public String about(){
         System.out.println("about init");
         return "about";
     }
-    
 
-
+    // 기본 보여주는 페이지
+    @RequestMapping("/logout")
+    public String logout(){
+        System.out.println("logout init");
+        return "redirect:/auth/logout";
+    }
 }

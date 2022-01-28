@@ -56,7 +56,7 @@ public class AuthService {
     }
 
     // 쿠키를 저장해야 해서 HttpServletResponse 같이 파라미터로 전달
-    public boolean login (ClientDto client, HttpServletResponse response) {
+    public boolean login (ClientDto client) {
 
 
         System.out.println("요청 비밀번호 : " + client.getUsername());
