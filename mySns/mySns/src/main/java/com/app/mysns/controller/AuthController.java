@@ -1,13 +1,8 @@
 package com.app.mysns.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.http.HttpHeaders;
-import java.security.Timestamp;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
@@ -15,10 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.app.mysns.dto.ClientDto;
 import com.app.mysns.dto.Restful;
-import com.app.mysns.service.MailService;
 import com.app.mysns.service.SecureUtilsService;
+import com.app.mysns.service.MailService;
 import com.app.mysns.service.AuthService;
-// import com.app.mysns.service.UserSha256;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +30,7 @@ import groovyjarjarpicocli.CommandLine.Model;
 @RequestMapping("/auth")
 public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+    private static int ttl = 10 * 60 * 1000; // 유효 시간 10분 뒤 만료
 
     @Autowired
     private MailService mailService;
@@ -86,87 +81,40 @@ public class AuthController {
     @RequestMapping(value = "/login" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity login(@RequestBody ClientDto client, HttpServletRequest request, HttpServletResponse response) {
 
-        // 쿠키 삭제 여부 검증
-        Cookie[] cookies = request.getCookies();
-        boolean isRquiredLogin = true;
-
-        if(cookies != null) {
-            for(Cookie c : cookies) {
-                System.out.println(c.getName());
-
-                if(c.getName().startsWith("mysns.")) {
-                    String[] data = c.getValue().split(".");
-                    if(data.length > 2) {
-                        String uuid = secureUtilsService.SHA256(client.getUsername() + "." + data[2].toString()) + "." + data[2].toString();
-                        if(data[1] == uuid) {
-                            isRquiredLogin = false;
-                            break;
-                        }
-                    }   
-                }
-            }
-        }
-
-
         // 로그인일경우 새로운 쿠키 생성
         // 쿠키로 로그인 여부는 보안상 좋지 않음, 지향하지 않는 추세
-        if(isRquiredLogin) {
 
-            // 로그인 검증
-            boolean isLoginSuccess = authService.login(client);
-            if(!isLoginSuccess) {
-                return new ResponseEntity<>(new Restful().Error("Login failed"), HttpStatus.OK);
-            }
-
-            // 필요시 나중에 시간 검증용
-            Instant instant = Instant.now();
-            long timeStampSeconds = instant.getEpochSecond();
-            // Timestamp timestamp = new Timestamp(timeStampSeconds);
-            String uuid = "mysns." + secureUtilsService.SHA256(client.getUsername() + "." + timeStampSeconds) + "." + timeStampSeconds;
-
-            System.out.println("쿠키 토큰 UUID : " + uuid);
-            Cookie cookie = new Cookie("mysns_uuid", uuid);
-            
-            System.out.println("쿠키 : " + cookie);
-
-            cookie.setComment("mysns auth code for login");
-            // 글로벌
-            cookie.setPath("/"); 
-            // 유효시간: 30분
-            cookie.setMaxAge(60 * 30);
-            response.addCookie(cookie);
-            System.out.println("client redirect to welcome");
-
-            return new ResponseEntity<>(new Restful().Data("login successful"), HttpStatus.OK);
-
-            // return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).header(HttpHeaders.LOCATION, "/welcome").build();
-            // return "redirect:/welcome";
-        } else {
-            return new ResponseEntity<>(new Restful().Error("login failed"), HttpStatus.BAD_REQUEST);
+        boolean isLoginSuccess = authService.login(client);
+        if(!isLoginSuccess) {
+            return new ResponseEntity<>(new Restful().Error("Login failed"), HttpStatus.OK);
         }
-
         
-    }
+        // 필요시 나중에 시간 검증용
+        Instant instant = Instant.now();
+        long timeStampSeconds = instant.getEpochSecond();
+        timeStampSeconds += ttl;
+        // Timestamp timestamp = new Timestamp(timeStampSeconds);
 
-    //웰컴으로 가는 controller 여기서 쿠키가 없으면 다른데로 보내준다.
-    // @RequestMapping("/dashboard")
-    // public String dashboard(HttpServletRequest request) {
-    //     System.out.println("대시보드 컨트롤러 진입");
-    //     Cookie[] cookies= request.getCookies(); // 모든 쿠키 가져오기
-    //     if(cookies!=null) {
-    //         for (Cookie c : cookies) {
-    //             String name = c.getName(); // 쿠키 이름 가져오기
-    //             String value = c.getValue(); // 쿠키 값 가져오기
-    //             System.out.println("쿠키이름"+name);
-    //             if (name.equals("userName")) {
-    //                 //쿠키가있으면 welcome 페이지로
-    //                 return "welcome";
-    //             }
-    //         }
-    //     }
-    //     //쿠키가 없으면 로그인 페이지로
-    //     return "redirect:/auth/login";
-    // }
+        String clientIpAddress = (null != request.getHeader("X-FORWARDED-FOR")) ? request.getHeader("X-FORWARDED-FOR") : request.getRemoteAddr();
+
+        // 접속한 곳 기준으로 쿠키 생성
+        String uuid = "mysns." + secureUtilsService.SHA256(clientIpAddress + "." + timeStampSeconds) + "." + timeStampSeconds;
+
+        System.out.println("쿠키 토큰 UUID : " + uuid);
+        Cookie cookie = new Cookie("mysns_uuid", uuid);
+        
+        System.out.println("쿠키 : " + cookie);
+
+        cookie.setComment("mysns auth code for login");
+        // 글로벌
+        cookie.setPath("/"); 
+        // 유효시간: 30분
+        cookie.setMaxAge(ttl);
+        response.addCookie(cookie);
+        System.out.println("client redirect to welcome");
+
+        return new ResponseEntity<>(new Restful().Data("login successful"), HttpStatus.OK);
+    }
 
     @RequestMapping("/")
     public String login(Model model, HttpServletResponse response,
@@ -189,7 +137,6 @@ public class AuthController {
 
         // 쿠키 삭제 여부 검증
         Cookie[] cookies = request.getCookies();
-        boolean isRquiredLogin = true;
 
         if(cookies != null) {
             for(Cookie c : cookies) {
@@ -197,6 +144,8 @@ public class AuthController {
 
                 if(c.getName().startsWith("mysns.")) {
                     c.setValue(null);
+                    c.setSecure(true);
+                    c.setHttpOnly(true);
                     c.setMaxAge(0); // 유효시간을 0으로 설정
                     c.setPath("/");
                 }

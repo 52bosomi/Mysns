@@ -1,29 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout"
-      layout:decorate="~{layout/default_layout}">
+      layout:decorate="~{layout/private_layout}">
 	<th:block layout:fragment="content">
-		<link rel="stylesheet" type="text/css" href="css/profile.css">
-		<div id="mySidenav" class="sidenav">
-			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-			<a href="./welcome">Welcome</a>
-			<a href="./profile">Profile</a>
-			<a href="./qna">Q&A</a>
-			<a href="./about">About us</a>
-			<a href="./logout">Logout</a>
-		</div>
-
+		<link rel="stylesheet" type="text/css" href="/static/css/profile.css">
 		<div id="main">
-			<button type="button" id="btn_toggle" onclick="openNav()" class="btn btn-white">
-					<i class="fa fa-bars"></i>
-					<span class="sr-only">Toggle Menu</span>
-			</button>
 			<div class="container-login100">
 				<div class="wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30 profile">
 					<form class="login100-form validate-form text-left">
 						<div class="flex-c">
 							<div class="mr-5">
-								<img src="/images/hdh.jpg" alt="" srcset="" style="height:10rem;width:10rem; border-radius:20%;">
+								<img src="/static/images/hdh.jpg" alt="" srcset="" style="height:10rem;width:10rem; border-radius:20%;">
 								<div class="m-2 mt-4 font-weight-bold h6">
 									안녕 내 이름은 포도야
 								</div>
@@ -60,22 +47,22 @@
 									<th scope="row">3</th>
 									<td>youtube.com</td>
 									<td>
-										<!-- <img class="mr-1 ml-1" src="/images/icons/icon-insta.png" alt="INSTAGRAM" width="35px" height="35px" class="m-t-5"> -->
+										<!-- <img class="mr-1 ml-1" src="/static/images/icons/icon-insta.png" alt="INSTAGRAM" width="35px" height="35px" class="m-t-5"> -->
 									</td>
 								</tr>
 								<tr>
 									<th scope="row">2</th>
 									<td>coupang.com</td>
 									<td>
-										<!-- <img class="mr-1 ml-1" src="/images/icons/icon-naver.png" alt="NAVER" width="35px" height="35px" class="m-t-5"> -->
+										<!-- <img class="mr-1 ml-1" src="/static/images/icons/icon-naver.png" alt="NAVER" width="35px" height="35px" class="m-t-5"> -->
 									</td>
 								</tr>
 								<tr>
 									<th scope="row">1</th>
 									<td class="text-danger font-weight-bold">ikea.com</td>
 									<td>
-										<!-- <img class="mr-1 ml-1" src="/images/icons/icon-facebook.png" alt="FACEBOOK" width="35px" height="35px" class="m-t-5">
-										<img class="mr-1 ml-1" src="/images/icons/icon-naver.png" alt="NAVER" width="35px" height="35px" class="m-t-5"> -->
+										<!-- <img class="mr-1 ml-1" src="/static/images/icons/icon-facebook.png" alt="FACEBOOK" width="35px" height="35px" class="m-t-5">
+										<img class="mr-1 ml-1" src="/static/images/icons/icon-naver.png" alt="NAVER" width="35px" height="35px" class="m-t-5"> -->
 									</td>
 								</tr>
 								</tbody>
@@ -89,6 +76,6 @@
 		</div>
 
 		<!-- js -->
-		<!-- <script src="/js/signin.js"></script> -->
+		<!-- <script src="/static/js/signin.js"></script> -->
 	</th:block>
 </html>

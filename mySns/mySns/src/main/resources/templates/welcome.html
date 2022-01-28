@@ -1,74 +1,57 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout"
-      layout:decorate="~{layout/default_layout}">
+      layout:decorate="~{layout/private_layout}">
 	<th:block layout:fragment="content">
-		<div id="mySidenav" class="sidenav">
-			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-			<a href="./welcome">Welcome</a>
-			<a href="./profile">Profile</a>
-			<a href="./qna">Q&A</a>
-			<a href="./about">About us</a>
-			<a href="./logout">Logout</a>
-		</div>
-
 		<div id="main">
-			<button type="button" id="btn_toggle" onclick="openNav()" class="btn btn-white">
-					<i class="fa fa-bars"></i>
-					<span class="sr-only">Toggle Menu</span>
-			</button>
-		</div>
+			<div class="container-login100">
+				<div class="wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30">
+					<div class="login100-form validate-form text-left">
+						<div class="flex-c p-2">
+							<img src="/static/images/hdh.jpg" alt="" srcset="" style="height:5rem;width:5rem; border-radius:20%;">
+							<strong style="width:5rem; height: 5rem; line-height: 5rem; text-align:center">동화</strong>
+						</div>
+						<hr>
 
-		<div class="container-login100">
-			<div class="wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30">
-				<form class="login100-form validate-form text-left">
-					<div class="flex-c p-2">
-						<img src="/images/hdh.jpg" alt="" srcset="" style="height:5rem;width:5rem; border-radius:20%;">
-						<strong style="width:5rem; height: 5rem; line-height: 5rem; text-align:center">동화</strong>
-					</div>
-					<hr>
-
-					<div class="flex-c p-2 w-100 sync">
-						<!-- TODO : QR 코드는 백엔드에서 URL 로 만들어 줘야 함 -->
-						<!-- 링크를 js 에서 만들어도 됌 -->
-						<img src="/images/mysns.info.png" alt="NAVER" width="35px" height="35px" class="m-t-5 m-r-20">
-						<img src="/images/icons/icon-naver.png" alt="NAVER" width="35px" height="35px" class="m-t-5">
-						<p class="common_title">Naver</p>
-						<div class="flex-r">
-							<a href="#" class="login100-social-item">
-								1
-							</a>
+						<div class="flex-c p-2 w-100 sync">
+							<!-- TODO : QR 코드는 백엔드에서 URL 로 만들어 줘야 함 -->
+							<!-- 링크를 js 에서 만들어도 됌 -->
+							<img src="/static/images/mysns.info.png" alt="NAVER" width="35px" height="35px" class="m-t-5 m-r-20">
+							<img src="/static/images/icons/icon-naver.png" alt="NAVER" width="35px" height="35px" class="m-t-5">
+							<p class="common_title">Naver</p>
+							<div class="flex-r">
+								<a href="#" class="login100-social-item">
+									1
+								</a>
+							</div>
+						</div>
+						<div class="flex-c p-2 w-100 unsync">
+							<!-- TODO : QR 코드는 백엔드에서 URL 로 만들어 줘야 함 -->
+							<img src="/static/images/mysns.info.png" alt="INSTAGRAM" width="35px" height="35px" class="m-t-5 m-r-20">
+							<img src="/static/images/icons/icon-insta.png" alt="INSTAGRAM" width="35px" height="35px" class="m-t-5">
+							<p class="common_title">Instagram</p>
+							<div class="flex-r">
+								<a href="#" class="login100-social-item">
+									10
+								</a>
+							</div>
+						</div>
+						<div class="flex-c p-2 w-100 unsync">
+							<!-- TODO : QR 코드는 백엔드에서 URL 로 만들어 줘야 함 -->
+							<img src="/static/images/mysns.info.png" alt="Facebook" width="35px" height="35px" class="m-t-5 m-r-20">
+							<img src="/static/images/icons/icon-facebook.png" alt="FACEBOOK" width="35px" height="35px" class="m-t-5">
+							<p class="common_title">Facebook</p>
+							<div class="flex-r">
+								<a href="#" class="login100-social-item">
+									0
+								</a>
+							</div>
 						</div>
 					</div>
-					<div class="flex-c p-2 w-100 unsync">
-						<!-- TODO : QR 코드는 백엔드에서 URL 로 만들어 줘야 함 -->
-						<img src="/images/mysns.info.png" alt="INSTAGRAM" width="35px" height="35px" class="m-t-5 m-r-20">
-						<img src="/images/icons/icon-insta.png" alt="INSTAGRAM" width="35px" height="35px" class="m-t-5">
-						<p class="common_title">Instagram</p>
-						<div class="flex-r">
-							<a href="#" class="login100-social-item">
-								10
-							</a>
-						</div>
-					</div>
-					<div class="flex-c p-2 w-100 unsync">
-						<!-- TODO : QR 코드는 백엔드에서 URL 로 만들어 줘야 함 -->
-						<img src="/images/mysns.info.png" alt="Facebook" width="35px" height="35px" class="m-t-5 m-r-20">
-						<img src="/images/icons/icon-facebook.png" alt="FACEBOOK" width="35px" height="35px" class="m-t-5">
-						<p class="common_title">Facebook</p>
-						<div class="flex-r">
-							<a href="#" class="login100-social-item">
-								0
-							</a>
-						</div>
-					</div>
-
-				</form>
-
-
+				</div>
 			</div>
 		</div>
 		<!-- js -->
-		<!-- <script src="/js/signin.js"></script> -->
+		<!-- <script src="/static/js/signin.js"></script> -->
 	</th:block>
 </html>

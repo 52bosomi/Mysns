@@ -1,24 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout"
-      layout:decorate="~{layout/default_layout}">
+      layout:decorate="~{layout/private_layout}">
 	<!-- custom css -->
 	<th:block layout:fragment="content">
-	<link rel="stylesheet" type="text/css" href="css/qna.css">
-	<div id="mySidenav" class="sidenav">
-		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-		<a href="./welcome">Welcome</a>
-		<a href="./profile">Profile</a>
-		<a href="./qna">Q&A</a>
-		<a href="./about">About us</a>
-		<a href="./logout">Logout</a>
-	</div>
+	<link rel="stylesheet" type="text/css" href="/static/css/qna.css">
 
 	<div id="main">
-		<button type="button" id="btn_toggle" onclick="openNav()" class="btn btn-white">
-				<i class="fa fa-bars"></i>
-				<span class="sr-only">Toggle Menu</span>
-		</button>
 		<div class="container-login100">
 			<div class="wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30 qna">
 				<form class="login100-form validate-form text-left">

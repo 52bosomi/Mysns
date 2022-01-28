@@ -1,4 +1,8 @@
 package com.app.mysns.config;
+import com.app.mysns.filter.GlobalFilter;
+
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 // import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -13,19 +17,29 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 캐시 설정이 필요할 수 있음
-        registry.addResourceHandler("/fonts/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/fonts/");
-        registry.addResourceHandler("/images/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/images/");
-        registry.addResourceHandler("/img/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/img/");
-        registry.addResourceHandler("/css/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/css/");
-        registry.addResourceHandler("/js/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/js/");
-        registry.addResourceHandler("/vendor/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/vendor/");
-        registry.addResourceHandler("/favicon.ico").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/images/icons/phodo.ico");
+        registry.addResourceHandler("/static/fonts/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/fonts/");
+        registry.addResourceHandler("/static/images/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/images/");
+        registry.addResourceHandler("/static/img/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/img/");
+        registry.addResourceHandler("/static/css/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/css/");
+        registry.addResourceHandler("/static/js/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/js/");
+        registry.addResourceHandler("/static/vendor/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/vendor/");
+        registry.addResourceHandler("/static/favicon.ico").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/images/icons/phodo.ico");
         // registry.addResourceHandler("/*.html").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
     }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**");
+    }
+
+
+    @Bean
+    FilterRegistrationBean myFilterRegistration () {
+        FilterRegistrationBean filter = new FilterRegistrationBean();
+        filter.setFilter(new GlobalFilter());
+        filter.setOrder(0);
+        filter.addUrlPatterns("/*");
+        return filter;
     }
 
 }

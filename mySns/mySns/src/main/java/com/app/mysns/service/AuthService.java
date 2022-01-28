@@ -3,6 +3,8 @@ package com.app.mysns.service;
 import com.app.mysns.dao.ManageDao;
 import com.app.mysns.dto.ClientDto;
 import com.app.mysns.dto.SnsTypeDto;
+import com.app.mysns.service.SecureUtilsService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
