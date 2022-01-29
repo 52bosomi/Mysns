@@ -1,112 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>MySNS - Sync</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout"
+      layout:decorate="~{layout/private_layout}">
+    <th:block layout:fragment="content">
+        <div class="spinner-border"></div>
+        <div class="container-login100">
+            <div class="wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30">
+                <div class="login100-form validate-form text-left">
+                    <div class="flex-c p-2">
+                        <img src="/static/images/phodo.jpg" alt="" srcset="" style="height:15rem;width:15rem; border-radius:20%;" class="step_0">
+                        <img src="/static/images/icons/icon-facebook.png" alt="FACEBOOK" width="35px" height="35px" class="step_1" style="height:15rem;width:15rem; border-radius:20%;">
+                        <img src="/static/images/fake_phodo.gif" alt="Phodo" width="35px" height="35px" class="loading" style="height:15rem;width:15rem; border-radius:20%;">
+                    </div>
+                    <div class="flex-c p-2 mt-4 step_0">
+                        <strong >연결할 SNS 를 선택헤주세요</strong>
+                    </div>
+                    <div class="flex-c p-2 mt-4 step_1">
+                        <strong >연동 계정을 입력하세요</strong>
+                    </div>
+                    <!-- 현재 어떠한 것을 하고 있는지 표시 필요 -->
+    
+                    <hr>
+                    <!-- step 0 -->
+                    <!-- unsync, sync 부분 연동 상태에 따라 클래스 지정 필요 -->
+                    <div class="flex-c p-2 w-100 step_0">
+                        <img src="/static/images/icons/icon-naver.png" alt="NAVER" width="35px" height="35px" class="m-t-5 sync">
+                        <p class="common_title">Naver</p>
+                        <div class="flex-r">
+                            <label class="switch">
+                                <input type="checkbox" name="sync_type" class="form-check-input cheeckbox_type" value="naver">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="flex-c p-2 w-100 step_0">
+                        <img src="/static/images/icons/icon-insta.png" alt="INSTAGRAM" width="35px" height="35px" class="m-t-5 unsync">
+                        <p class="common_title">Instagram</p>
+                        <div class="flex-r">
+                            <label class="switch">
+                                <input type="checkbox" name="sync_type" class="form-check-input cheeckbox_type" value="instagram">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="flex-c p-2 w-100 step_0">
+                        <img src="/static/images/icons/icon-facebook.png" alt="FACEBOOK" width="35px" height="35px" class="m-t-5 unsync">
+                        <p class="common_title">Facebook</p>
+                        <div class="flex-r">
+                            <label class="switch">
+                                <input type="checkbox" name="sync_type" class="form-check-input cheeckbox_type" value="facebook">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
 
-	<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css" rel="stylesheet">
-
-	<!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css"> -->
-	<link rel="icon" type="image/png" href="images/icons/phodo.ico"/>
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link rel="stylesheet" type="text/css" href="css/common.css">
-	<link rel="stylesheet" type="text/css" href="css/connect.css">
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-9FVDFV1SLW"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
-
-		gtag('config', 'G-9FVDFV1SLW');
-	</script>
-
-</head>
-<body>
-
-<div id="mySidenav" class="sidenav">
-	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-	<a href="./welcome">Welcome</a>
-	<!-- <a href="./mysns.html">SNS Status</a> -->
-	<a href="./profile">Profile</a>
-	<a href="./qna">Q&A</a>
-	<a href="./about">About us</a>
-	<a href="./index">Logout</a>
-</div>
-<!-- Use any element to open the sidenav -->
-<!-- <span onclick="openNav()">=</span> -->
-
-<div id="main">
-	<button type="button" id="btn_toggle" onclick="openNav()" class="btn btn-white">
-		<i class="fa fa-bars"></i>
-		<span class="sr-only">Toggle Menu</span>
-	</button>
-	<div class="container-login100">
-		<div class="wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30">
-			<form class="login100-form validate-form text-left">
+                    <!-- step 1 -->
+                    <div class="wrap-input100 validate-input m-b-20 step_1" data-validate="Enter username or email">
+                        <input class="input100" type="text" id ="username" name="username" placeholder="username or email">
+                        <span class="focus-input100"></span>
+                    </div>
+                    <div class="wrap-input100 validate-input m-b-20 step_1" data-validate="Enter password">
+                        <input class="input100" type="text" id ="password" name="password" placeholder="password">
+                        <span class="focus-input100"></span>
+                    </div>
 
 
-				<div class="flex-c p-2">
-					<img src="/images/podo.jpg" alt="" srcset="" style="height:15rem;width:15rem; border-radius:20%;">
-				</div>
-				<div class="flex-c p-2 mt-4">
-					<strong >연결할 SNS 를 선택헤주세요</strong>
-				</div>
-
-				<hr>
-				<!-- unsync, sync 부분 연동 상태에 따라 클래스 지정 필요 -->
-				<div class="flex-c p-2 w-100">
-					<img src="/images/icons/icon-naver.png" alt="NAVER" width="35px" height="35px" class="m-t-5 sync">
-					<p class="common_title">Naver</p>
-					<div class="flex-r">
-						<label class="switch">
-							<input type="checkbox" name="sync_type" class="form-check-input cheeckbox_type" value="naver">
-							<span class="slider round"></span>
-						</label>
-					</div>
-				</div>
-				<div class="flex-c p-2 w-100">
-					<img src="/images/icons/icon-insta.png" alt="INSTAGRAM" width="35px" height="35px" class="m-t-5 unsync">
-					<p class="common_title">Instagram</p>
-					<div class="flex-r">
-						<label class="switch">
-							<input type="checkbox" name="sync_type" class="form-check-input cheeckbox_type" value="instagram">
-							<span class="slider round"></span>
-						</label>
-					</div>
-				</div>
-				<div class="flex-c p-2 w-100">
-					<img src="/images/icons/icon-facebook.png" alt="FACEBOOK" width="35px" height="35px" class="m-t-5 unsync">
-					<p class="common_title">Facebook</p>
-					<div class="flex-r">
-						<label class="switch">
-							<input type="checkbox" name="sync_type" class="form-check-input cheeckbox_type" value="facebook">
-							<span class="slider round"></span>
-						</label>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
-<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-<script src="vendor/animsition/js/animsition.min.js"></script>
-<script src="vendor/select2/select2.min.js"></script>
-<script src="vendor/daterangepicker/moment.min.js"></script>
-<script src="vendor/daterangepicker/daterangepicker.js"></script>
-<script src="vendor/countdowntime/countdowntime.js"></script>
-<script src="js/main.js"></script>
-<script src="js/common.js"></script>
-</body>
+                    <div class="wrap-input100 validate-input m-b-20 loading">
+                        연동중
+                    </div>
+                    
+                    <hr>
+                    <div class="flex-c p-2 w-100">
+                        <button class="login100-form-btn" id="btn_next" >
+                            Next
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <!-- js -->
+		<script src="/static/js/connect.js"></script>
+    </th:block>
 </html>
