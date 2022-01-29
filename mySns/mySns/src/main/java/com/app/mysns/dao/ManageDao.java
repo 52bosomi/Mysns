@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 //매퍼 xml 과 연동해주는 인터페이스 제공
 
-@Mapper
+// @Mapper
 @Repository
 public interface ManageDao {
     // CRUD 한 세트, username 으로 엮었으나 베스트는 아님
