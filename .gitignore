@@ -147,3 +147,5 @@ dist
 scraping/screenshot
 .vscode/
 # scraping/sample_data/
+.idea/*
+.idea

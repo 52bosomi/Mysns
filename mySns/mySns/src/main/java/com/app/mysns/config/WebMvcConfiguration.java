@@ -32,7 +32,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         registry.addMapping("/**");
     }
 
-
+    // 필터는 모든 요청에 대해서 쿠키 검증!!!
     @Bean
     FilterRegistrationBean myFilterRegistration () {
         FilterRegistrationBean filter = new FilterRegistrationBean();

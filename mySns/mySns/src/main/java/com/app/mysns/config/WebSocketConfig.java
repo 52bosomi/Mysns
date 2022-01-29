@@ -20,6 +20,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     // connection을 맺을때 CORS 허용합니다.
+    // TODO @유가희 CORS 공부 해야 함
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         // TODO : 로컬 및 도커에서만 접근 가능하게 필요
         registry.addHandler(chatHandler, "/ws/agent")

@@ -41,6 +41,11 @@ public class GlobalFilter implements Filter  {
                 chain.doFilter(request, response);
                 return;
             }
+            // auth 쪽은 검증 안함
+            if(requestURI.startsWith("/auth")) {
+                chain.doFilter(request, response);
+                return;
+            }
 
             if(requiredAuthentication(requestURI)) {
                 System.out.println("로그인 필요 없는 페이지 : " + requestURI);    
