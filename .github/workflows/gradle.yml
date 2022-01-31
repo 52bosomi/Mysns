@@ -23,7 +23,7 @@ jobs:
     - name: Set-Version
       run: |
         echo "RELEASE_VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
-        echo $GITHUB_ENV
+        echo $RELEASE_VERSION
         
     - name: set cert
       run: |
