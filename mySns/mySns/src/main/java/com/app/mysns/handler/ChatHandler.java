@@ -12,7 +12,6 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ import java.util.List;
 
 @Component
 @Log4j2
-// @RequiredArgsConstructor
 public class ChatHandler extends TextWebSocketHandler {
 
     private static List<WebSocketSession> list = new ArrayList<WebSocketSession>();
