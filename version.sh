@@ -2,6 +2,7 @@
 echo $GITHUB_ENV
 echo $RELEASE_VERSION
 pwd
-sed -i 's/version/\/\/version/' mysns/mysns/build.gradle
-echo version=$RELEASE_VERSION >> mysns/mysns/build.gradle
-cat mysns/mysns/build.gradle
+ls -al
+sed -i 's/version/\/\/version/' ./mySns/mySns/build.gradle
+echo version=$RELEASE_VERSION >> ./mySns/mySns/build.gradle
+cat ./mySns/mySns/build.gradle
