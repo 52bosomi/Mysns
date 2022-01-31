@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  db:
+    init: true
+    image: postgres
+    restart: always
+    ports:
+    - 5432:5432/tcp
+    environment:
+      POSTGRES_PASSWORD: root_mysns_password!0M
+      POSTGRES_USER: mysns_password!0M
+      POSTGRES_DB: mysns
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - /data/mysns/postgres:/var/lib/postgresql/data
+  # mariadb:
+  #   init: true
+  #   image: mariadb
+  #   restart: always
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: mysns_password!0A
+  #   ports:
+  #   - 3030:3306/tcp
+  #   volumes:
+  #   - /data/mysns:/var/lib/mysql

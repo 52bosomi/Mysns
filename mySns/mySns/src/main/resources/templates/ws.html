@@ -41,7 +41,7 @@
   });
 
 //   const websocket = new WebSocket("/ws/agent");
-  var websocket = new SockJS("/ws/agent", null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
+  var websocket = new SockJS("/ws", null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
 
   websocket.onmessage = onMessage;
   websocket.onopen = onOpen;

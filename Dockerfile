@@ -9,6 +9,5 @@ RUN ls -al /app/mySns/mySns/build/libs
 RUN cp -r /app/mySns/mySns/build/libs/mysns.jar /app/mysns.jar
 EXPOSE 80
 EXPOSE 443
-ENTRYPOINT [ "java" ]
-CMD [ "-jar /app/mysns.jar --server.port=80" ]
+CMD [ "java", "-jar", "/app/mysns.jar", "--server.port=80" ]
 # 기본 포트 수정, ssl 적용시 443 으로 변경 필요

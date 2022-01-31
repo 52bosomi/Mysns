@@ -35,12 +35,19 @@ public class GlobalFilter implements Filter  {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         try {
-            System.out.println("인증 필터 시작 : " + requestURI);
 
+            // 웹소켓은 예외
+            if(requestURI.startsWith("/ws")) {
+                chain.doFilter(request, response);
+                return;
+            }
+
+            // 정적 파일은 예외
             if(requestURI.startsWith("/static")) {
                 chain.doFilter(request, response);
                 return;
             }
+
             // auth 쪽은 검증 안함
             if(requestURI.startsWith("/auth")) {
                 chain.doFilter(request, response);
@@ -53,6 +60,7 @@ public class GlobalFilter implements Filter  {
                 return;
             }
 
+            System.out.println("인증 필터 시작 : " + requestURI);
             System.out.println("로그인 여부 확인 필요 : " + requestURI);
 
             // 쿠키 삭제 여부 검증

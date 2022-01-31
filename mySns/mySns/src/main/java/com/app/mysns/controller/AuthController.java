@@ -34,7 +34,9 @@ public class AuthController {
 
     @Autowired
     private MailService mailService;
+    @Autowired
     private AuthService authService;
+    @Autowired
     private SecureUtilsService secureUtilsService;
 
     public AuthController(TemplateEngine htmlTemplateEngine, MailService mailService, SecureUtilsService secureUtilsService, AuthService authService) {
@@ -114,21 +116,6 @@ public class AuthController {
         System.out.println("client redirect to welcome");
 
         return new ResponseEntity<>(new Restful().Data("login successful"), HttpStatus.OK);
-    }
-
-    @RequestMapping("/")
-    public String login(Model model, HttpServletResponse response,
-                        @RequestParam("username") String username,
-                        @RequestParam("pw") String pw) throws IOException {
-        System.out.println("client redirect to login");
-
-        System.out.println("로그인 시도: "+username+"/"+pw);
-        // boolean same = authService.login(username, response);
-        // System.out.println("로그인 성공 : " + same);
-        // if(same) {
-        //     return "redirect:/auth/dashboard";
-        // }
-        return "redirect:/auth/login";
     }
 
     @RequestMapping("/logout")

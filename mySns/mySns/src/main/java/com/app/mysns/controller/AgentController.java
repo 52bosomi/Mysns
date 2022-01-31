@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Log4j2
 public class AgentController {
     
-    @GetMapping("/ws")
+    @GetMapping("/agent")
     public String chatGET(){
 
         System.out.println("@AgentController, chat GET()");

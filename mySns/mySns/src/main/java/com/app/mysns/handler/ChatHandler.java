@@ -3,6 +3,9 @@ package com.app.mysns.handler;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.websocket.OnError;
+import javax.websocket.Session;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -45,5 +48,11 @@ public class ChatHandler extends TextWebSocketHandler {
 
         System.out.println(session + " 클라이언트 접속 해제");
         list.remove(session);
+    }
+
+    @OnError
+    public void onError(Session session, Throwable throwable) {
+        System.out.println("Error for " + session.getId() + " caused by: " + throwable.getMessage());
+        throwable.printStackTrace();
     }
 }
