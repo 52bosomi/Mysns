@@ -12,25 +12,7 @@ services:
       POSTGRES_DB: mysns
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      /data/mysns/postgres:/var/lib/postgresql/data
-  web:
-    image: harbor.dndev.pw:4443/mysns/web:latest
-    restart: always
-    # 필요시 볼륨 마운팅
-    # volumes: 
-    #   - /dev:/dev
-    sysctls:
-      - net.ipv6.conf.all.disable_ipv6=1 
-    ports:
-      - 80:80
-      # 인증서 준비될 경우 반영
-      # - 443:443
-    deploy:
-      replicas: 1
-    environment:
-      - SERVICE=production
-    networks:
-      - bridge
+      - /data/mysns/postgres:/var/lib/postgresql/data
   # mariadb:
   #   init: true
   #   image: mariadb
@@ -41,11 +23,3 @@ services:
   #   - 3030:3306/tcp
   #   volumes:
   #   - /data/mysns:/var/lib/mysql
-
-networks:
-  bridge:
-    external:
-      name: bridge
-
-
-      PGDATA
