@@ -113,7 +113,7 @@ jobs:
       - name: set cert
         run: |
           bash cert.sh
-          bash version.sh
+          ls -al mySns/mySns/build/libs
       
       # login to harbor
       - name: Login to GitHub Container Registry
