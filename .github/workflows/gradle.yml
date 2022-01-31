@@ -56,7 +56,7 @@ jobs:
         
     - uses: actions/upload-artifact@v2
       with:
-        name: mysns.jar
+        name: libs
         path: mySns/mySns/build/libs/mysns.jar
         
   build-if-failed:
@@ -103,7 +103,7 @@ jobs:
       # file cache
       - uses: actions/download-artifact@v2
         with:
-          path: mySns/mySns/build/libs/mysns.jar
+          path: mySns/mySns/build
 
       # pull buildx       
       - name: Set up Docker Buildx
