@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  latter:
+  web:
     image: harbor.dndev.pw:4443/mysns/web:latest
     restart: always
     # 필요시 볼륨 마운팅

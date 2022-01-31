@@ -1,0 +1,51 @@
+version: '3.8'
+services:
+  db:
+    init: true
+    image: postgres
+    restart: always
+    ports:
+    - 5432:5432/tcp
+    environment:
+      POSTGRES_PASSWORD: root_mysns_password!0M
+      POSTGRES_USER: mysns_password!0M
+      POSTGRES_DB: mysns
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      /data/mysns/postgres:/var/lib/postgresql/data
+  web:
+    image: harbor.dndev.pw:4443/mysns/web:latest
+    restart: always
+    # 필요시 볼륨 마운팅
+    # volumes: 
+    #   - /dev:/dev
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1 
+    ports:
+      - 80:80
+      # 인증서 준비될 경우 반영
+      # - 443:443
+    deploy:
+      replicas: 1
+    environment:
+      - SERVICE=production
+    networks:
+      - bridge
+  # mariadb:
+  #   init: true
+  #   image: mariadb
+  #   restart: always
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: mysns_password!0A
+  #   ports:
+  #   - 3030:3306/tcp
+  #   volumes:
+  #   - /data/mysns:/var/lib/mysql
+
+networks:
+  bridge:
+    external:
+      name: bridge
+
+
+      PGDATA
