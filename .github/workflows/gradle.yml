@@ -47,6 +47,7 @@ jobs:
         do
            target=`echo $f`
         done
+        cp $target mySns/mySns/build/libs/mysns.jar
         java -jar `echo $target` &
 
     - name: web port open test
@@ -56,8 +57,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: mysns.jar
-        path: mySns/mySns/build/libs/**
-    
+        path: mySns/mySns/build/libs/mysns.jar
         
   build-if-failed:
     runs-on: ubuntu-latest
@@ -96,14 +96,14 @@ jobs:
       - name: Set-Version
         run: |
           echo "RELEASE_VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
-          echo $GITHUB_ENV
+          echo $RELEASE_VERSION
           mkdir -p mySns/mySns/build/libs
           ls -al mySns/mySns/build/libs
 
       # file cache
       - uses: actions/download-artifact@v2
         with:
-          path: mySns/mySns/build/libs/
+          path: mySns/mySns/build/libs/mysns.jar
 
       # pull buildx       
       - name: Set up Docker Buildx
