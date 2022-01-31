@@ -107,7 +107,9 @@ jobs:
       
       # authorize ssl certificates for login
       - name: set cert
-        run: bash cert.sh
+        run: |
+          bash cert.sh
+          bash version.sh
       
       # login to harbor
       - name: Login to GitHub Container Registry
