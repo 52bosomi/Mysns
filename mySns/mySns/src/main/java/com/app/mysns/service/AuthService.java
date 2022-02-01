@@ -12,6 +12,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class AuthService {
@@ -19,6 +21,7 @@ public class AuthService {
     @Autowired
     private ManageDao dao;
     private SecureUtilsService util;
+    private final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
     public AuthService(SecureUtilsService util) {
         this.util = util;
@@ -59,23 +62,25 @@ public class AuthService {
 
     // 쿠키를 저장해야 해서 HttpServletResponse 같이 파라미터로 전달
     public boolean login (ClientDto client) {
+        try {
+            System.out.println("요청 비밀번호 : " + client.getUsername());
+            System.out.println("요청 비밀번호 : " + client.getPassword());
+            System.out.println("요청 비밀번호 암호화 : " + util.getSecurePassword(client.getPassword(), client.getUsername()));
 
+            ClientDto loginInfo = dao.login(client.getUsername());
 
-        System.out.println("요청 비밀번호 : " + client.getUsername());
-        System.out.println("요청 비밀번호 : " + client.getPassword());
-        System.out.println("요청 비밀번호 암호화 : " + util.getSecurePassword(client.getPassword(), client.getUsername()));
-        
+            String username = loginInfo.getUsername();
+            String password = loginInfo.getPassword();
+            System.out.println("DB 이메일 : " + username);
+            System.out.println("DB 비밀번호 : " + password);
 
-        ClientDto loginInfo = dao.login(client.getUsername());
-
-        String username = loginInfo.getUsername();
-        String password = loginInfo.getPassword();
-        System.out.println("DB 이메일 : " + username);
-        System.out.println("DB 비밀번호 : " + password);
-
-        if(username.equals(client.getUsername()) && password.equals(util.getSecurePassword(client.getPassword(), client.getUsername()))) {
-            return true;
+            if(username.equals(client.getUsername()) && password.equals(util.getSecurePassword(client.getPassword(), client.getUsername()))) {
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return false;
         }
-        return false;
     }
 }

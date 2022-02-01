@@ -16,6 +16,7 @@ services:
       replicas: 1
     environment:
       - SERVICE=production
+      - DOMAIN=mysns.info
     networks:
       - bridge
 

@@ -16,13 +16,12 @@ function send_email() {
     data: JSON.stringify({ username : username }),
     contentType : 'application/json',
     dataType:'json',// xml, json, script, html
-    beforeSend:function(x) {
-      console.log(x)
-    },// 서버 요청 전 호출 되는 함수 return false; 일 경우 요청 중단
     success:function(x) {
       $('#checker').show();
       $('#btn_send_text').text('Sent!')
       alert(x.isError ? x.reason : x.data);
+
+      // location.href = '/login'
     },// 요청 완료 시
     error:function(x) {
       console.log('failed', x)
@@ -55,12 +54,13 @@ function send_join(){
   if(!password) { return alert('비밀번호를 입력해주세요') }
   if(!password_repeat) { return alert('비밀번호 확인을 입력해주세요') }
   if(password != password_repeat) { return alert('비밀번호가 서로 일치하지 않습니다') }
+  $('#btn_send').prop('disabled', true)
 
   console.log('request to signup')
 
   let body = { username : username, password : password, phone : phone, name : name }
 
-  // 보내기 전 패스워드 암호화
+  // 보내기 전 패스워드 암호화 필요
   // body.password = body.password
 
   $.ajax({
@@ -70,18 +70,19 @@ function send_join(){
     data: JSON.stringify(body),
     contentType : 'application/json',
     dataType:'json',// xml, json, script, html
-    beforeSend : function(x) {
-      console.log(x)
-    },// 서버 요청 전 호출 되는 함수 return false; 일 경우 요청 중단
     success : function(x) {
       $('#checker').show();
       $('#btn_send_text').text('Signup Successful')
+
       alert(x.isError ? x.reason : x.data);
+
+      location.href = '/login'
     },// 요청 완료 시
     error:function(x) {
       console.log('failed', x)
       $('#username').prop('disabled', false)
       $('#btn_send_text').text('Signup Failed')
+
       alert(x.responseJSON.isError ? x.responseJSON.reason : x.responseJSON.data);
     },// 요청 실패.
     complete:function(x) {
