@@ -58,6 +58,7 @@ public class AuthController {
             // 이메일 발송
             boolean rs = this.mailService.sendEmailSignup(client.getUsername());
             return rs ? new ResponseEntity<>(new Restful().Data("Sucessful send email"), HttpStatus.OK) : new ResponseEntity<>(new Restful().Data("Sending failed"), HttpStatus.BAD_REQUEST);
+
         } catch (Exception e) {
             // TODO : 로깅 남겨야 함
             return new ResponseEntity<>(new Restful().Error("failed send email"), HttpStatus.BAD_REQUEST);

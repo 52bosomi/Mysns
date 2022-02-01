@@ -5,6 +5,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
+
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -37,7 +39,7 @@ public class MailService {
             email = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             email.setTo(username);
             email.setSubject("Welcome !!, plz follow sign up URL");
-            // email.setFrom(new InternetAddress("no-reply@mysns.info", "MySNS"));
+            // email.setFrom(new InternetAddress(from, "MySNS"));
 
             final Context ctx = new Context(LocaleContextHolder.getLocale());
             ctx.setVariable("email", username);
@@ -45,7 +47,7 @@ public class MailService {
 
             // change url for production
             String domain =  System.getenv("DOMAIN");
-            if(domain == null) { domain = "localhost" ;}
+            if(domain == null) { domain = "localhost:8888"; }
 
             String url = MessageFormat.format("http://{0}/auth/email/check?username={1}", domain, username );
 
