@@ -23,7 +23,13 @@ function login() {
     },// 서버 요청 전 호출 되는 함수 return false; 일 경우 요청 중단
     success:function(x) {
       $('#checker').show();
-      alert(x.isError ? x.reason : x.data);
+
+      if(x.isError) {
+        alert(x.reason);
+        return
+      }
+
+      alert(x.data)
       location.href = '/welcome'
     },// 요청 완료 시
     error:function(x) {
@@ -45,5 +51,7 @@ $('#checker').hide();
 
 
 // for dev
-let username = $('#username').val('hdh0926@naver.com')
-let password = $('#password').val('hdh')
+if(location.hostname == 'localhost') {
+  $('#username').val('hdh0926@naver.com')
+  $('#password').val('hdh')
+}

@@ -55,8 +55,8 @@ public class AuthController {
                 return new ResponseEntity<>(new Restful().Error("Exising user"), HttpStatus.BAD_REQUEST);
             }
 
-            // 
-            boolean rs = this.mailService.SendEmailSignup(client.getUsername());
+            // 이메일 발송
+            boolean rs = this.mailService.sendEmailSignup(client.getUsername());
             return rs ? new ResponseEntity<>(new Restful().Data("Sucessful send email"), HttpStatus.OK) : new ResponseEntity<>(new Restful().Data("Sending failed"), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             // TODO : 로깅 남겨야 함

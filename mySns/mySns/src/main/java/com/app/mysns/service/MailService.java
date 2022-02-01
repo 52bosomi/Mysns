@@ -9,7 +9,7 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.context.Context;
-
+import java.text.MessageFormat;
 
 @Service
 public class MailService {
@@ -28,7 +28,7 @@ public class MailService {
     }
 
     //인증 메일 발송
-    public Boolean SendEmailSignup(String username) {
+    public Boolean sendEmailSignup(String username) {
 
         try {
             final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
@@ -44,7 +44,12 @@ public class MailService {
             ctx.setVariable("phodo", PHODO_IMAGE);
 
             // change url for production
-            ctx.setVariable("url", "http://localhost:8888/auth/email/check?username="+username);
+            String domain =  System.getenv("DOMAIN");
+            if(domain == null) { domain = "localhost" ;}
+
+            String url = MessageFormat.format("http://{0}/auth/email/check?username={1}", domain, username );
+
+            ctx.setVariable("url", url);
             email.setText(this.htmlTemplateEngine.process("email/signup.html", ctx), true);
 
             // 마스코트 이미지 넣기
