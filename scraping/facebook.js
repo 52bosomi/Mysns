@@ -1,11 +1,24 @@
 const peppeteer = require("puppeteer");
 const dotenv = require('dotenv');
 dotenv.config();
-const screenShot = 'facebook.png'
-const scraper = async() => {
-    try {
+
+/* Return value */
+const resultEnum = { "SUCCESS" : 0, "FAIL" : 1, "PENDING" : 2};
+
+/* Email and password setting */
+if(process.env.NODE_ENV !== 'production') {
+    // for dev account!!! careful leack!!!!
+    process.env.EMAIL_FACEBOOK = 'wdt0818@naver.com'
+    process.env.PASSWORD_FACEBOOK = 'jeon5376!!'
+    process.env.XPATH_FACEBOOK = './/div[@class="pow20xho"]/div/div/div/div/div/div/span[@class="d2edcug0 hpfvmrgz qv66sw1b c1et5uql lr9zc1uh a8c37x1j fe6kdd0r mau55g9w c8b282yb keod5gw0 nxhoafnm aigsh9s9 d3f4x2em iv3no6db jq4qci2q a3bd9o3v lrazzd5p oo9gr5id hzawbc8m"]'
+}
+
+const FacebookScraper = async() => {
+    try {   
+        /* UI MODE */
         // const browser = await peppeteer.launch({headless: false, args:['--window-size=1920,1080','--disable-notifications']});
         
+        /* CLI MODE */
         const browser = await peppeteer.launch({headless: true, args: ['--disable-notifications']});
         const page = await browser.newPage();
         await page.setViewport({
@@ -15,28 +28,35 @@ const scraper = async() => {
 
         await page.goto('https://facebook.com');
         
+        /* Input the email and password */
         await page.evaluate((id, pw) => {
             document.querySelector("#email").value = id;
             document.querySelector("#pass").value = pw;
-        }, process.env.EMAIL, process.env.PASSWORD)
-
+        }, process.env.EMAIL_FACEBOOK, process.env.PASSWORD_FACEBOOK)
+        
+        /* Click the login button */
         await page.click("button[type=submit]");
         await page.waitForNavigation();
 
+        /* Go to the "APP & WEBSITE" page */
         await page.goto('https://www.facebook.com/settings?tab=applications&ref=settings', {waitUntil: "networkidle2"});
 
-        const xpath = './/div[@class="' + process.env.MAIN_CLASS + '"]/div/div/div/div/div/div/span[@class="' + process.env.SPAN_CLASS + '"]';
+        // const xpath = './/div[@class="' + process.env.MAIN_CLASS + '"]/div/div/div/div/div/div/span[@class="' + process.env.SPAN_CLASS + '"]';
         
-        // const loginList = await page.$x(process.env.XPATH);
-        const loginList = await page.$x(xpath);
+        /* Get the account info */
+        const loginList = await page.$x(process.env.XPATH_FACEBOOK);
+        // const loginList = await page.$x(xpath);
         // const loginList = await page.$('.//pow20xho');
 
+        /* Parsing the text and make a format */
         let data = {};
         let datas = [];
 
         if(loginList.length == 0)
         {
             console.log("Can't find data");
+            browser.close();
+            return resultEnum.FAIL;
         }
         else{
             for(let i=0; i<loginList.length; i++)
@@ -52,9 +72,10 @@ const scraper = async() => {
                     join_at : ' '
                 });
             }
-            console.log(datas);
+            browser.close();
+            return datas;
         }
-        browser.close();
+        
     } catch(err) {
         console.log(err);
     }
@@ -63,5 +84,8 @@ const scraper = async() => {
     }
 }
 
+/* Declare the function to export*/
+exports.FacebookScraper = FacebookScraper;
 
-scraper();
+
+// FacebookScraper();
