@@ -1,0 +1,14 @@
+FROM ubuntu:18:04
+
+RUN apt-get update -y && \
+    apt-get install -y python3-pip
+RUN apt-get insatll -y curl && \
+    apt-get install -y nodejs && \
+    apt-get install -y npm
+
+COPY . /app
+WORKDIR /app/mySns/scraping
+
+CMD ["node", "index.js"]
+
+# web 소켓으로 결과물 전송
