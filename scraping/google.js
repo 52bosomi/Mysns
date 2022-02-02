@@ -3,11 +3,11 @@ const config = require('./config')
 
 if(process.env.NODE_ENV !== 'production') {
   // for dev account!!! careful leack!!!!
-  process.env.USERNAME = 'mysns.devops@gmail.com'
-  process.env.PASSWORD = 'mysns_password!0M'
+  process.env.USERNAME_GOOGLE = 'mysns.devops@gmail.com'
+  process.env.PASSWORD_GOOGLE = 'mysns_password!0M'
 }
 
-(async () => {
+const GoogleScraper = async () => {
   let browser = await puppeteer.launch(config)
   try {
     const context = await browser.createIncognitoBrowserContext()
@@ -21,7 +21,7 @@ if(process.env.NODE_ENV !== 'production') {
     await page.click('input[type="email"]')
     await navigationPromise
   
-    await page.type('input[type="email"]', process.env.USERNAME)
+    await page.type('input[type="email"]', process.env.USERNAME_GOOGLE)
     await page.waitForSelector('#identifierNext')
     await page.click('#identifierNext')
     await navigationPromise
@@ -40,7 +40,7 @@ if(process.env.NODE_ENV !== 'production') {
       }
     }
   
-    await page.type('input[type="password"]', process.env.PASSWORD)
+    await page.type('input[type="password"]', process.env.PASSWORD_GOOGLE)
     await page.waitForSelector('#passwordNext')
     // async wait all resolve
     await Promise.all([
@@ -118,11 +118,11 @@ if(process.env.NODE_ENV !== 'production') {
     console.log(rt_data)
   } catch (e) {
     console.log(e)
-  } finally {
     browser ? await browser.close() : ''
   }
-  console.log('End!!!', new Date())
-})()
+  console.log('End!!!')
+}
 
+exports.GoogleScraper = GoogleScraper;
 // description!!
 // 보안 이슈로 특정 계정은 로그인 안될 수 있음
