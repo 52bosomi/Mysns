@@ -16,9 +16,13 @@
     <hr>
     <div>
         <div id="msgArea" class="col"></div>
+        <hr>
         <div class="col-6">
             <div class="input-group mb-3">
-                <input type="text" id="msg" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+                username : <input value="mysns.devops@gmail.com" type="text" id="username" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+                <br>
+                password : <input value="mysns_password!0M" type="text" id="password" class="form-control" aria-label="Recipient's password" aria-describedby="button-addon2">
+                <hr>
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
                 </div>
@@ -50,10 +54,25 @@
   function send(){
 
       let msg = document.getElementById("msg");
+      let u = document.getElementById("username")
+      let p = document.getElementById("password")
 
-      console.log(username + ":" + msg.value);
-      websocket.send(username + ":" + msg.value);
-      msg.value = '';
+      console.log(u, p)
+
+      let data = {
+          username : u.value,
+          password : p.value
+      }
+
+    //   console.log(username + ":" + msg.value);
+      websocket.send(JSON.stringify(data));
+    //   msg.value = '';
+
+      var str = "<div class='col-6'>";
+    str += "<div class='alert alert-warning'>";
+    str += "<b>" + "sessionId" + " : " + JSON.stringify(data) + "</b>";
+    str += "</div></div><br/>";
+    $("#msgArea").append(str);
   }
   
   //채팅창에서 나갔을 때

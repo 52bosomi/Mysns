@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GlobalFilter implements Filter  {
 
-    private static final String[] whiteList = { "/", "/login", "/auth/signup", "/auth/login", "/logout", "/favicon.ico" };
+    private static final String[] whiteList = { "/", "/login", "/auth/signup", "/auth/login", "/logout", "/favicon.ico", "/agent" };
     private static SecureUtilsService secureUtilsService = new SecureUtilsService();
 
     // public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
