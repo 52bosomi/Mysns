@@ -80,18 +80,24 @@
                     </div>
 
 
-                    <div class="wrap-input100 validate-input m-b-20 loading">
-                        연동중
+                    <div class="flex-c p-2 w-100 loading">
+                        <strong>
+                            연동중
+                        </strong>
+
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
                     </div>
                     
                     <hr>
-                    <div class="flex-c p-2 w-100">
+                    <div class="flex-c p-2 w-100 btn-start">
                         <button class="login100-form-btn" id="btn-start" >
                             Start
                         </button>
                     </div>
                     <div class="flex-c p-2 w-100 btn-step">
-                        <button class="login100-form-btn" id="btn-next" >
+                        <button class="login100-form-btn" id="btn-step" >
                             Next
                         </button>
                     </div>
@@ -100,7 +106,7 @@
             </div>
         </div>
         <!-- js -->
-		<script src="/static/js/connect.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+		<script src="/static/js/connect.js"></script>
     </th:block>
 </html>

@@ -1,63 +1,149 @@
-this.step = 0
-this.is_clear = false
-this.sns_type = 'naver'
-this.sns_type_list = []
+step = 0
+is_clear = false
+sns_type = 'naver'
+sns_type_list = []
+uuid = ''
 // 순서는 네이버, 구글, 페이스북, 인스타
 
 $(document).ready(function() {
+  // 로드 완료되고 연결 실시
+  websocket = new SockJS("/ws", null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
+
+  function generateUUID() { // Public Domain/MIT
+    var d = new Date().getTime();//Timestamp
+    var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16;//random number between 0 and 16
+        if(d > 0){//Use timestamp until depleted
+            r = (d + r)%16 | 0;
+            d = Math.floor(d/16);
+        } else {//Use microseconds since page-load if supported
+            r = (d2 + r)%16 | 0;
+            d2 = Math.floor(d2/16);
+        }
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+  }
+  // uuid = generateUUID()
+
+  function send() {
+    let u = document.getElementById("username")
+    let p = document.getElementById("password")
+
+    // console.log(u, p)
+
+    let data = {
+      username : u.value,
+      password : p.value,
+      type : sns_type,
+      uuid : uuid
+    }
+    websocket.send(JSON.stringify(data));
+  }
+
+  //채팅창에서 나갔을 때
+  function onClose(evt) {
+    console.log(evt)
+  }
+
+  //채팅창에 들어왔을 때
+  function onOpen(evt) {
+    evt.type == 'open' ? console.log('connected !!') : ''
+  }
+
+  function onMessage(msg) {
+    var data = msg.data;
+
+    console.log(data)
+
+    // convert
+    data = typeof data == typeof "" ? JSON.parse(data) : data
+
+    if(data.uuid && !uuid) {
+      uuid = data.uuid
+      return
+    }
+
+    
+  }
+
+  websocket.onmessage = onMessage;
+  websocket.onopen = onOpen;
+  websocket.onclose = onClose;
+
   
   function start(x) { 
-    this.sns_type_list = $('input:checkbox:checked').map(function() { return this.value}).get();
-    console.log("this.sns_type_list", this.sns_type_list)
+    sns_type_list = $('input:checkbox:checked').map(function() { return this.value}).get();
+    console.log("sns_type_list", sns_type_list)
+
+    // 버튼 변경
+    $('.btn-start').hide()
+    $('.btn-step').show()
+
     loop()
     // setTimeout(() => loop(), 1000) // 화면 렌더링 이슈로 따로 실행
   }
 
   function loop() {
 
-    if(this.sns_type_list.length < 1) { return alert("plz, select for sync") }
+    if(sns_type_list.length < 1) { return alert("plz, select for sync") }
 
-    $('.start').hide(); // 기존거 숨기기
+    $('.start').hide() // 기존거 숨기기
 
-    this.sns_type = this.sns_type_list.pop(0);
-    console.log("start", this.sns_type, this.sns_type_list)
-      
-      $('.step-input').show();
-      // 해당 화면 보여주기
-      
-      
-      $('.step').hide(); // 기존거 숨기기
-      $(`.step_${this.sns_type}`).show(); // 해당하는 것만 사용
+    sns_type = sns_type_list.pop(0);
+    console.log("start", sns_type, sns_type_list)
 
-      // 웹소켓으로 전송
+
+    // 입력 폼 활성화
+    $('.step-input').show();
+    
+    // 기존거 숨기기
+    $('.step').hide()
+
+    // 해당하는 이미지만 보여주기
+    $(`.step_${sns_type}`).show();
 
   }
 
-
+  // 로그인 연동을 위해 계정 정보 전송
   function next() {
     
-    console.log(this.step, "type")
-    // this.step = step
+    // 기존거 숨기기
+    $('.step').hide()
+
+    // 계정 정보 보내고 
+    send()
+
+    // 입력 폼 비활성화
+    $('.step-input').hide()
+
+    // 로딩중 표시
+    $(`.loading`).show(); 
+    $("#btn_next").hide()
+
+    console.log('결과 대기중')
+    
+    // step = step
     
 
-    switch (this.step) {
-      case 0:
-        // naver
-        $('.step_0').hide()
-        $('.step_1').show()
+    // switch (step) {
+    //   case 0:
+    //     // naver
+    //     $('.step_0').hide()
+    //     $('.step_1').show()
 
-        $('#username').val('hdh0926@naver.com')
-        $('#password').val('hdh')
-        this.step = 1
-        break;
-      case 1:
-        $('.step_1').hide()
-        this.step = 2
+    //     $('#username').val('hdh0926@naver.com')
+    //     $('#password').val('hdh')
+    //     step = 1
+    //     break;
+    //   case 1:
+    //     $('.step_1').hide()
+    //     step = 2
 
-        $(".loading").show()
-      default:
-        break;
-    }
+    //     $(".loading").show()
+    //   default:
+    //     break;
+    // }
 
     // console.log('request to email')
     // $.ajax({
@@ -83,11 +169,11 @@ $(document).ready(function() {
   }
 
 
-  this.step = 0
+  step = 0
   $('.step-input').hide()
   $('.btn-step').hide()
   $('.btn-start').show()
-  $('.step').hide(); // 기존거 숨기기
+  $('.step').hide() // 기존거 숨기기
   
   $('.loading').hide()
   $(".step_1").hide()
@@ -97,89 +183,8 @@ $(document).ready(function() {
   })
   
   $("#btn-start").click((x) => start(x))
+  $("#btn-step").click((x) => next(x))
 
 
   console.log("already loaded")
 })
-
-var websocket = new SockJS("/ws", null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
-
-websocket.onmessage = onMessage;
-websocket.onopen = onOpen;
-websocket.onclose = onClose;
-
-function send(){
-
-    let msg = document.getElementById("msg");
-    let u = document.getElementById("username")
-    let p = document.getElementById("password")
-    let t = document.getElementById("type")
-
-    console.log(u, p)
-
-    let data = {
-      username : u.value,
-      password : p.value,
-      type = t.value
-    }
-
-  //   console.log(username + ":" + msg.value);
-    websocket.send(JSON.stringify(data));
-  //   msg.value = '';
-
-    var str = "<div class='col-6'>";
-  str += "<div class='alert alert-warning'>";
-  str += "<b>" + "sessionId" + " : " + JSON.stringify(data) + "</b>";
-  str += "</div></div><br/>";
-  $("#msgArea").append(str);
-}
-
-//채팅창에서 나갔을 때
-function onClose(evt) {
-    var str = username + ": 님이 방을 나가셨습니다.";
-    websocket.send(str);
-}
-
-//채팅창에 들어왔을 때
-function onOpen(evt) {
-    var str = username + ": 님이 입장하셨습니다.";
-    websocket.send(str);
-}
-
-function onMessage(msg) {
-    var data = msg.data;
-    var sessionId = null;
-    //데이터를 보낸 사람
-    var message = null;
-    var arr = data.split(":");
-
-    for(var i=0; i<arr.length; i++){
-        console.log('arr[' + i + ']: ' + arr[i]);
-    }
-
-    var cur_session = username;
-
-    //현재 세션에 로그인 한 사람
-    console.log("cur_session : " + cur_session);
-    sessionId = arr[0];
-    message = arr[1];
-
-    console.log("sessionID : " + sessionId);
-    console.log("cur_session : " + cur_session);
-
-    //로그인 한 클라이언트와 타 클라이언트를 분류하기 위함
-    if(sessionId == cur_session){
-        var str = "<div class='col-6'>";
-        str += "<div class='alert alert-secondary'>";
-        str += "<b>" + sessionId + " : " + message + "</b>";
-        str += "</div></div>";
-        $("#msgArea").append(str);
-    }
-    else{
-        var str = "<div class='col-6'>";
-        str += "<div class='alert alert-warning'>";
-        str += "<b>" + sessionId + " : " + message + "</b>";
-        str += "</div></div>";
-        $("#msgArea").append(str);
-    }
-}
