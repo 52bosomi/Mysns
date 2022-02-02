@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>MySNS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body class="nav-md">
+<div class="container body footer_fixed custom_container">
+    <!-- <div class="main_container"> -->
+        <!-- top navigation -->
+        <th:block th:replace="fragments/header :: headerFragment"></th:block>
+        <!-- /top navigation -->
+        <div id="mySidenav" class="sidenav">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+			<a href="./welcome">Welcome</a>
+			<a href="./profile">Profile</a>
+			<a href="./qna">Q&A</a>
+			<a href="./about">About us</a>
+			<a href="./logout">Logout</a>
+		</div>
+
+		<button type="button" id="btn_toggle" onclick="openNav()" class="btn btn-white">
+				<i class="fa fa-bars"></i>
+				<span class="sr-only">Toggle Menu</span>
+		</button>
+
+        <!-- page content -->
+        <div layout:fragment="content"></div>
+        <!-- page content -->
+        <th:block th:replace="fragments/footer :: footerFragment"></th:block>
+        <!-- <footer th:replace="fragments/footer"></footer> -->
+    <!-- </div> -->
+</div>
+</body>
+</html>

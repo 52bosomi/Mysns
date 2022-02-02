@@ -1,6 +1,8 @@
 on:
   push:
-    branches: [ main ]
+    branches: [ dev_dev ]
+#     branches:
+#      - '*'
 
 name: Slack Notification about push info
 jobs:

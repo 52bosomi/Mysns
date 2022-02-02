@@ -1,123 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>MySNS - about us</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout"
+      layout:decorate="~{layout/private_layout}">
+	<th:block layout:fragment="content">
+		<link rel="stylesheet" type="text/css" href="/static/css/about.css">
+		<div id="main">		
+			<div class="container-login100">
+				<div class="wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30 about">
+					<form class="login100-form validate-form text-left">
 
-	<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css" rel="stylesheet">
-	<link rel="icon" type="image/png" href="images/icons/phodo.ico"/>
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link rel="stylesheet" type="text/css" href="css/about.css">
-	<link rel="stylesheet" type="text/css" href="css/common.css">
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-9FVDFV1SLW"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
+						<div class="flex-c mt-5">
+							<div class="m-2 mt-4 font-weight-bold h1">
+								MySNS
+							</div>
+						</div>
+						<div class="flex-c mt-4 h6">
+							많은 SNS 로그인을 사용하는 사용자입니다
+							<br>
+							가끔 어떠한 사이트에 어떠한 로그인이 사용했는지 기억이 안나더라구요
+							<br>
+							이미 계정 있는데 다른 계정으로 또하고, 나중에 알고
+							<br>
+							자기 자신의 기억력을 믿기보다 컴퓨터를 믿기 위해 만들었습니다
+						</div>
 
-		gtag('config', 'G-9FVDFV1SLW');
-	</script>
-</head>
-<body>
-	
-	<div id="mySidenav" class="sidenav">
-		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-		<a href="./welcome.html">Welcome</a>
-		<!-- <a href="./mysns.html">SNS Status</a> -->
-		<a href="./profile.html">Profile</a>
-		<a href="./qna.html">Q&A</a>
-		<a href="./about.html">About us</a>
-		<a href="./index.html">Logout</a>
-	</div>
-	<div id="main">
-		<button type="button" id="btn_toggle" onclick="openNav()" class="btn btn-white">
-			<i class="fa fa-bars"></i>
-			<span class="sr-only">Toggle Menu</span>
-		</button>
-		<div class="container-login100">
-			<div class="wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30 about">
-				<form class="login100-form validate-form text-left">
+						<hr>
 
-					<div class="flex-c mt-5">
-						<div class="m-2 mt-4 font-weight-bold h1">
-							MySNS
+						<div class="flex-l mt-5">
+							<div class="mr-5">
+								<img src="/static/images/hdh.jpg" alt="" srcset="" style="height:10rem;width:10rem; border-radius:20%;">
+							</div>
+							<div class="m-2 mt-4 font-weight-bold h4">
+								안녕 내 이름은 희진이야
+								<p class="mt-4 h5">희진</p>
+							</div>
 						</div>
-					</div>
-					<div class="flex-c mt-4 h6">
-						많은 SNS 로그인을 사용하는 사용자입니다
-						<br>
-						가끔 어떠한 사이트에 어떠한 로그인이 사용했는지 기억이 안나더라구요
-						<br>
-						이미 계정 있는데 다른 계정으로 또하고, 나중에 알고
-						<br>
-						자기 자신의 기억력을 믿기보다 컴퓨터를 믿기 위해 만들었습니다
-					</div>
 
-					<hr>
+						<div class="flex-l mt-5">
+							<div class="mr-5">
+								<img src="/static/images/hdh.jpg" alt="" srcset="" style="height:10rem;width:10rem; border-radius:20%;">
+							</div>
+							<div class="m-2 mt-4 font-weight-bold h4">
+								안녕 내 이름은 인석이야
+								<p class="mt-4 h5">인석</p>
+							</div>
+						</div>
 
-					<div class="flex-l mt-5">
-						<div class="mr-5">
-							<img src="images/hdh.jpg" alt="" srcset="" style="height:10rem;width:10rem; border-radius:20%;">
+						<div class="flex-l mt-5">
+							<div class="mr-5">
+								<img src="/static/images/hdh.jpg" alt="" srcset="" style="height:10rem;width:10rem; border-radius:20%;">
+							</div>
+							<div class="m-2 mt-4 font-weight-bold h4">
+								안녕 내 이름은 가희이야
+								<p class="mt-4 h5">가희</p>
+							</div>
 						</div>
-						<div class="m-2 mt-4 font-weight-bold h4">
-							안녕 내 이름은 희진이야
-							<p class="mt-4 h5">희진</p>
-						</div>
-					</div>
 
-					<div class="flex-l mt-5">
-						<div class="mr-5">
-							<img src="images/hdh.jpg" alt="" srcset="" style="height:10rem;width:10rem; border-radius:20%;">
+						<div class="flex-l mt-5">
+							<div class="mr-5">
+								<img src="/static/images/hdh.jpg" alt="" srcset="" style="height:10rem;width:10rem; border-radius:20%;">
+							</div>
+							<div class="m-2 mt-4 font-weight-bold h4">
+								안녕 내 이름은 동화이야
+								<p class="mt-4 h5">동화</p>
+							</div>
 						</div>
-						<div class="m-2 mt-4 font-weight-bold h4">
-							안녕 내 이름은 인석이야
-							<p class="mt-4 h5">인석</p>
-						</div>
-					</div>
 
-					<div class="flex-l mt-5">
-						<div class="mr-5">
-							<img src="images/hdh.jpg" alt="" srcset="" style="height:10rem;width:10rem; border-radius:20%;">
-						</div>
-						<div class="m-2 mt-4 font-weight-bold h4">
-							안녕 내 이름은 가희이야
-							<p class="mt-4 h5">가희</p>
-						</div>
-					</div>
-
-					<div class="flex-l mt-5">
-						<div class="mr-5">
-							<img src="images/hdh.jpg" alt="" srcset="" style="height:10rem;width:10rem; border-radius:20%;">
-						</div>
-						<div class="m-2 mt-4 font-weight-bold h4">
-							안녕 내 이름은 동화이야
-							<p class="mt-4 h5">동화</p>
-						</div>
-					</div>
-
-				</form>
+					</form>
+				</div>
 			</div>
 		</div>
-	</div>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-	<script src="vendor/animsition/js/animsition.min.js"></script>
-	<script src="vendor/select2/select2.min.js"></script>
-	<script src="vendor/daterangepicker/moment.min.js"></script>
-	<script src="vendor/daterangepicker/daterangepicker.js"></script>
-	<script src="vendor/countdowntime/countdowntime.js"></script>
-	<script src="js/main.js"></script>
-	<script src="js/common.js"></script>
-</body>
+		<!-- js -->
+		<!-- <script src="/static/js/signin.js"></script> -->
+	</th:block>
 </html>

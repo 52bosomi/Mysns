@@ -1,113 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>MySNS - Welcome</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css" rel="stylesheet">
-	
-	<link rel="icon" type="image/png" href="images/icons/phodo.ico"/>
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link rel="stylesheet" type="text/css" href="css/common.css">
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-9FVDFV1SLW"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout"
+      layout:decorate="~{layout/private_layout}">
+	<th:block layout:fragment="content">
+		<div id="main">
+			<div class="container-login100">
+				<div class="wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30">
+					<div class="login100-form validate-form text-left">
+						<div class="flex-c p-2">
+							<img src="/static/images/hdh.jpg" alt="" srcset="" style="height:5rem;width:5rem; border-radius:20%;">
+							<strong style="width:5rem; height: 5rem; line-height: 5rem; text-align:center">동화</strong>
+						</div>
+						<hr>
 
-		gtag('config', 'G-9FVDFV1SLW');
-	</script>
-</head>
-<body>
-	
-	<div id="mySidenav" class="sidenav">
-		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-		<a href="./welcome.html">Welcome</a>
-		<!-- <a href="./mysns.html">SNS Status</a> -->
-		<a href="./profile.html">Profile</a>
-		<a href="./qna.html">Q&A</a>
-		<a href="./about.html">About us</a>
-		<a href="./index.html">Logout</a>
-	</div>
-	<!-- Use any element to open the sidenav -->
-	<!-- <span onclick="openNav()">=</span> -->
-	
-	<div id="main">
-		<button type="button" id="btn_toggle" onclick="openNav()" class="btn btn-white">
-			<i class="fa fa-bars"></i>
-			<span class="sr-only">Toggle Menu</span>
-		</button>
-		<div class="container-login100">
-			<div class="wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30">
-				<form class="login100-form validate-form text-left">
-					
-
-					<div class="flex-c p-2">
-						<img src="images/hdh.jpg" alt="" srcset="" style="height:5rem;width:5rem; border-radius:20%;">
-						<strong style="width:5rem; height: 5rem; line-height: 5rem; text-align:center">동화</strong>
-					</div>
-					<hr>
-					
-					<div class="flex-c p-2 w-100 sync">
-						<!-- TODO : QR 코드는 백엔드에서 URL 로 만들어 줘야 함 -->
-						<!-- 링크를 js 에서 만들어도 됌 -->
-						<img src="images/mysns.info.png" alt="NAVER" width="35px" height="35px" class="m-t-5 m-r-20">
-						<img src="images/icons/icon-naver.png" alt="NAVER" width="35px" height="35px" class="m-t-5">
-						<p class="common_title">Naver</p>
-						<div class="flex-r">
-							<a href="#" class="login100-social-item">
-								1
-							</a>
+						<div class="flex-c p-2 w-100 sync">
+							<!-- TODO : QR 코드는 백엔드에서 URL 로 만들어 줘야 함 -->
+							<!-- 링크를 js 에서 만들어도 됌 -->
+							<img src="/static/images/mysns.info.png" alt="NAVER" width="35px" height="35px" class="m-t-5 m-r-20">
+							<img src="/static/images/icons/icon-naver.png" alt="NAVER" width="35px" height="35px" class="m-t-5">
+							<p class="common_title">Naver</p>
+							<div class="flex-r">
+								<a href="#" class="login100-social-item">
+									1
+								</a>
+							</div>
+						</div>
+						<div class="flex-c p-2 w-100 unsync">
+							<!-- TODO : QR 코드는 백엔드에서 URL 로 만들어 줘야 함 -->
+							<img src="/static/images/mysns.info.png" alt="INSTAGRAM" width="35px" height="35px" class="m-t-5 m-r-20">
+							<img src="/static/images/icons/icon-insta.png" alt="INSTAGRAM" width="35px" height="35px" class="m-t-5">
+							<p class="common_title">Instagram</p>
+							<div class="flex-r">
+								<a href="#" class="login100-social-item">
+									10
+								</a>
+							</div>
+						</div>
+						<div class="flex-c p-2 w-100 unsync">
+							<!-- TODO : QR 코드는 백엔드에서 URL 로 만들어 줘야 함 -->
+							<img src="/static/images/mysns.info.png" alt="Facebook" width="35px" height="35px" class="m-t-5 m-r-20">
+							<img src="/static/images/icons/icon-facebook.png" alt="FACEBOOK" width="35px" height="35px" class="m-t-5">
+							<p class="common_title">Facebook</p>
+							<div class="flex-r">
+								<a href="#" class="login100-social-item">
+									0
+								</a>
+							</div>
 						</div>
 					</div>
-					<div class="flex-c p-2 w-100 unsync">
-						<!-- TODO : QR 코드는 백엔드에서 URL 로 만들어 줘야 함 -->
-						<img src="images/mysns.info.png" alt="INSTAGRAM" width="35px" height="35px" class="m-t-5 m-r-20">
-						<img src="images/icons/icon-insta.png" alt="INSTAGRAM" width="35px" height="35px" class="m-t-5">
-						<p class="common_title">Instagram</p>
-						<div class="flex-r">
-							<a href="#" class="login100-social-item">
-								10
-							</a>
-						</div>
-					</div>
-					<div class="flex-c p-2 w-100 unsync">
-						<!-- TODO : QR 코드는 백엔드에서 URL 로 만들어 줘야 함 -->
-						<img src="images/mysns.info.png" alt="Facebook" width="35px" height="35px" class="m-t-5 m-r-20">
-						<img src="images/icons/icon-facebook.png" alt="FACEBOOK" width="35px" height="35px" class="m-t-5">
-						<p class="common_title">Facebook</p>
-						<div class="flex-r">
-							<a href="#" class="login100-social-item">
-								0
-							</a>
-						</div>
-					</div>
-
-				</form>
-
-				
+				</div>
 			</div>
 		</div>
-	</div>
-	
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-	<script src="vendor/animsition/js/animsition.min.js"></script>
-	<script src="vendor/select2/select2.min.js"></script>
-	<script src="vendor/daterangepicker/moment.min.js"></script>
-	<script src="vendor/daterangepicker/daterangepicker.js"></script>
-	<script src="vendor/countdowntime/countdowntime.js"></script>
-	<script src="js/main.js"></script>
-	<script src="js/common.js"></script>
-</body>
+		<!-- js -->
+		<!-- <script src="/static/js/signin.js"></script> -->
+	</th:block>
 </html>
