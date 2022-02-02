@@ -97,7 +97,7 @@ public class GlobalFilter implements Filter  {
                         // 길이가 다르면 이 쿠키는 믿으면 안됨
                         // 쿠키 초기화
                         Cookie cookie = new Cookie("mysns_uuid", null);
-                        cookie.setMaxAge(0);
+                        cookie.setMaxAge(-1);
                         cookie.setSecure(true);
                         cookie.setHttpOnly(true);
                         cookie.setPath("/");

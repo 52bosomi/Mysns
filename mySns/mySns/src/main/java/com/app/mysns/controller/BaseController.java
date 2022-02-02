@@ -74,9 +74,9 @@ public class BaseController {
     }
 
     // 기본 보여주는 페이지
-    @RequestMapping("/connect")
-    public String connect(){
-        System.out.println("connect init");
-        return "connect";
-    }
+    // @RequestMapping("/connect")
+    // public String connect(){
+    //     System.out.println("connect init");
+    //     return "connect";
+    // }
 }

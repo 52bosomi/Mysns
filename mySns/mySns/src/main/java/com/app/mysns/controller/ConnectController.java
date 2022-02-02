@@ -19,18 +19,20 @@ public class ConnectController {
 
     private final Logger logger = LoggerFactory.getLogger(ConnectController.class);
 
-    @Autowired
-    private ManageService service;
+    // @Autowired
+    // private ManageService service;
 
-    @RequestMapping("/")
-    public String index(Model model){
+    @RequestMapping("")
+    public ModelAndView index(){
         // 연동 페이지 메인으로 현재 연동된 사이트 정보를 리턴
         
         // 모델 받아서 넘기기
-        model.addAttribute("isFacebook", false);
-        model.addAttribute("isGoogle", false);
-        model.addAttribute("isNaver", true);
+        ModelAndView rv = new ModelAndView("connect");
+        rv.addObject("isFacebook", false);
+        rv.addObject("isInstagram", false);
+        rv.addObject("isGoogle", false);
+        rv.addObject("isNaver", true);
 
-        return "connect";
+        return rv;
     }
 }
