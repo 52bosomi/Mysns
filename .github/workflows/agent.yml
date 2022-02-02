@@ -2,8 +2,8 @@ name: Agent CI
 
 on:
   push:
-    branch:
-      - 'dev_jis'
+    branch: [dev_jis]
+    
 jobs:
   build:
 
@@ -15,5 +15,7 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
+    - name: Build image test
+      run: docker build . --file Dockerfile_scraper -t scraper
 
 
