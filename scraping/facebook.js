@@ -19,7 +19,7 @@ const FacebookScraper = async() => {
         // const browser = await peppeteer.launch({headless: false, args:['--window-size=1920,1080','--disable-notifications']});
         
         /* CLI MODE */
-        const browser = await peppeteer.launch({headless: true, args: ['--disable-notifications']});
+        const browser = await peppeteer.launch({headless: true, args: ['--disable-notifications', '--no-sandbox', '--disable-setuid-sandbox']});
         const page = await browser.newPage();
         await page.setViewport({
             width:1920,
