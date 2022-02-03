@@ -9,14 +9,15 @@ RUN apt-get update -y && \
     apt-get install -y python3-pip
 # RUN apt-get install -y apt-utils
 
-# node js 설치
+# Node js install
 RUN apt-get install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt-get install -y nodejs
 RUN apt-get install build-essential
+# Install check
 RUN node -v
-# RUN apt-get install -y npm
 RUN npm -v
+# npm install
 RUN npm install
 
 # RUN apt-get install -y google-chrome-stable --no-install-recommends
@@ -28,8 +29,7 @@ RUN ls -al /app/scraping
 RUN npm install puppeteer
 RUN npm install dotenv
 
-
-
-# CMD ["node", "index.js"]
+# command exec
+CMD ["node", "index.js"]
 
 # web 소켓으로 결과물 전송
