@@ -32,8 +32,8 @@ RUN touch hello.js
 RUN echo "console.log('hello world')" > hello.js
 RUN ls -la
 RUN node hello.js
-
+RUN node index.js
 # command exec
-CMD ["node", "index.js"]
+# CMD ["node", "index.js"]
 
 # web 소켓으로 결과물 전송
