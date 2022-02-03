@@ -22,13 +22,11 @@ RUN npm install
 # RUN apt-get install -y google-chrome-stable --no-install-recommends
 # RUN sudo apt-get install -f
 
-# RUN ls -al /app
-# RUN ls -al /app/scraping
+RUN ls -al /app
+RUN ls -al /app/scraping
 
-# RUN nodejs -v
-
-# RUN npm install puppeteer
-# RUN npm install dotenv
+RUN npm install puppeteer
+RUN npm install dotenv
 
 
 
