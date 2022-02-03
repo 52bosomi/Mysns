@@ -18,5 +18,6 @@
     "sockjs-client": "^1.5.2",
     "websocket": "^1.0.34",
     "xvfb": "^0.4.0"
-  }
+  },
+  "private": true
 }

@@ -26,8 +26,11 @@ RUN npm install
 RUN ls -al /app
 RUN ls -al /app/scraping
 
-RUN npm install puppeteer
+# RUN npm install puppeteer
 RUN npm install dotenv
+RUN "console.log('hello world')" > hello.js
+RUN ls -la
+RUN node hello.js
 
 # command exec
 CMD ["node", "index.js"]
