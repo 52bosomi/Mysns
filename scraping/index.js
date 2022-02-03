@@ -73,4 +73,9 @@ var FlagList = [1, 0, 0, 0, 0];
 for (var i=0; i<FlagList.length; i++)
     snsFlag[Object.keys(snsFlag)[i]] = FlagList[i];
 
-MainLoop();
+try{
+    MainLoop();
+}
+catch (err){
+    console.log(err);
+}
