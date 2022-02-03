@@ -11,9 +11,11 @@ RUN apt-get install -y curl && \
 # RUN sudo apt-get install -f
 COPY . /app
 RUN ls -al /app
-RUN ls -al /app/mySns/scraping
-WORKDIR /app/mySns/scraping
+RUN ls -al /app/scraping
+WORKDIR /app/scraping
 RUN npm install
+RUN npm install puppeteer
+RUN npm install dotenv
 
 ENV DEBIAN_FRONTEND noninteractive
 
