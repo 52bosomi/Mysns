@@ -1,24 +1,30 @@
 FROM ubuntu:18.04
 
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN apt-get update -y && \
     apt-get install -y python3-pip
 RUN apt-get install -y apt-utils
 RUN apt-get install -y curl && \
-    apt-get install -y nodejs && \
-    apt-get install -y npm
+RUN curl -sL https://deb.nodesource.com/setup_4.x | bash
+RUN apt-get install -y nodejs
+RUN node -v
+RUN npm -v
+    # apt-get install -y npm
 
 # RUN apt-get install -y google-chrome-stable --no-install-recommends
 # RUN sudo apt-get install -f
-COPY . /app
-RUN ls -al /app
-RUN ls -al /app/scraping
-WORKDIR /app/scraping
-RUN npm install
-RUN npm install puppeteer
-RUN npm install dotenv
+# COPY . /app
+# RUN ls -al /app
+# RUN ls -al /app/scraping
+# WORKDIR /app/scraping
+# RUN nodejs -v
+# RUN npm install
+# RUN npm install puppeteer
+# RUN npm install dotenv
 
-ENV DEBIAN_FRONTEND noninteractive
 
-CMD ["node", "index.js"]
+
+# CMD ["node", "index.js"]
 
 # web 소켓으로 결과물 전송
