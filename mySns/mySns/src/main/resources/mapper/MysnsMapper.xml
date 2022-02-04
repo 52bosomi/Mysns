@@ -5,7 +5,48 @@
     <!-- <select id="dbtest" resultType="com.app.mysns.dto.SnsTypeDto">
         SELECT * FROM sns_type
     </select> -->
+    <!--  -->
     <!-- C -->
+    <insert id="CreateClient" parameterType="com.app.mysns.dto.ClientDto">
+        INSERT INTO client (
+            username,
+            password,
+            name,
+            phone,
+            updated_at,
+            created_at
+        ) VALUES (
+            #{username},
+            #{password},
+            #{name},
+            #{phone},
+            #{updated_at},
+            #{created_at}
+        )
+    </insert>
+    <!-- R -->
+    <select id="FindClient" parameterType="com.app.mysns.dto.ClientDto" resultType="com.app.mysns.dto.ClientDto">
+        SELECT * FROM client WHERE username = #{username} limit 1
+    </select>
+    <!-- U -->
+    <update id="UpdateClient" parameterType="com.app.mysns.dto.ClientDto">
+        UPDAETE client SET username = #{username}, password = #{password} name = #{name} phone = #{phone}
+    </update>
+    <!-- D -->
+    <delete id="DeleteClient" parameterType="com.app.mysns.dto.ClientDto">
+        DELETE FROM client WHERE username = #{username}
+    </delete>
+    <!-- list -->
+    <select id="ListClient" parameterType="com.app.mysns.dto.ClientDto" resultType="java.util.List">
+        SELECT * FROM client
+    </select>
+
+    <select id="login" parameterType="String" resultType="com.app.mysns.dto.ClientDto">
+        SELECT username, password FROM client WHERE username = #{username}
+    </select>
+
+
+
     <insert id="CreateClient" parameterType="com.app.mysns.dto.ClientDto">
         INSERT INTO client (
             username,
