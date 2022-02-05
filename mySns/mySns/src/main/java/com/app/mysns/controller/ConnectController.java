@@ -29,7 +29,7 @@ public class ConnectController {
         // 모델 받아서 넘기기
         ModelAndView rv = new ModelAndView("connect");
         rv.addObject("isFacebook", false);
-        rv.addObject("isInstagram", false);
+        rv.addObject("isInstagram", true);
         rv.addObject("isGoogle", false);
         rv.addObject("isNaver", true);
 

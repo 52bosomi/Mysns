@@ -36,7 +36,8 @@ $(document).ready(function() {
       username : u.value,
       password : p.value,
       type : sns_type,
-      uuid : uuid
+      uuid : uuid,
+      ua : navigator.userAgent
     }
     websocket.send(JSON.stringify(data));
   }
