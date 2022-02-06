@@ -21,6 +21,12 @@ jobs:
     - name: check docker images
       run: docker images
 
+    # building image store
+    - nmae: share docker image
+      uses: actions/download-artifact@v2
+      with:
+        path: var/libs/docker
+
   deploy:
     needs: build
 
@@ -33,10 +39,11 @@ jobs:
     - name: check docker images
       run: docker images
 
-    # # building image store
-    # - uses: actions/download-artifact@v2
-    #   with:
-    #     path: scraping/build
+    # building image store
+    - nmae: share docker image
+      uses: actions/download-artifact@v2
+      with:
+        path: var/libs/docker
 
     # authorize ssl certificates for login
     - name: set cert
