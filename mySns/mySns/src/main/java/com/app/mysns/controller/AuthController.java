@@ -134,7 +134,7 @@ public class AuthController {
                     c.setValue(null);
                     c.setSecure(true);
                     c.setHttpOnly(true);
-                    c.setMaxAge(0); // 유효시간을 0으로 설정
+                    c.setMaxAge(-1); // 유효시간을 0으로 설정
                     c.setPath("/");
                 }
             }
@@ -142,7 +142,7 @@ public class AuthController {
         
         // 쿠키 삭제
         Cookie cookie = new Cookie("mysns_uuid", null);
-        cookie.setMaxAge(0);
+        cookie.setMaxAge(-1);
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setPath("/");

@@ -1,30 +1,35 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout"
       layout:decorate="~{layout/private_layout}">
     <th:block layout:fragment="content">
+        <link rel="stylesheet" href="static/css/connect.css">
         <div class="spinner-border"></div>
         <div class="container-login100">
             <div class="wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30">
                 <div class="login100-form validate-form text-left">
                     <div class="flex-c p-2">
-                        <img src="/static/images/phodo.jpg" alt="" srcset="" style="height:15rem;width:15rem; border-radius:20%;" class="step_0">
-                        <img src="/static/images/icons/icon-facebook.png" alt="FACEBOOK" width="35px" height="35px" class="step_1" style="height:15rem;width:15rem; border-radius:20%;">
+                        <img src="/static/images/phodo.jpg" alt="" srcset="" style="height:15rem;width:15rem; border-radius:20%;" class="start">
+                        <img src="/static/images/icons/icon-facebook.png" alt="NAVER" width="35px" height="35px" class="step step_naver" style="height:15rem;width:15rem; border-radius:20%;">
+                        <img src="/static/images/icons/icon-google.png" alt="INSTAGRAM" width="35px" height="35px" class="step step_google" style="height:15rem;width:15rem; border-radius:20%;">
+                        <img src="/static/images/icons/icon-facebook.png" alt="FACEBOOK" width="35px" height="35px" class="step step_facebook" style="height:15rem;width:15rem; border-radius:20%;">
+                        <img src="/static/images/icons/icon-insta.png" alt="INSTAGRAM" width="35px" height="35px" class="step step_instagram" style="height:15rem;width:15rem; border-radius:20%;">
                         <img src="/static/images/fake_phodo.gif" alt="Phodo" width="35px" height="35px" class="loading" style="height:15rem;width:15rem; border-radius:20%;">
                     </div>
-                    <div class="flex-c p-2 mt-4 step_0">
-                        <strong >연결할 SNS 를 선택헤주세요</strong>
+                    <div class="flex-c p-2 mt-4 start">
+                        <strong >최신으로 연결할 SNS 를 선택헤주세요</strong>
                     </div>
-                    <div class="flex-c p-2 mt-4 step_1">
-                        <strong >연동 계정을 입력하세요</strong>
+                    <div class="flex-c p-2 mt-4 step-input">
+                        <strong >계정을 입력하세요</strong>
                     </div>
                     <!-- 현재 어떠한 것을 하고 있는지 표시 필요 -->
     
                     <hr>
                     <!-- step 0 -->
                     <!-- unsync, sync 부분 연동 상태에 따라 클래스 지정 필요 -->
-                    <div class="flex-c p-2 w-100 step_0">
-                        <img src="/static/images/icons/icon-naver.png" alt="NAVER" width="35px" height="35px" class="m-t-5 sync">
+                    <div class="flex-c p-2 w-100 start">
+                        <img src="/static/images/icons/icon-naver.png" alt="NAVER" width="35px" height="35px" class="m-t-5"  th:classappend="${isNaver} ? 'sync' : 'unsync'">
                         <p class="common_title">Naver</p>
                         <div class="flex-r">
                             <label class="switch">
@@ -33,45 +38,66 @@
                             </label>
                         </div>
                     </div>
-                    <div class="flex-c p-2 w-100 step_0">
-                        <img src="/static/images/icons/icon-insta.png" alt="INSTAGRAM" width="35px" height="35px" class="m-t-5 unsync">
-                        <p class="common_title">Instagram</p>
+                    <div class="flex-c p-2 w-100 start">
+                        <img src="/static/images/icons/icon-google.png" alt="GOOGLE" width="35px" height="35px" class="m-t-5" th:classappend="${isGoogle} ? sync : unsync">
+                        <p class="common_title">Google</p>
                         <div class="flex-r">
                             <label class="switch">
-                                <input type="checkbox" name="sync_type" class="form-check-input cheeckbox_type" value="instagram">
+                                <input type="checkbox" name="sync_type" class="form-check-input cheeckbox_type" value="Google" th:checked="${!isGoogle}">
                                 <span class="slider round"></span>
                             </label>
                         </div>
                     </div>
-                    <div class="flex-c p-2 w-100 step_0">
-                        <img src="/static/images/icons/icon-facebook.png" alt="FACEBOOK" width="35px" height="35px" class="m-t-5 unsync">
+                    <div class="flex-c p-2 w-100 start">
+                        <img src="/static/images/icons/icon-facebook.png" alt="FACEBOOK" width="35px" height="35px" class="m-t-5" th:classappend="${isFacebook} ? sync : unsync">
                         <p class="common_title">Facebook</p>
                         <div class="flex-r">
                             <label class="switch">
-                                <input type="checkbox" name="sync_type" class="form-check-input cheeckbox_type" value="facebook">
+                                <input type="checkbox" name="sync_type" class="form-check-input cheeckbox_type" value="facebook" th:checked="${!isFacebook}">
                                 <span class="slider round"></span>
                             </label>
+                        </div>
+                    </div>
+                    <div class="flex-c p-2 w-100 start">
+                        <img src="/static/images/icons/icon-insta.png" alt="INSTAGRAM" width="35px" height="35px" class="m-t-5" th:classappend="${isInstagram} ? sync : unsync">
+                        <p class="common_title">Instagram</p>
+                        <div class="flex-r">
+                            <label class="switch">
+                                <input type="checkbox" name="sync_type" class="form-check-input cheeckbox_type" value="instagram" th:checked="${!isInstagram}">
+                                <span class="slider round"></span>
+                              </label>
                         </div>
                     </div>
 
                     <!-- step 1 -->
-                    <div class="wrap-input100 validate-input m-b-20 step_1" data-validate="Enter username or email">
+                    <div class="wrap-input100 validate-input m-b-20 step-input" data-validate="Enter username or email">
                         <input class="input100" type="text" id ="username" name="username" placeholder="username or email">
                         <span class="focus-input100"></span>
                     </div>
-                    <div class="wrap-input100 validate-input m-b-20 step_1" data-validate="Enter password">
+                    <div class="wrap-input100 validate-input m-b-20 step-input" data-validate="Enter password">
                         <input class="input100" type="text" id ="password" name="password" placeholder="password">
                         <span class="focus-input100"></span>
                     </div>
 
 
-                    <div class="wrap-input100 validate-input m-b-20 loading">
-                        연동중
+                    <div class="flex-c p-2 w-100 loading">
+                        <strong>
+                            연동중
+                        </strong>
+
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
                     </div>
                     
                     <hr>
-                    <div class="flex-c p-2 w-100">
-                        <button class="login100-form-btn" id="btn_next" >
+                    <div class="flex-c p-2 w-100 btn-start">
+                        <button class="login100-form-btn" id="btn-start" >
+                            Start
+                        </button>
+                    </div>
+                    <div class="flex-c p-2 w-100 btn-step">
+                        <button class="login100-form-btn" id="btn-step" >
                             Next
                         </button>
                     </div>
@@ -80,6 +106,7 @@
             </div>
         </div>
         <!-- js -->
+        <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 		<script src="/static/js/connect.js"></script>
     </th:block>
 </html>

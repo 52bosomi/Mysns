@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.mysns.dao.ManageDao">
-
-    <!-- <select id="dbtest" resultType="com.app.mysns.dto.SnsTypeDto">
-        SELECT * FROM sns_type
-    </select> -->
+    <!-- client -->
     <!-- C -->
     <insert id="CreateClient" parameterType="com.app.mysns.dto.ClientDto">
         INSERT INTO client (
@@ -19,32 +16,106 @@
             #{password},
             #{name},
             #{phone},
-            #{updated_at},
-            #{created_at}
+            CURRENT_TIMESTAMP,
+            CURRENT_TIMESTAMP
         )
     </insert>
     <!-- R -->
-    <select id="FindClient" parameterType="com.app.mysns.dto.ClientDto" resultType="com.app.mysns.dto.ClientDto">
+    <select id="FindClient" parameterType="Long" resultType="com.app.mysns.dto.ClientDto">
+        SELECT * FROM client WHERE idx = #{idx}
+    </select>
+    <select id="FindClientByUsername" parameterType="String" resultType="com.app.mysns.dto.ClientDto">
         SELECT * FROM client WHERE username = #{username} limit 1
     </select>
     <!-- U -->
     <update id="UpdateClient" parameterType="com.app.mysns.dto.ClientDto">
-        UPDAETE client SET username = #{username}, password = #{password} name = #{name} phone = #{phone}
+        UPDAETE client SET username = #{username}, password = #{password}, name = #{name}, phone = #{phone}, updated_at = CURRENT_TIMESTAMP where idx = #{idx}
     </update>
     <!-- D -->
-    <delete id="DeleteClient" parameterType="com.app.mysns.dto.ClientDto">
-        DELETE FROM client WHERE username = #{username}
+    <delete id="DeleteClient" parameterType="Long">
+        DELETE FROM client WHERE username = #{id}
     </delete>
     <!-- list -->
     <select id="ListClient" parameterType="com.app.mysns.dto.ClientDto" resultType="java.util.List">
         SELECT * FROM client
     </select>
 
+    <!-- more -->
     <select id="login" parameterType="String" resultType="com.app.mysns.dto.ClientDto">
         SELECT username, password FROM client WHERE username = #{username}
     </select>
 
+    <!-- snstype -->
+    <insert id="CreateSnsType" parameterType="com.app.mysns.dto.SnsTypeDto">
+        INSERT INTO sns_type (
+            name,
+            description,
+            updated_at,
+            created_at
+        ) VALUES (
+            #{name},
+            #{description},
+            CURRENT_TIMESTAMP,
+            CURRENT_TIMESTAMP
+        )
+    </insert>
+    <!-- R -->
+    <select id="FindSnsType" parameterType="Long" resultType="com.app.mysns.dto.SnsTypeDto">
+        SELECT * FROM sns_type WHERE idx = #{idx}
+    </select>
+    <select id="FindSnsTypeByName" parameterType="com.app.mysns.dto.SnsTypeDto" resultType="com.app.mysns.dto.SnsTypeDto">
+        SELECT * FROM sns_type WHERE name = #{name}
+    </select>
+    <!-- U -->
+    <update id="UpdateSnsType" parameterType="com.app.mysns.dto.SnsTypeDto">
+        UPDAETE sns_type SET name = #{name}, description = #{description}, updated_at = CURRENT_TIMESTAMP where idx = #{idx}
+    </update>
+    <!-- D -->
+    <delete id="DeleteSnsType" parameterType="Long">
+        DELETE FROM sns_type WHERE idx = #{idx}
+    </delete>
+    <!-- list -->
+    <select id="ListSnsType" parameterType="com.app.mysns.dto.SnsTypeDto" resultType="java.util.List">
+        SELECT * FROM sns_type
+    </select>
 
-
+    <!-- sync_site -->
+    <insert id="CreateSyncSite" parameterType="com.app.mysns.dto.SyncSiteDto">
+        INSERT INTO sync_site (
+            sns_type_id,
+            url,
+            description,
+            updated_at,
+            created_at
+        ) VALUES (
+            #{sns_type_id},
+            #{url},
+            #{description},
+            CURRENT_TIMESTAMP,
+            CURRENT_TIMESTAMP
+        )
+    </insert>
+    <!-- R -->
+    <select id="FindSyncSiteByName" parameterType="String" resultType="com.app.mysns.dto.SyncSiteDto">
+        SELECT * FROM sync_site AS ss JOIN sns_type AS st WHERE st.name = #{name} limit 1
+    </select>
+    <select id="FindSyncSiteByDescription" parameterType="String" resultType="com.app.mysns.dto.SyncSiteDto">
+        SELECT * FROM sync_site WHERE description like '%#{description}%' limit 1
+    </select>
+    <select id="FindSyncSite" parameterType="com.app.mysns.dto.SyncSiteDto" resultType="com.app.mysns.dto.SyncSiteDto">
+        SELECT * FROM sync_site WHERE idx = #{idx}
+    </select>
+    <!-- U -->
+    <update id="UpdateSyncSite" parameterType="com.app.mysns.dto.SyncSiteDto">
+        UPDAETE sync_site SET name = #{name}, description = #{description}, updated_at = CURRENT_TIMESTAMP where idx = #{idx}
+    </update>
+    <!-- D -->
+    <delete id="DeleteSyncSite" parameterType="Long">
+        DELETE FROM sync_site WHERE idx = #{idx}
+    </delete>
+    <!-- list -->
+    <select id="ListSyncSite" parameterType="com.app.mysns.dto.SyncSiteDto" resultType="java.util.List">
+        SELECT * FROM sync_site
+    </select>
 
 </mapper>

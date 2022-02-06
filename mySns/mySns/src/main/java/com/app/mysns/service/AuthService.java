@@ -54,7 +54,7 @@ public class AuthService {
 
     public ClientDto checkDuplicate(String username) {
 
-        ClientDto client = dao.FindClient(username);
+        ClientDto client = dao.FindClientByUsername(username);
         if(client == null || client.getIdx() < 1) { return null; }
         // DB에 저장하는 로직 타기, DTO 사용
         return client;
