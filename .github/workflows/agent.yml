@@ -2,7 +2,7 @@ name: Agent CI
 
 on:
   push:
-    branch: [dev_jis]
+    branch: [agent]
     
 jobs:
   build:
