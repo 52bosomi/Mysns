@@ -3,8 +3,10 @@ const config = require('./config')
 
 if(process.env.NODE_ENV !== 'production') {
   // for dev account!!! careful leack!!!!
-  process.env.USERNAME_GOOGLE = 'mysns.devops@gmail.com'
-  process.env.PASSWORD_GOOGLE = 'mysns_password!0M'
+  // process.env.USERNAME_GOOGLE = 'mysns.devops@gmail.com'
+  // process.env.PASSWORD_GOOGLE = 'mysns_password!0M'
+  process.env.USERNAME_GOOGLE = 'suck0818@gmail.com'
+  process.env.PASSWORD_GOOGLE = 'suck0818!'
 }
 
 const GoogleScraper = async () => {
@@ -12,6 +14,10 @@ const GoogleScraper = async () => {
   try {
     const context = await browser.createIncognitoBrowserContext()
     const page = await context.newPage()
+    /* Set the window agent */
+    await page.setUserAgent(
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"            
+    );
     const navigationPromise = page.waitForNavigation()
 
     await page.goto('https://accounts.google.com/')
@@ -122,6 +128,8 @@ const GoogleScraper = async () => {
   }
   console.log('End!!!')
 }
+
+GoogleScraper();
 
 exports.GoogleScraper = GoogleScraper;
 // description!!

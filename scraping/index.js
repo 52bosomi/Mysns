@@ -24,7 +24,11 @@ async function MainLoop()
                 const res = await Scraper(key);
                 if (res != resultEnum.FAIL)
                 {   
-                    datas.push(res);
+                    for (var i=0; i<res.length; i++)
+                    {
+                        datas.push(res[i]);
+                    }
+                    // datas.push(res);
                     console.log(key + "scraper finished successfuly");    
                 }
                 else
@@ -52,6 +56,7 @@ async function Scraper(site)
         srp_data = await objFacebook.FacebookScraper();
         return srp_data;
     }    
+    
     else if( site == "google")
     {
         srp_data = await objGoogle.GoogleScraper();
@@ -73,4 +78,9 @@ var FlagList = [1, 0, 0, 0, 0];
 for (var i=0; i<FlagList.length; i++)
     snsFlag[Object.keys(snsFlag)[i]] = FlagList[i];
 
-MainLoop();
+try{
+    MainLoop();
+}
+catch (err){
+    console.log(err);
+}
