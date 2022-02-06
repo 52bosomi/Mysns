@@ -38,7 +38,8 @@ jobs:
         file: ./DockerfileScraper
         push: true
         tags: harbor.dndev.pw:4443/mysns/scraper:latest
-        outputs: type=oci,dest=/tmp/myimage.tar
+        # outputs: type=oci,dest=/tmp/myimage.tar
+        outputs: dest=/tmp/myimage.tar
 
     - name: Show Docker image
       run: ls -la /tmp/ 
