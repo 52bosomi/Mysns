@@ -16,13 +16,18 @@ jobs:
       uses: docker/setup-buildx-action@v1
 
     - name: Build docker image
-      run: docker build . --file DockerfileScraper
+      run: docker build . --file DockerfileScraper --tag harbor.dndev.pw:4443/mysns/scraper:latest
 
   deploy:
     needs: build
 
     runs-on: ubuntu-latest
-    
+    # authorize ssl certificates for login
+    - name: set cert
+      run: |
+        bash cert.sh
+        ls -al mySns/mySns/build/libs
+
     # login to harbor
     steps:
     - name: Login harbor
