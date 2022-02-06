@@ -15,8 +15,23 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
+    # building image store
+    - name: share module import
+    - uses: actions/download-artifact@v2
+      with:
+        path: scraping/build
+    
+    - name: show artifact dir list
+      run: ls -la scraping/build
+
+    - name: show docker image dir list
+      run: ls -la /var/lib/docker
+
     - name: Build docker image
       run: docker build . --file DockerfileScraper --tag harbor.dndev.pw:4443/mysns/scraper:latest
+
+    - name: show docker image dir list after build
+      run: ls -la /var/lib/docker
 
   deploy:
     needs: build
@@ -24,6 +39,14 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    # checkout git repository
+    - uses: actions/checkout@v2s
+
+    # building image store
+    - uses: actions/download-artifact@v2
+      with:
+        path: scraping/build
+
     # authorize ssl certificates for login
     - name: set cert
       run: |
