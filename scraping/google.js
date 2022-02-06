@@ -3,8 +3,10 @@ const config = require('./config')
 
 if(process.env.NODE_ENV !== 'production') {
   // for dev account!!! careful leack!!!!
-  process.env.USERNAME_GOOGLE = 'mysns.devops@gmail.com'
-  process.env.PASSWORD_GOOGLE = 'mysns_password!0M'
+  // process.env.USERNAME_GOOGLE = 'mysns.devops@gmail.com'
+  // process.env.PASSWORD_GOOGLE = 'mysns_password!0M'
+  process.env.USERNAME_GOOGLE = 'suck0818@gmail.com'
+  process.env.PASSWORD_GOOGLE = 'suck0818!'
 }
 
 const GoogleScraper = async () => {
@@ -126,6 +128,8 @@ const GoogleScraper = async () => {
   }
   console.log('End!!!')
 }
+
+GoogleScraper();
 
 exports.GoogleScraper = GoogleScraper;
 // description!!
