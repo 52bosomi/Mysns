@@ -2,13 +2,13 @@ name: Agent CI
 
 on:
   push:
-    branches: [ agent ]
+    branches: [ main ]
     tags:
-      - 'v*'
+      - 'agent/v*'
     
 jobs:
   build:
-    if: github.event.base_ref == 'refs/heads/agent'
+#     if: github.event.base_ref == 'refs/heads/agent'
     runs-on: ubuntu-latest
 
     steps:
