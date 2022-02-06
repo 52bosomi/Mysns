@@ -2,8 +2,7 @@ name: Agent CI
 
 on:
   push:
-    branch:
-      - "agent"
+    branch: [ agent ]
     tags:
       - 'v*'
     
