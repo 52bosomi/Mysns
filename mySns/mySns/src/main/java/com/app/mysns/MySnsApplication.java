@@ -5,10 +5,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // import org.springframework.boot.web.servlet.ServletComponentScan;
 // import org.springframework.context.annotation.Bean;
 // import org.springframework.web.socket.server.standard.ServerEndpointExporter;
+import org.springframework.cache.annotation.EnableCaching;
 
 
 @SpringBootApplication
 // @ServletComponentScan(basePackages = "com.app.mysns.filter")
+@EnableCaching
 public class MySnsApplication {
 
     // @Bean

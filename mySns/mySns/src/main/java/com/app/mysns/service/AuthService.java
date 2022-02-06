@@ -2,16 +2,11 @@ package com.app.mysns.service;
 
 import com.app.mysns.dao.ManageDao;
 import com.app.mysns.dto.ClientDto;
-import com.app.mysns.dto.SnsTypeDto;
-import com.app.mysns.service.SecureUtilsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,15 +17,11 @@ public class AuthService {
     private ManageDao dao;
     private SecureUtilsService util;
     private final Logger logger = LoggerFactory.getLogger(AuthService.class);
+    
 
     public AuthService(SecureUtilsService util) {
         this.util = util;
     }
-
-    // public ArrayList<SnsTypeDto> dbtest() {
-    //     ArrayList<SnsTypeDto> result =  dao.dbtest();
-    //     return result;
-    // }
 
     public boolean emailJoin(ClientDto client) {
         //암호화시키기 ,SHA256 암호화 사용

@@ -12,7 +12,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.app.mysns.dto.ClientDto;
-import com.app.mysns.dto.ConfirmationToken;
 import com.app.mysns.dto.Restful;
 import com.app.mysns.service.SecureUtilsService;
 import com.app.mysns.service.MailService;
@@ -20,7 +19,8 @@ import com.app.mysns.service.AuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,19 +36,16 @@ public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private static int ttl = 10 * 60 * 1000; // 유효 시간 10분 뒤 만료
 
-    @Autowired
     private MailService mailService;
-    @Autowired
     private AuthService authService;
-    @Autowired
     private SecureUtilsService secureUtilsService;
-    @Autowired
-    private ConfirmationToken confirmationToken;
+    RedisTemplate<String, String> redisTemplate;
 
-    public AuthController(TemplateEngine htmlTemplateEngine, MailService mailService, SecureUtilsService secureUtilsService, AuthService authService) {
+    public AuthController(TemplateEngine htmlTemplateEngine, MailService mailService, SecureUtilsService secureUtilsService, AuthService authService, RedisTemplate<String, String> redisTemplate) {
         this.mailService = mailService;
         this.secureUtilsService = secureUtilsService;
         this.authService = authService;
+        this.redisTemplate = redisTemplate;
     }
 
     @PostMapping("/email/signup")
@@ -181,15 +178,24 @@ public class AuthController {
                                    @RequestParam(required = false) String token,
                                    HttpServletResponse response) throws IOException {
         ModelAndView rv = new ModelAndView();
+        
+        if(token == null || token.length() < 1) { return null; }
 
-        System.out.println("사용자 이메일 : "+username+"/ 토큰:"+token);
+        System.out.println("사용자 이메일 : " + username);
+        System.out.println("사용자 token : " + token);
 
-        LocalDateTime tokenExpiration = LocalDateTime.parse(token.split(",")[1].split("=")[1]);
-        System.out.println("유효시간"+tokenExpiration);
-        System.out.println("현재시간"+LocalDateTime.now());
-        System.out.println("client redirect to email");
+        ValueOperations<String, String> vop = redisTemplate.opsForValue();
+        String result = "";
+        try { 
+            result = (String)vop.get(token);
+            // redisTemplate.delete(token);
+            // vop.get(token).delete();
+        } catch (Exception e) {}
+
+        System.out.println("메모리 token : " + result);
+
         //이메일 토큰 사용가능 또는 만료상태로 분기
-        if(tokenExpiration.isAfter(LocalDateTime.now())){//시간 유효
+        if(username.equals(result)) {
             rv.addObject("username", username);
             rv.addObject("isAuth", true);
             rv.setViewName("signup");
@@ -220,11 +226,17 @@ public class AuthController {
             return new ResponseEntity<>(new Restful().Error("Exising user"), HttpStatus.BAD_REQUEST);
         }
 
+        // 회원 가입 성공 후, redis 정보 삭제
+        try { 
+            redisTemplate.delete(client.getToken());
+        } catch (Exception e) {}
+
         // 회원가입성공 여부 리턴
         if(authService.emailJoin(client)) {
             // 생성된 패스워드는 초기화
             return new ResponseEntity<>(new Restful().Data("Create Sucessful"), HttpStatus.OK);
         }
+
         return new ResponseEntity<>(new Restful().Error("create user failed"), HttpStatus.BAD_REQUEST);
     }
 }
