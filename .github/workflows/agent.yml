@@ -75,7 +75,7 @@ jobs:
 
       # Upload the Docker image to "Harbor"
       - name: Push the docker image
-        run: docker push push harbor.dndev.pw:4443/mysns/scraper:latest
+        run: docker push harbor.dndev.pw:4443/mysns/scraper:latest
 
   
     
