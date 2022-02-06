@@ -6,13 +6,17 @@ const { v4: uuidv4 } = require('uuid');
 
 let main = async () => {
   var websocket = new SockJS("http://localhost:8888/ws", null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
+  // var websocket = new SockJS("http://mysns.info/ws", null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
   var task = {}
   var agent_uuid = uuidv4() // 원래는 db 등록된 값
   var task_uuid =  uuidv4()
 
   function result(){
     task.agentUUID = agent_uuid
-    task.result = [{ aa : "aa" }] // 스크랩핑 데이터
+    task.result = [
+      { title : "사람인앱", type : 'facebook', url : 'url', join_at : '' },
+      { title : "잡코리아", type : 'facebook', url : 'url', join_at : '' }
+    ] // 스크랩핑 데이터
     let data = JSON.stringify(Object.assign({}, task, { from : 'agent', cmd : 'result' }))
     websocket.send(data);
     console.log("result sent!!")
