@@ -3,6 +3,8 @@ name: Agent CI
 on:
   push:
     branch: [agent]
+    tags:
+      - 'v*'
     
 jobs:
   build:
