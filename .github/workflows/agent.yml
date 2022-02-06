@@ -30,10 +30,11 @@ jobs:
         registry: harbor.dndev.pw:4443
         username: ${{ secrets.HARBOR_BOT_ID }}
         password: ${{ secrets.HARBOR_BOT_PW }}
+        
     # Build the Docker image as tar file
     - name: Docker image build
       run: |
-      docker build . --file DockerfileScraper --tag harbor.dndev.pw:4443/mysns/scraper:latest
+        docker build . --file DockerfileScraper --tag harbor.dndev.pw:4443/mysns/scraper:latest
 
     - name: Docker image save to tar file
       run: docker save -o /tmp/myimage.tar harbor.dndev.pw:4443/mysns/scraper:latest
