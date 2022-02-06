@@ -1,8 +1,8 @@
 name: Java CI with Gradle
 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  create:
+  push:
+    branches: [ main ]
     tags:
       - 'v*'
 #   pull_request:
@@ -10,6 +10,7 @@ on:
 
 jobs:
   build:
+    if: github.event.base_ref == 'refs/heads/main'
 
     runs-on: ubuntu-latest
 
