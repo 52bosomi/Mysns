@@ -1,6 +1,8 @@
 package com.app.mysns.service;
 
 import com.app.mysns.dto.ClientDto;
+import com.app.mysns.dto.ConfirmationToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,8 @@ public class MailService {
 
     private final JavaMailSender mailSender;
     private final TemplateEngine htmlTemplateEngine;
+    @Autowired
+    private ConfirmationToken token;
 
     // private final Logger logger = LoggerFactory.getLogger(authController.class);
 
@@ -48,8 +52,10 @@ public class MailService {
             // change url for production
             String domain =  System.getenv("DOMAIN");
             if(domain == null) { domain = "localhost:8888"; }
+            ConfirmationToken resultToken = token.createEmailConfirmationToken(username);
+            System.out.println("토큰생성"+resultToken);
 
-            String url = MessageFormat.format("http://{0}/auth/email/check?username={1}", domain, username );
+            String url = MessageFormat.format("http://{0}/auth/email/check?username={1}&token={2}", domain, username,resultToken );
 
             ctx.setVariable("url", url);
             email.setText(this.htmlTemplateEngine.process("email/signup.html", ctx), true);

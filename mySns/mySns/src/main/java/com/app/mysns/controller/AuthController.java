@@ -1,14 +1,18 @@
 package com.app.mysns.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.app.mysns.dto.ClientDto;
+import com.app.mysns.dto.ConfirmationToken;
 import com.app.mysns.dto.Restful;
 import com.app.mysns.service.SecureUtilsService;
 import com.app.mysns.service.MailService;
@@ -38,6 +42,8 @@ public class AuthController {
     private AuthService authService;
     @Autowired
     private SecureUtilsService secureUtilsService;
+    @Autowired
+    private ConfirmationToken confirmationToken;
 
     public AuthController(TemplateEngine htmlTemplateEngine, MailService mailService, SecureUtilsService secureUtilsService, AuthService authService) {
         this.mailService = mailService;
@@ -91,7 +97,7 @@ public class AuthController {
         if(!isLoginSuccess) {
             return new ResponseEntity<>(new Restful().Error("Login failed"), HttpStatus.OK);
         }
-        
+
         // 필요시 나중에 시간 검증용
         Instant instant = Instant.now();
         long timeStampSeconds = instant.getEpochSecond();
@@ -105,12 +111,12 @@ public class AuthController {
 
         System.out.println("쿠키 토큰 UUID : " + uuid);
         Cookie cookie = new Cookie("mysns_uuid", uuid);
-        
+
         System.out.println("쿠키 : " + cookie);
 
         cookie.setComment("mysns auth code for login");
         // 글로벌
-        cookie.setPath("/"); 
+        cookie.setPath("/");
         // 유효시간: 30분
         cookie.setMaxAge(ttl);
         response.addCookie(cookie);
@@ -139,7 +145,7 @@ public class AuthController {
                 }
             }
         }
-        
+
         // 쿠키 삭제
         Cookie cookie = new Cookie("mysns_uuid", null);
         cookie.setMaxAge(-1);
@@ -171,16 +177,32 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/email/check" , method = RequestMethod.GET)
-    public ModelAndView emailCheck(@RequestParam(required = false) String username) {
+    public ModelAndView emailCheck(@RequestParam(required = false) String username,
+                                   @RequestParam(required = false) String token,
+                                   HttpServletResponse response) throws IOException {
         ModelAndView rv = new ModelAndView();
 
-        System.out.println("사용자 이메일 : "+username);
-        System.out.println("client redirect to email");
+        System.out.println("사용자 이메일 : "+username+"/ 토큰:"+token);
 
-        rv.addObject("username", username);
-        rv.addObject("isAuth", true);
-        rv.setViewName("signup");
-        return rv;
+        LocalDateTime tokenExpiration = LocalDateTime.parse(token.split(",")[1].split("=")[1]);
+        System.out.println("유효시간"+tokenExpiration);
+        System.out.println("현재시간"+LocalDateTime.now());
+        System.out.println("client redirect to email");
+        //이메일 토큰 사용가능 또는 만료상태로 분기
+        if(tokenExpiration.isAfter(LocalDateTime.now())){//시간 유효
+            rv.addObject("username", username);
+            rv.addObject("isAuth", true);
+            rv.setViewName("signup");
+
+            return rv;
+        }
+
+        response.setContentType("text/html; charset=euc-kr");
+        PrintWriter out = response.getWriter();
+        out.println("<script>alert('이메일 유효시간이 만료되었습니다. 다시 시도해주세요.');location.href='/auth/signup'; </script>");
+        out.flush();
+
+        return null;
     }
 
     @RequestMapping(value = "/email/join" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -197,7 +219,7 @@ public class AuthController {
         if(authService.checkDuplicate(client.getUsername()) != null) {
             return new ResponseEntity<>(new Restful().Error("Exising user"), HttpStatus.BAD_REQUEST);
         }
-        
+
         // 회원가입성공 여부 리턴
         if(authService.emailJoin(client)) {
             // 생성된 패스워드는 초기화
