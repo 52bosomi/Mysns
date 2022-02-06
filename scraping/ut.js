@@ -1,28 +1,24 @@
 
 
 var SockJS = require('sockjs-client');
-// var sockjs = new SockJS(url, _reserved, options);
+const { v4: uuidv4 } = require('uuid');
+// uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
 
 let main = async () => {
   var websocket = new SockJS("http://localhost:8888/ws", null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
-// var client = sjsc.create("http://localhost:8888/ws/agent");
-username = "WTF"
-// sockjs.on('connection', function () {
-//   // connection is established
-// });
-// sockjs.on('data', function (msg) {
-//   // received some data
-// });
-// sockjs.on('error', function (e) { // something went wrong });
-//   sockjs.write("Have some text you mighty SockJS server!"); })
+  var task = {}
+  var agent_uuid = uuidv4() // 원래는 db 등록된 값
+  var task_uuid =  uuidv4()
 
-  function send(){
-    websocket.send("WTF");
+  function result(){
+    task.agentUUID = agent_uuid
+    task.result = [{ aa : "aa" }] // 스크랩핑 데이터
+    let data = JSON.stringify(Object.assign({}, task, { from : 'agent', cmd : 'result' }))
+    websocket.send(data);
+    console.log("result sent!!")
   }
   
-  //채팅창에서 나갔을 때
   function onClose(evt) {
-      // var str = username + ": 님이 방을 나가셨습니다.";
       console.log(evt)
       console.log("bye")
       websocket.send("bye");
@@ -30,17 +26,19 @@ username = "WTF"
   
   //채팅창에 들어왔을 때
   function onOpen(evt) {
-    console.log(evt)
-    console.log("hi")
-    websocket.send('hi');
+    // 1. 에이전트는 등록시 아래 구분 전송
+    websocket.send(JSON.stringify({ from : 'agent', cmd : 'new', uuid : 'uuid' }));
   }
 
   function onMessage(msg) {
-    console.log(msg)
-      var data = msg.data;
-      var sessionId = null;
-      var message = null;
-      console.log(message, data, sessionId)
+    let x = JSON.parse(msg.data)
+    if(x.cmd == 'scraping' && x.from == 'client') {
+      console.log("get job sent!!")
+      task = Object.assign({}, JSON.parse(msg.data))
+      setTimeout(function() { result() }, 5*1000)
+    }
+    
+    console.log(x)
   }
 
   websocket.onmessage = onMessage;
@@ -50,18 +48,6 @@ username = "WTF"
     console.log("x", x)
   };
 
-  let wait = (x) => {
-    return new Promise((resolve, reject) => {
-      return setTimeout(resolve, x * 1000)
-    })
-  }
-
-  
-  while (true) {
-    // console.log(websocket)
-    await wait(1)
-    console.log('loop', new Date())
-  }
 }
 
 main();

@@ -8,6 +8,7 @@ uuid = ''
 $(document).ready(function() {
   // 로드 완료되고 연결 실시
   websocket = new SockJS("/ws", null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
+  window['x'] = websocket
 
   function generateUUID() { // Public Domain/MIT
     var d = new Date().getTime();//Timestamp
@@ -36,7 +37,7 @@ $(document).ready(function() {
       username : u.value,
       password : p.value,
       type : sns_type,
-      uuid : uuid,
+      clientUUID : uuid,
       ua : navigator.userAgent
     }
     websocket.send(JSON.stringify(data));
