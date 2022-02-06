@@ -63,7 +63,7 @@ public class BaseController {
     @RequestMapping("/about")
     public String about(){
         System.out.println("about init");
-        return "about";
+        return "about_sample";
     }
 
     // 기본 보여주는 페이지
