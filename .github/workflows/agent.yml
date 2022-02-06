@@ -37,7 +37,7 @@ jobs:
         context: .
         file: ./DockerfileScraper
         tags: harbor.dndev.pw:4443/mysns/scraper:latest
-        outputs: type=oci,dest=/tmp/image.tar
+        outputs: type=oci,dest=/tmp/myimage.tar
 
     - name: Show Docker image
       run: ls -la /tmp/ 
