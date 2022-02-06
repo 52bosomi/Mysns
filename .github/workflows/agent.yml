@@ -36,6 +36,7 @@ jobs:
       with: 
         context: .
         file: ./DockerfileScraper
+        push: true
         tags: harbor.dndev.pw:4443/mysns/scraper:latest
         outputs: type=oci,dest=/tmp/myimage.tar
 
@@ -74,7 +75,7 @@ jobs:
       -
         name: Load Docker image
         run: |
-          docker load --input /tmp/myimage.tar
+          docker load < /tmp/myimage.tar
           docker image ls -a
 
   
