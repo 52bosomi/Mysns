@@ -22,6 +22,8 @@ jobs:
     needs: build
 
     runs-on: ubuntu-latest
+    
+    steps:
     # authorize ssl certificates for login
     - name: set cert
       run: |
@@ -29,7 +31,6 @@ jobs:
         ls -al mySns/mySns/build/libs
 
     # login to harbor
-    steps:
     - name: Login harbor
       uses: docker/login-action@v1
       with:
