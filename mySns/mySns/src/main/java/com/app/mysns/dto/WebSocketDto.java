@@ -2,6 +2,7 @@ package com.app.mysns.dto;
 
 import java.security.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.google.gson.Gson;
 
@@ -15,7 +16,7 @@ public class WebSocketDto {
     private String clientUUID = "";
     private String from = "";
     private String ua = "";
-    private ArrayList<Object> result;
+    private ArrayList<HashMap<String, String>> result;
     
     public String getClientUUID() {
         return clientUUID;
@@ -76,10 +77,10 @@ public class WebSocketDto {
         return ua;
     }
 
-    public void setResult(ArrayList<Object> result) {
+    public void setResult(ArrayList<HashMap<String, String>> result) {
         this.result = result;
     }
-    public ArrayList<Object> getResult() {
+    public ArrayList<HashMap<String, String>> getResult() {
         return result;
     }
 
