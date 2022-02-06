@@ -39,6 +39,9 @@ jobs:
         tags: harbor.dndev.pw:4443/mysns/scraper:latest
         outputs: type=oci,dest=/tmp/image.tar
 
+    - name: Show Docker image
+      run: ls -la /tmp/ 
+
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
