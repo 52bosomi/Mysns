@@ -24,7 +24,11 @@ async function MainLoop()
                 const res = await Scraper(key);
                 if (res != resultEnum.FAIL)
                 {   
-                    datas.push(res);
+                    for (var i=0; i<res.length; i++)
+                    {
+                        datas.push(res[i]);
+                    }
+                    // datas.push(res);
                     console.log(key + "scraper finished successfuly");    
                 }
                 else
