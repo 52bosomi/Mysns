@@ -1,7 +1,7 @@
 #!/bin/bash
 echo $GITHUB_ENV
 echo $RELEASE_VERSION
-# pwd
+pwd
 ls -al
 sed -i 's/version = /\/\/version/' ./mySns/mySns/build.gradle
 echo version=\'`echo $RELEASE_VERSION`\' >> ./mySns/mySns/build.gradle
