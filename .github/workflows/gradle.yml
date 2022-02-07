@@ -2,15 +2,14 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
     tags:
       - 'web/v*'
-#   pull_request:
-#     branches: [ main ]
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/main'
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
 
     steps:
