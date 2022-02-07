@@ -192,7 +192,7 @@ public class AuthController {
             // vop.get(token).delete();
         } catch (Exception e) {}
 
-        System.out.println("메모리 token : " + result);
+        System.out.println("메모리 email : " + result);
 
         //이메일 토큰 사용가능 또는 만료상태로 분기
         if(username.equals(result)) {
