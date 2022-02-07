@@ -7,7 +7,7 @@ on:
     
 jobs:
   build:
-    if: github.ref == 'refs/heads/main'
+    if: contains(github.ref, 'refs/tags/agent/v')
     runs-on: ubuntu-latest
 
     steps:
