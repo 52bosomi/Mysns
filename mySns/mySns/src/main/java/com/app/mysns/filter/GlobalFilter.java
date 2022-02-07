@@ -55,13 +55,13 @@ public class GlobalFilter implements Filter  {
             }
 
             if(requiredAuthentication(requestURI)) {
-                System.out.println("로그인 필요 없는 페이지 : " + requestURI);    
+                // System.out.println("로그인 필요 없는 페이지 : " + requestURI);    
                 chain.doFilter(request, response);
                 return;
             }
 
-            System.out.println("인증 필터 시작 : " + requestURI);
-            System.out.println("로그인 여부 확인 필요 : " + requestURI);
+            // System.out.println("인증 필터 시작 : " + requestURI);
+            // System.out.println("로그인 여부 확인 필요 : " + requestURI);
 
             // 쿠키 삭제 여부 검증
             // Cookie[] cookies = httpRequest.getCookies();
@@ -117,8 +117,8 @@ public class GlobalFilter implements Filter  {
         } catch (Exception e) {
             throw e;
         } finally {
-            System.out.println("인증 필터 종료 : " + requestURI);
-            System.out.println("=========================================" );
+            // System.out.println("인증 필터 종료 : " + requestURI);
+            // System.out.println("=========================================" );
         }
 
     }

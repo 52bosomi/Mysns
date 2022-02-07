@@ -13,6 +13,7 @@
 					<input class="input100" type="text" id="username" name="username" placeholder="username or email" >
 					<span class="focus-input100"></span>
 				</div>
+
 				<!-- 추가 입력  -->
 				<div th:if="${isAuth} == true" class="wrap-input100 validate-input m-b-20" data-validate="" onclick="$('#name').focus();" style="cursor: pointer;">
 					<input class="input100" type="text" id="username"  name="username" th:value="${username}" placeholder="username or email" disabled="true">

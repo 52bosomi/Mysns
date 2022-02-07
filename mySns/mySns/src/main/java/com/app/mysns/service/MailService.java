@@ -77,6 +77,7 @@ public class MailService {
 
             return true;
         } catch (Exception e) {
+            System.out.println(e.getMessage()+"\n\n"+e.getStackTrace());
             // TODO : 로깅 남겨야 함
             return false;
         }
