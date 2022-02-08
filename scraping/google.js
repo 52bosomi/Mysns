@@ -129,7 +129,7 @@ const GoogleScraper = async () => {
   console.log('End!!!')
 }
 
-GoogleScraper();
+// GoogleScraper();
 
 exports.GoogleScraper = GoogleScraper;
 // description!!
