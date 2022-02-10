@@ -13,7 +13,7 @@ if(process.env.NODE_ENV !== 'production') {
     process.env.XPATH_FACEBOOK = './/div[@class="pow20xho"]/div/div/div/div/div/div/span[@class="d2edcug0 hpfvmrgz qv66sw1b c1et5uql lr9zc1uh a8c37x1j fe6kdd0r mau55g9w c8b282yb keod5gw0 nxhoafnm aigsh9s9 d3f4x2em iv3no6db jq4qci2q a3bd9o3v lrazzd5p oo9gr5id hzawbc8m"]'
 }
 
-const FacebookScraper = async() => {
+const FacebookScraper = async (loginInfo) => {
     try {   
         /* UI MODE */
         // const browser = await peppeteer.launch({headless: false, args:['--window-size=1920,1080','--disable-notifications']});
@@ -34,10 +34,14 @@ const FacebookScraper = async() => {
         await page.goto('https://facebook.com');
         
         /* Input the email and password */
+        // await page.evaluate((id, pw) => {
+        //     document.querySelector("#email").value = id;
+        //     document.querySelector("#pass").value = pw;
+        // }, process.env.EMAIL_FACEBOOK, process.env.PASSWORD_FACEBOOK)
         await page.evaluate((id, pw) => {
             document.querySelector("#email").value = id;
             document.querySelector("#pass").value = pw;
-        }, process.env.EMAIL_FACEBOOK, process.env.PASSWORD_FACEBOOK)
+        }, loginInfo.email, loginInfo.password)
         
         /* Click the login button */
         await page.click("button[type=submit]");

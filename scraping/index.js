@@ -1,5 +1,8 @@
 const objFacebook = require("./facebook");
 const objGoogle = require("./google");
+// const objHttp = require("http");
+const objSocket = require("socket.io");
+const { io } = require("socket.io-client");
 
 const snsFlag = {   "facebook" : 0, 
                     "google" : 0, 
@@ -10,8 +13,10 @@ const snsFlag = {   "facebook" : 0,
 
 const resultEnum = { "SUCCESS" : 0, "FAIL" : 1, "PENDING" : 2};
 
+let loginInfo;
+
 /* Execute each scrapping method according to "snsFlag" */
-async function MainLoop()
+async function MainLoop(loginInfo)
 {   
     let datas = [];
     try{
@@ -21,7 +26,7 @@ async function MainLoop()
             {
                 console.log(key + " scraper is runing...");
 
-                const res = await Scraper(key);
+                const res = await Scraper(key, loginInfo);
                 if (res != resultEnum.FAIL)
                 {   
                     for (var i=0; i<res.length; i++)
@@ -48,18 +53,18 @@ async function MainLoop()
 }
 
 /* Scraper running function */
-async function Scraper(site) 
+async function Scraper(site, account) 
 {   
     let srp_data;
     if (site == "facebook")
     {
-        srp_data = await objFacebook.FacebookScraper();
+        srp_data = await objFacebook.FacebookScraper(account);
         return srp_data;
     }    
     
     else if( site == "google")
     {
-        srp_data = await objGoogle.GoogleScraper();
+        srp_data = await objGoogle.GoogleScraper(account);
         return srp_data;
     }
     // else if( site == "google")
@@ -72,15 +77,40 @@ async function Scraper(site)
         return resultEnum.FAIL;
 }
 
-/* Setting the snsFlag object */
-// var FlagList = [1, 1, 1, 1, 1];
-var FlagList = [1, 0, 0, 0, 0];
-for (var i=0; i<FlagList.length; i++)
-    snsFlag[Object.keys(snsFlag)[i]] = FlagList[i];
 
-try{
-    MainLoop();
+async function Run()
+{   
+    try
+    {   
+        /* websocket connection part  */ 
+        // const httpServer = objHttp.createServer();
+        const io = new objSocket.Server(8888, {
+        });
+        io.on("connection", socket => {
+            console.log(socket.id+ "(id)" + " connect")
+            socket.on("loginInfo", async info => {
+                await console.log(info);
+                loginInfo = info;
+                await io.disconnectSockets();
+                await io.close();
+                
+                /* Setting the snsFlag object */
+                for (var i=0; i<Object.keys(snsFlag).length; i++)
+                {   
+                    if(loginInfo.type == Object.keys(snsFlag)[i])
+                    {
+                        snsFlag[Object.keys(snsFlag)[i]] = 1;
+                    }
+                }
+
+                MainLoop(loginInfo);
+            })
+        })
+    }
+    catch(err)
+    {
+        console.log(err);
+    }
 }
-catch (err){
-    console.log(err);
-}
+
+Run();

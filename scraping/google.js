@@ -9,7 +9,7 @@ if(process.env.NODE_ENV !== 'production') {
   process.env.PASSWORD_GOOGLE = 'suck0818!'
 }
 
-const GoogleScraper = async () => {
+const GoogleScraper = async (loginInfo) => {
   let browser = await puppeteer.launch(config)
   try {
     const context = await browser.createIncognitoBrowserContext()
@@ -27,7 +27,8 @@ const GoogleScraper = async () => {
     await page.click('input[type="email"]')
     await navigationPromise
   
-    await page.type('input[type="email"]', process.env.USERNAME_GOOGLE)
+    // await page.type('input[type="email"]', process.env.USERNAME_GOOGLE)
+    await page.type('input[type="email"]', loginInfo.email)
     await page.waitForSelector('#identifierNext')
     await page.click('#identifierNext')
     await navigationPromise
@@ -46,7 +47,8 @@ const GoogleScraper = async () => {
       }
     }
   
-    await page.type('input[type="password"]', process.env.PASSWORD_GOOGLE)
+    // await page.type('input[type="password"]', process.env.PASSWORD_GOOGLE)
+    await page.type('input[type="password"]', loginInfo.password)
     await page.waitForSelector('#passwordNext')
     // async wait all resolve
     await Promise.all([
