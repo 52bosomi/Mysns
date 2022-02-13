@@ -25,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.TemplateEngine;
@@ -114,7 +115,7 @@ public class AuthController {
         cookie.setComment("mysns auth code for login");
         // 글로벌
         cookie.setPath("/");
-        // 유효시간: 30분
+        // 유효시간: 10분
         cookie.setMaxAge(ttl);
         response.addCookie(cookie);
         System.out.println("client redirect to welcome");

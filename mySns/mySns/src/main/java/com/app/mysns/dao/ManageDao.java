@@ -4,13 +4,9 @@ import com.app.mysns.dto.ClientDto;
 import com.app.mysns.dto.SnsTypeDto;
 import com.app.mysns.dto.SyncSiteDto;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import groovyjarjarantlr.collections.List;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 
 //매퍼 xml 과 연동해주는 인터페이스 제공
 // @Mapper
@@ -45,6 +41,17 @@ public interface ManageDao {
 
     // ut
     ClientDto login(String username);
+
+    ClientDto findUser(String username);
+
+    // sns count
+    int countFacebook(long user_id, long sns_type_id);
+
+    int countGoogle(long user_id, long sns_type_id);
+
+    int countInsta(long user_id, long sns_type_id);
+
+    int countNaver(long user_id, long sns_type_id);
 }
 
 
