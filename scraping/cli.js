@@ -1,5 +1,4 @@
 const websock = require("socket.io-client")
-const 
 
 const sample_data = {   username: "wdt0818@naver.com",
                         password: "jeon5376!!",
@@ -7,6 +6,26 @@ const sample_data = {   username: "wdt0818@naver.com",
                         uuid: "",
                         ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"
                     };
+
+async function WebComm()
+{
+    try
+    {
+        const socketWeb = await websock("ws://mysns.info", {
+            // transports: ["polling", "websocket"],
+            path: "/ws"
+        });
+
+        await socketWeb.on("connect", (req) =>{
+            console.log(req);
+            console.log("connected");
+        })
+    }
+    catch(err)
+    {
+        console.log(err);
+    }
+}
 
 async function DockerComm()
 {
@@ -57,7 +76,8 @@ async function DockerComm()
 
 try
 {
-    DockerComm();
+    // DockerComm();
+    WebComm();
 }
 catch(err)
 {
