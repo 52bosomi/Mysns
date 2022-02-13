@@ -24,7 +24,8 @@ const FacebookScraper = async (loginInfo) => {
         const page = await browser.newPage();
         /* Set the window agent */
         await page.setUserAgent(
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"            
+            loginInfo.ua
+            // "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"            
         );
         await page.setViewport({
             width:1920,
@@ -41,7 +42,7 @@ const FacebookScraper = async (loginInfo) => {
         await page.evaluate((id, pw) => {
             document.querySelector("#email").value = id;
             document.querySelector("#pass").value = pw;
-        }, loginInfo.email, loginInfo.password)
+        }, loginInfo.username, loginInfo.password)
         
         /* Click the login button */
         await page.click("button[type=submit]");

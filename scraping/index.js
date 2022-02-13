@@ -45,6 +45,7 @@ async function MainLoop(loginInfo)
             
         }
         console.log(datas);
+        return datas;
     }
     catch(err)
     {
@@ -91,8 +92,8 @@ async function Run()
             socket.on("loginInfo", async info => {
                 await console.log(info);
                 loginInfo = info;
-                await io.disconnectSockets();
-                await io.close();
+                // await io.disconnectSockets();
+                // await io.close();
                 
                 /* Setting the snsFlag object */
                 for (var i=0; i<Object.keys(snsFlag).length; i++)
@@ -102,9 +103,20 @@ async function Run()
                         snsFlag[Object.keys(snsFlag)[i]] = 1;
                     }
                 }
-
-                MainLoop(loginInfo);
+                let res = await MainLoop(loginInfo);
+                await io.emit("response", res);
+                await io.disconnectSockets();
+                await io.close();
+                await io.removeAllListeners();
             })
+        })
+
+        io.on("close", socket => {
+            console.log(socket.id + "(id)" + " close")
+        })
+
+        io.on("connect_error", (err) => {
+            console.log(err);
         })
     }
     catch(err)
@@ -113,4 +125,10 @@ async function Run()
     }
 }
 
-Run();
+try{
+    Run();
+}
+catch(err)
+{
+    console.log(err);
+}
