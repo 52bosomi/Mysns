@@ -1,4 +1,5 @@
 const websock = require("socket.io-client")
+var SockJS = require('sockjs-client');
 
 const sample_data = {   username: "wdt0818@naver.com",
                         password: "jeon5376!!",
@@ -11,15 +12,23 @@ async function WebComm()
 {
     try
     {
-        const socketWeb = await websock("ws://mysns.info", {
-            // transports: ["polling", "websocket"],
-            path: "/ws"
-        });
+        var socketWeb = new SockJS("http://mysns.info/ws", null, { transports: ["websocket", "xhr-streaming", "xhr-polling"]});
+        // const socketWeb = await websock("http://mysns.info", {
+        //     transports: ["websocket", "xhr-streaming", "xhr-polling"],
+        //     path: "/ws"
+        // });
 
-        await socketWeb.on("connect", (req) =>{
+        // socketWeb.onmessage = onMessage;
+        socketWeb.onopen = (req) =>{
             console.log(req);
             console.log("connected");
-        })
+        };
+        // socketWeb.onclose = onClose;
+
+        // await socketWeb.on("connect", (req) =>{
+        //     console.log(req);
+        //     console.log("connected");
+        // })
     }
     catch(err)
     {
