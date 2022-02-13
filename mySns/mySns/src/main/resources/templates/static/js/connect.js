@@ -1,35 +1,23 @@
 step = 0
-is_clear = false
+is_step_done = false
 sns_type = 'naver'
 sns_type_list = []
+sns_type_list_origin = []
 uuid = ''
 // 순서는 네이버, 구글, 페이스북, 인스타
 
 $(document).ready(function() {
   // 로드 완료되고 연결 실시
-  websocket = new SockJS("/ws", null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
-  window['x'] = websocket
-
-  function generateUUID() { // Public Domain/MIT
-    var d = new Date().getTime();//Timestamp
-    var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random() * 16;//random number between 0 and 16
-        if(d > 0){//Use timestamp until depleted
-            r = (d + r)%16 | 0;
-            d = Math.floor(d/16);
-        } else {//Use microseconds since page-load if supported
-            r = (d2 + r)%16 | 0;
-            d2 = Math.floor(d2/16);
-        }
-        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-  }
-  // uuid = generateUUID()
+  websocket = new SockJS("/ws", null, { transports : ["websocket", "xhr-streaming", "xhr-polling"]});
+  // window['x'] = websocket
 
   function send() {
     let u = document.getElementById("username")
     let p = document.getElementById("password")
+    if(!u.value || !p.value) {
+      alert('계정 정보를 입력하세요')
+      return false
+    }
 
     // console.log(u, p)
 
@@ -41,6 +29,7 @@ $(document).ready(function() {
       ua : navigator.userAgent
     }
     websocket.send(JSON.stringify(data));
+    return true
   }
 
   //채팅창에서 나갔을 때
@@ -54,18 +43,35 @@ $(document).ready(function() {
   }
 
   function onMessage(msg) {
-    var data = msg.data;
-
-    console.log(data)
+    let data = msg.data;
 
     // convert
     data = typeof data == typeof "" ? JSON.parse(data) : data
 
-    if(data.uuid && !uuid) {
-      uuid = data.uuid
+
+    console.log('data', 'from', data.result.from, 'agentUUID', data.result.agentUUID)
+    if(!data.result.from.startsWith('agent'))
+    {
+      console.log('is not correct signal from agent')
       return
     }
 
+    if(!data.result.agentUUID)
+    {
+      console.log('is not correct agent uuid')
+      return
+    }
+
+    console.log(data)
+
+    // 연동 완료 표시 및 다음 스탭 시작
+    // 로딩중 표시
+    $(`.loading`).hide();
+    $(`.done`).show()
+    $('#checker').hide()
+    $('#btn-step').attr('disabled', false)
+    is_step_done = true
+    // $("#btn_next").hide()
     
   }
 
@@ -77,8 +83,10 @@ $(document).ready(function() {
   function start(x) { 
     sns_type_list = $('input:checkbox:checked').map(function() { return this.value}).get();
     console.log("sns_type_list", sns_type_list)
+    sns_type_list_origin = sns_type_list.map(x => x) // 클론 방식 때문에 그럼
 
     // 버튼 변경
+    $('#btn-start').attr('disabled', true)
     $('.btn-start').hide()
     $('.btn-step').show()
 
@@ -88,7 +96,16 @@ $(document).ready(function() {
 
   function loop() {
 
-    if(sns_type_list.length < 1) { return alert("plz, select for sync") }
+    if(sns_type_list.length < 1) { 
+      if(sns_type_list_origin.length < 1) {
+        return alert("연동 대상을 선택하세요!!") 
+      }
+
+      // 연동 완료!!!!!!!!!
+      alert('연동이 완료 되었습니다, 상세 연동을 확인하세요')
+      location.href = "/profile"
+
+    }
 
     $('.start').hide() // 기존거 숨기기
 
@@ -103,18 +120,31 @@ $(document).ready(function() {
     $('.step').hide()
 
     // 해당하는 이미지만 보여주기
-    $(`.step_${sns_type}`).show();
+    $(`.step_${sns_type.toLowerCase()}`).show();
 
   }
 
   // 로그인 연동을 위해 계정 정보 전송
   function next() {
+
+    console.log("next!!", is_step_done)
+
+    if(is_step_done) {
+      $(`.done`).hide()
+      $('#checker').hide()
+
+      // reset
+      $(`#password`).val('')
+      is_step_done = false
+      return loop()
+    }
     
+    
+    // 계정 정보 보내고 
+    if(!send()) { return }
+
     // 기존거 숨기기
     $('.step').hide()
-
-    // 계정 정보 보내고 
-    send()
 
     // 입력 폼 비활성화
     $('.step-input').hide()
@@ -122,67 +152,29 @@ $(document).ready(function() {
     // 로딩중 표시
     $(`.loading`).show(); 
     $("#btn_next").hide()
+    $('#btn-step').attr('disabled', true)
 
     console.log('결과 대기중')
     
-    // step = step
-    
-
-    // switch (step) {
-    //   case 0:
-    //     // naver
-    //     $('.step_0').hide()
-    //     $('.step_1').show()
-
-    //     $('#username').val('hdh0926@naver.com')
-    //     $('#password').val('hdh')
-    //     step = 1
-    //     break;
-    //   case 1:
-    //     $('.step_1').hide()
-    //     step = 2
-
-    //     $(".loading").show()
-    //   default:
-    //     break;
-    // }
-
-    // console.log('request to email')
-    // $.ajax({
-    //   async : true,
-    //   url:'/auth/login', // 요청 할 주소
-    //   type:'POST', // GET, PUT
-    //   data: JSON.stringify({ username : username, password : password }),
-    //   contentType : 'application/json',
-    //   dataType:'json',// xml, json, script, html
-    //   success:function(x) {
-    //     $('#checker').show();
-    //     alert(x.isError ? x.reason : x.data);
-    //     location.href = '/welcome'
-    //   },// 요청 완료 시
-    //   error:function(x) {
-    //     console.log('failed', x)
-    //     alert(x.responseJSON.isError ? x.responseJSON.reason : x.responseJSON.data);
-    //   },// 요청 실패.
-    //   complete:function(x) {
-    //     console.log(x)
-    //   }// 요청의 실패, 성공과 상관 없이 완료 될 경우 호출
-    // });
   }
 
 
   step = 0
+  $('#checker').hide()
   $('.step-input').hide()
   $('.btn-step').hide()
   $('.btn-start').show()
   $('.step').hide() // 기존거 숨기기
   
   $('.loading').hide()
+  $(`.done`).hide(); 
   $(".step_1").hide()
   $("#btn_next").click((x) => {
     console.log("x", x)
     next()
   })
+  $("#username").enterKey(() => $("#password").focus())
+  $("#password").enterKey(() => $(".btn-submit").click())
   
   $("#btn-start").click((x) => start(x))
   $("#btn-step").click((x) => next(x))

@@ -91,7 +91,7 @@ public class ChatHandler extends TextWebSocketHandler {
                 for (String key : clientList.keySet().stream().collect(Collectors.toList())) {
 
                     if(key.equals(data.getClientUUID())) { 
-                        TextMessage msg = new TextMessage(MessageFormat.format("'{' \"result\" : \"{0}\" '}'", data.getResult()).getBytes());
+                        TextMessage msg = new TextMessage(MessageFormat.format("'{' \"result\" : {0} '}'", data.ToJson()).getBytes());
                         clientList.get(key).sendMessage(msg);
                         break;
                     }
