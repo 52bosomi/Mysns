@@ -16,6 +16,9 @@
                         <img src="/static/images/icons/icon-facebook.png" alt="FACEBOOK" width="35px" height="35px" class="step step_facebook" style="height:15rem;width:15rem; border-radius:20%;">
                         <img src="/static/images/icons/icon-insta.png" alt="INSTAGRAM" width="35px" height="35px" class="step step_instagram" style="height:15rem;width:15rem; border-radius:20%;">
                         <img src="/static/images/fake_phodo.gif" alt="Phodo" width="35px" height="35px" class="loading" style="height:15rem;width:15rem; border-radius:20%;">
+                        <svg class="checkmark done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                            <path class="checkmark_check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                        </svg>
                     </div>
                     <div class="flex-c p-2 mt-4 start">
                         <strong >최신으로 연결할 SNS 를 선택헤주세요</strong>
@@ -81,30 +84,37 @@
 
 
                     <div class="flex-c p-2 w-100 loading">
-                        <strong>
-                            연동중
-                        </strong>
-
                         <div class="spinner-border" role="status">
                             <span class="sr-only">Loading...</span>
-                          </div>
+                        </div>
+                        <strong class="mt-1 mr-2 ml-2">
+                            연동중
+                        </strong>
+                    </div>
+
+                    <div class="flex-c p-2 w-100 done">
+                        <strong class="mt-1 mr-2 ml-2">
+                            연동 완료!! 다음을 눌러주세요
+                        </strong>
                     </div>
                     
                     <hr>
                     <div class="flex-c p-2 w-100 btn-start">
-                        <button class="login100-form-btn" id="btn-start" >
-                            Start
+                        <button class="login100-form-btn btn-submit" id="btn-start" >
+                            시작하기
                         </button>
                     </div>
                     <div class="flex-c p-2 w-100 btn-step">
-                        <button class="login100-form-btn" id="btn-step" >
-                            Next
+                        <button class="login100-form-btn btn-submit" id="btn-step" >
+                            다음
                         </button>
                     </div>
                     
                 </div>
             </div>
         </div>
+        <!-- css -->
+	    <link rel="stylesheet" type="text/css" href="/static/css/connect.css">
         <!-- js -->
         <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 		<script src="/static/js/connect.js"></script>

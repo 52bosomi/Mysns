@@ -20,6 +20,9 @@ let main = async () => {
     let data = JSON.stringify(Object.assign({}, task, { from : 'agent', cmd : 'result' }))
     websocket.send(data);
     console.log("result sent!!")
+    setTimeout(() => {
+      process.exit()
+    }, 1000);
   }
   
   function onClose(evt) {
@@ -31,7 +34,7 @@ let main = async () => {
   //채팅창에 들어왔을 때
   function onOpen(evt) {
     // 1. 에이전트는 등록시 아래 구분 전송
-    websocket.send(JSON.stringify({ from : 'agent', cmd : 'new', uuid : 'uuid' }));
+    websocket.send(JSON.stringify({ from : 'agent', cmd : 'new', agentUUID : agent_uuid }));
   }
 
   function onMessage(msg) {
