@@ -52,6 +52,8 @@ dependencies {
 	// redis  사용
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+	compile group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.3'
+	compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 test {
