@@ -119,29 +119,31 @@
     </select>
 
     <select id="findUser" parameterType="String" resultType="com.app.mysns.dto.ClientDto">
-        SELECT idx FROM client WHERE username=#{username}
+        SELECT * FROM client WHERE username=#{username}
 
     </select>
 
     <select id="countFacebook" parameterType="com.app.mysns.dto.SyncSiteDto" resultType="java.lang.Integer">
-        SELECT COUNT(sns_type_id) FROM sync_site WHERE sns_type_id=#{sns_type_id} AND user_id=#{user_id};
+        SELECT COUNT(*) FROM sync_site WHERE sns_type_id=#{sns_type_id} AND user_id=#{user_id};
 
     </select>
 
     <select id="countGoogle" parameterType="com.app.mysns.dto.SyncSiteDto" resultType="java.lang.Integer">
-        SELECT COUNT(sns_type_id) FROM sync_site WHERE sns_type_id=#{sns_type_id} AND user_id=#{user_id};
+        SELECT COUNT(*) FROM sync_site WHERE sns_type_id=#{sns_type_id} AND user_id=#{user_id};
 
     </select>
 
     <select id="countInsta" parameterType="com.app.mysns.dto.SyncSiteDto" resultType="java.lang.Integer">
-        SELECT COUNT(sns_type_id) FROM sync_site WHERE sns_type_id=#{sns_type_id} AND user_id=#{user_id};
+        SELECT COUNT(*) FROM sync_site WHERE sns_type_id=#{sns_type_id} AND user_id=#{user_id};
 
     </select>
 
     <select id="countNaver" parameterType="com.app.mysns.dto.SyncSiteDto" resultType="java.lang.Integer">
-        SELECT COUNT(sns_type_id) FROM sync_site WHERE sns_type_id=#{sns_type_id} AND user_id=#{user_id};
+        SELECT COUNT(*) FROM sync_site WHERE sns_type_id=#{sns_type_id} AND user_id=#{user_id};
 
     </select>
 
-
+    <select id="summarySyncSite" parameterType="com.app.mysns.dto.SyncSiteDto" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM sync_site WHERE sns_type_id=#{sns_type_id} AND user_id=#{user_id};
+    </select>
 </mapper>

@@ -16,6 +16,11 @@ public class SyncSiteDto {
     // private String description;
     private Timestamp updated_at;
     private Timestamp created_at;
+
+    public SyncSiteDto (long user_id, long sns_type_id) {
+        this.sns_type_id = sns_type_id;
+        this.user_id = user_id;
+    }
     
     public long getIdx() {
         return this.idx;

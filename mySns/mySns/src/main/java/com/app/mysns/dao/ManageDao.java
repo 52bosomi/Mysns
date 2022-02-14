@@ -52,6 +52,8 @@ public interface ManageDao {
     int countInsta(long user_id, long sns_type_id);
 
     int countNaver(long user_id, long sns_type_id);
+
+    int summarySyncSite(SyncSiteDto syncSiteDto);
 }
 
 
