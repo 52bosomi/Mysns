@@ -1,6 +1,9 @@
 package com.app.mysns.service;
 
 import com.app.mysns.dto.ClientDto;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -27,7 +30,7 @@ public class MailService {
     private SecureUtilsService secureUtilsService;
     RedisTemplate<String, String> redisTemplate;
 
-    // private final Logger logger = LoggerFactory.getLogger(authController.class);
+    private final Logger logger = LoggerFactory.getLogger(MailService.class);
 
     public MailService(JavaMailSender mailSender, TemplateEngine htmlTemplateEngine, RedisTemplate<String, String> redisTemplate, SecureUtilsService secureUtilsService) {
         this.mailSender = mailSender;
@@ -74,11 +77,11 @@ public class MailService {
 
             // 슝슝 전송~
             mailSender.send(mimeMessage);
+            logger.info("send to email!!!");
 
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage()+"\n\n"+e.getStackTrace());
-            // TODO : 로깅 남겨야 함
+            logger.error(e.getMessage()+"\n\n");
             return false;
         }
     }
