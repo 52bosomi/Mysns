@@ -125,7 +125,18 @@ async function Run()
                 // if(Object.keys(webMsg.data).length = Object.keys(webData).length)
                 // {
                 //     webData = Object.assign(webMsg.data);
-                //     scrapingData = await DockerComm();
+
+                //     /* Setting the snsFlag object */
+                //     for (var i=0; i<Object.keys(snsFlag).length; i++)
+                //     {   
+                //         if(webData.type == Object.keys(snsFlag)[i])
+                //         {
+                //             snsFlag[Object.keys(snsFlag)[i]] = 1;
+                //         }
+                //     }
+                    
+                //     let scrapingData = await MainLoop(webData);
+                //     // console.log(scrapingData);
                 //     await ResponseProcess(scrapingData);
                 //     console.log(webData);
                 // }
@@ -134,7 +145,8 @@ async function Run()
                 //     await ErrorProcesss("data length not match");
                 //     console.log(webData);
                 // }
-    
+                
+                /* temp code */
                 if((Object.keys(sample_data).length) == (Object.keys(webData).length))
                 {   
                     webData = Object.assign(sample_data);
@@ -152,6 +164,9 @@ async function Run()
                     // console.log(scrapingData);
                     await ResponseProcess(scrapingData);
                     console.log(webData);
+                    
+                    /* socket send */
+                    await socketWeb.send(webData);
                 }
                 else
                 {
