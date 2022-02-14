@@ -1,7 +1,10 @@
 package com.app.mysns.service;
 
 import com.app.mysns.dto.ClientDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -12,21 +15,25 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.context.Context;
 import java.text.MessageFormat;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class MailService {
 
 
     private static final String PHODO_IMAGE = "templates/static/images/phodo.jpg";
-
     private final JavaMailSender mailSender;
     private final TemplateEngine htmlTemplateEngine;
+    private SecureUtilsService secureUtilsService;
+    RedisTemplate<String, String> redisTemplate;
 
     // private final Logger logger = LoggerFactory.getLogger(authController.class);
 
-    public MailService(JavaMailSender mailSender, TemplateEngine htmlTemplateEngine) {
+    public MailService(JavaMailSender mailSender, TemplateEngine htmlTemplateEngine, RedisTemplate<String, String> redisTemplate, SecureUtilsService secureUtilsService) {
         this.mailSender = mailSender;
         this.htmlTemplateEngine = htmlTemplateEngine;
+        this.redisTemplate = redisTemplate;
+        this.secureUtilsService = secureUtilsService;
     }
 
     //인증 메일 발송
@@ -49,7 +56,14 @@ public class MailService {
             String domain =  System.getenv("DOMAIN");
             if(domain == null) { domain = "localhost:8888"; }
 
-            String url = MessageFormat.format("http://{0}/auth/email/check?username={1}", domain, username );
+            ValueOperations<String, String> vop = redisTemplate.opsForValue();
+
+            String uuid = secureUtilsService.generateType1UUID().toString();
+
+            vop.set(uuid, username); // 인증시 검증
+            redisTemplate.expire(uuid, 5, TimeUnit.MINUTES);
+
+            String url = MessageFormat.format("http://{0}/auth/email/check?username={1}&token={2}", domain, username, uuid);
 
             ctx.setVariable("url", url);
             email.setText(this.htmlTemplateEngine.process("email/signup.html", ctx), true);
@@ -63,6 +77,7 @@ public class MailService {
 
             return true;
         } catch (Exception e) {
+            System.out.println(e.getMessage()+"\n\n"+e.getStackTrace());
             // TODO : 로깅 남겨야 함
             return false;
         }

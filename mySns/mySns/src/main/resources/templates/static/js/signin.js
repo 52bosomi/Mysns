@@ -30,7 +30,7 @@ function login() {
       }
 
       alert(x.data)
-      location.href = '/welcome'
+      location.href = '/welcome?user_id='+username
     },// 요청 완료 시
     error:function(x) {
       console.log('failed', x)

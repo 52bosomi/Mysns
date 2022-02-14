@@ -42,6 +42,13 @@ public class GlobalFilter implements Filter  {
                 return;
             }
 
+            // sms or kakao 예외
+            // 어뷰징이 될 수 있음
+            if(requestURI.startsWith("/sms") || requestURI.startsWith("/kakao")) {
+                chain.doFilter(request, response);
+                return;
+            }
+
             // 정적 파일은 예외
             if(requestURI.startsWith("/static")) {
                 chain.doFilter(request, response);
@@ -55,13 +62,13 @@ public class GlobalFilter implements Filter  {
             }
 
             if(requiredAuthentication(requestURI)) {
-                System.out.println("로그인 필요 없는 페이지 : " + requestURI);    
+                // System.out.println("로그인 필요 없는 페이지 : " + requestURI);    
                 chain.doFilter(request, response);
                 return;
             }
 
-            System.out.println("인증 필터 시작 : " + requestURI);
-            System.out.println("로그인 여부 확인 필요 : " + requestURI);
+            // System.out.println("인증 필터 시작 : " + requestURI);
+            // System.out.println("로그인 여부 확인 필요 : " + requestURI);
 
             // 쿠키 삭제 여부 검증
             // Cookie[] cookies = httpRequest.getCookies();
@@ -97,7 +104,7 @@ public class GlobalFilter implements Filter  {
                         // 길이가 다르면 이 쿠키는 믿으면 안됨
                         // 쿠키 초기화
                         Cookie cookie = new Cookie("mysns_uuid", null);
-                        cookie.setMaxAge(0);
+                        cookie.setMaxAge(-1);
                         cookie.setSecure(true);
                         cookie.setHttpOnly(true);
                         cookie.setPath("/");
@@ -117,8 +124,8 @@ public class GlobalFilter implements Filter  {
         } catch (Exception e) {
             throw e;
         } finally {
-            System.out.println("인증 필터 종료 : " + requestURI);
-            System.out.println("=========================================" );
+            // System.out.println("인증 필터 종료 : " + requestURI);
+            // System.out.println("=========================================" );
         }
 
     }

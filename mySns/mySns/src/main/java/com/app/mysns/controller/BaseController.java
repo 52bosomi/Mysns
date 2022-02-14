@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
 import java.util.ArrayList;
 
 @Controller
@@ -54,16 +57,32 @@ public class BaseController {
 
     // 기본 보여주는 페이지
     @RequestMapping("/welcome")
-    public String welcome(){
+    public ModelAndView welcome(@RequestParam String user_id){
         System.out.println("welcome init");
-        return "welcome";
+        ClientDto userIdx = service.findUser(user_id);
+        long user = userIdx.getIdx();
+        long sns_type_id = 0;
+        int facebook = service.countFacebook(user,sns_type_id);
+        int google = service.countGoogle(user,sns_type_id);
+        int insta = service.countInsta(user,sns_type_id);
+        int naver = service.countNaver(user,sns_type_id);
+        System.out.println("페이스북 : "+facebook+"/"+google+"/"+insta+"/"+naver);
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("facebook",facebook);
+        mav.addObject("google",google);
+        mav.addObject("insta",insta);
+        mav.addObject("naver",naver);
+
+        mav.setViewName("welcome");
+
+        return mav;
     }
 
     // 기본 보여주는 페이지
     @RequestMapping("/about")
     public String about(){
         System.out.println("about init");
-        return "about";
+        return "about_sample";
     }
 
     // 기본 보여주는 페이지
@@ -74,9 +93,9 @@ public class BaseController {
     }
 
     // 기본 보여주는 페이지
-    @RequestMapping("/connect")
-    public String connect(){
-        System.out.println("connect init");
-        return "connect";
-    }
+    // @RequestMapping("/connect")
+    // public String connect(){
+    //     System.out.println("connect init");
+    //     return "connect";
+    // }
 }

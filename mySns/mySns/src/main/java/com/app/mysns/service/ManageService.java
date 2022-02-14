@@ -2,13 +2,10 @@ package com.app.mysns.service;
 
 import com.app.mysns.dao.ManageDao;
 import com.app.mysns.dto.ClientDto;
-import com.app.mysns.dto.SnsTypeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 @Service
 public class ManageService {
@@ -20,6 +17,25 @@ public class ManageService {
     public ArrayList<ClientDto> ListClient() {
         return dao.ListClient();
     }
+
+    public ClientDto findUser(String username) {return dao.findUser(username);}
+
+    public int countFacebook(long user, long sns_type_id) {
+        sns_type_id =1;
+        return dao.countFacebook(user,sns_type_id);}
+
+    public int countGoogle(long user, long sns_type_id) {
+        sns_type_id =2;
+        return dao.countGoogle(user,sns_type_id);}
+
+    public int countInsta(long user, long sns_type_id) {
+        sns_type_id =3;
+        return dao.countInsta(user, sns_type_id);}
+
+    public int countNaver(long user, long sns_type_id) {
+        sns_type_id =4;
+        return dao.countNaver(user,sns_type_id);}
+
 
     // // 사용자 생성
     // public void mailAccept(String username) {

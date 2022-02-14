@@ -1,8 +1,11 @@
 package com.app.mysns.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
@@ -16,11 +19,13 @@ import com.app.mysns.service.AuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.TemplateEngine;
@@ -32,17 +37,16 @@ public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private static int ttl = 10 * 60 * 1000; // 유효 시간 10분 뒤 만료
 
-    @Autowired
     private MailService mailService;
-    @Autowired
     private AuthService authService;
-    @Autowired
     private SecureUtilsService secureUtilsService;
+    RedisTemplate<String, String> redisTemplate;
 
-    public AuthController(TemplateEngine htmlTemplateEngine, MailService mailService, SecureUtilsService secureUtilsService, AuthService authService) {
+    public AuthController(TemplateEngine htmlTemplateEngine, MailService mailService, SecureUtilsService secureUtilsService, AuthService authService, RedisTemplate<String, String> redisTemplate) {
         this.mailService = mailService;
         this.secureUtilsService = secureUtilsService;
         this.authService = authService;
+        this.redisTemplate = redisTemplate;
     }
 
     @PostMapping("/email/signup")
@@ -91,7 +95,7 @@ public class AuthController {
         if(!isLoginSuccess) {
             return new ResponseEntity<>(new Restful().Error("Login failed"), HttpStatus.OK);
         }
-        
+
         // 필요시 나중에 시간 검증용
         Instant instant = Instant.now();
         long timeStampSeconds = instant.getEpochSecond();
@@ -105,13 +109,13 @@ public class AuthController {
 
         System.out.println("쿠키 토큰 UUID : " + uuid);
         Cookie cookie = new Cookie("mysns_uuid", uuid);
-        
+
         System.out.println("쿠키 : " + cookie);
 
         cookie.setComment("mysns auth code for login");
         // 글로벌
-        cookie.setPath("/"); 
-        // 유효시간: 30분
+        cookie.setPath("/");
+        // 유효시간: 10분
         cookie.setMaxAge(ttl);
         response.addCookie(cookie);
         System.out.println("client redirect to welcome");
@@ -134,15 +138,15 @@ public class AuthController {
                     c.setValue(null);
                     c.setSecure(true);
                     c.setHttpOnly(true);
-                    c.setMaxAge(0); // 유효시간을 0으로 설정
+                    c.setMaxAge(-1); // 유효시간을 0으로 설정
                     c.setPath("/");
                 }
             }
         }
-        
+
         // 쿠키 삭제
         Cookie cookie = new Cookie("mysns_uuid", null);
-        cookie.setMaxAge(0);
+        cookie.setMaxAge(-1);
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
@@ -171,16 +175,41 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/email/check" , method = RequestMethod.GET)
-    public ModelAndView emailCheck(@RequestParam(required = false) String username) {
+    public ModelAndView emailCheck(@RequestParam(required = false) String username,
+                                   @RequestParam(required = false) String token,
+                                   HttpServletResponse response) throws IOException {
         ModelAndView rv = new ModelAndView();
+        
+        if(token == null || token.length() < 1) { return null; }
 
-        System.out.println("사용자 이메일 : "+username);
-        System.out.println("client redirect to email");
+        System.out.println("사용자 이메일 : " + username);
+        System.out.println("사용자 token : " + token);
 
-        rv.addObject("username", username);
-        rv.addObject("isAuth", true);
-        rv.setViewName("signup");
-        return rv;
+        ValueOperations<String, String> vop = redisTemplate.opsForValue();
+        String result = "";
+        try { 
+            result = (String)vop.get(token);
+            // redisTemplate.delete(token);
+            // vop.get(token).delete();
+        } catch (Exception e) {}
+
+        System.out.println("메모리 email : " + result);
+
+        //이메일 토큰 사용가능 또는 만료상태로 분기
+        if(username.equals(result)) {
+            rv.addObject("username", username);
+            rv.addObject("isAuth", true);
+            rv.setViewName("signup");
+
+            return rv;
+        }
+
+        response.setContentType("text/html; charset=euc-kr");
+        PrintWriter out = response.getWriter();
+        out.println("<script>alert('이메일 유효시간이 만료되었습니다. 다시 시도해주세요.');location.href='/auth/signup'; </script>");
+        out.flush();
+
+        return null;
     }
 
     @RequestMapping(value = "/email/join" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -197,12 +226,18 @@ public class AuthController {
         if(authService.checkDuplicate(client.getUsername()) != null) {
             return new ResponseEntity<>(new Restful().Error("Exising user"), HttpStatus.BAD_REQUEST);
         }
-        
+
+        // 회원 가입 성공 후, redis 정보 삭제
+        try { 
+            redisTemplate.delete(client.getToken());
+        } catch (Exception e) {}
+
         // 회원가입성공 여부 리턴
         if(authService.emailJoin(client)) {
             // 생성된 패스워드는 초기화
             return new ResponseEntity<>(new Restful().Data("Create Sucessful"), HttpStatus.OK);
         }
+
         return new ResponseEntity<>(new Restful().Error("create user failed"), HttpStatus.BAD_REQUEST);
     }
 }

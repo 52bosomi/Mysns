@@ -15,6 +15,7 @@ public class ClientDto {
     private String phone;
     private Timestamp updated_at;
     private Timestamp created_at;
+    private String token;
 
     // public ClientDto(String username, String password, String name, String phone) {
     //     this.username = username;
@@ -66,5 +67,11 @@ public class ClientDto {
     public void setCreated_at(Timestamp created_at) {
         this.created_at = created_at;
     }
-}
 
+    public String getToken() {
+        return token;
+    }
+    public void setToken(String token) {
+        this.token = token;
+    }
+}
