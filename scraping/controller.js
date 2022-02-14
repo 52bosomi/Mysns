@@ -38,7 +38,8 @@ async function WebComm()
 {
     try
     {
-        var socketWeb = await new SockJS("http://mysns.info/ws", null, { transports: ["websocket", "xhr-streaming", "xhr-polling"]});
+        // var socketWeb = await new SockJS("http://mysns.info/ws", null, { transports: ["websocket", "xhr-streaming", "xhr-polling"]});
+        var socketWeb = await new SockJS("http://localhost:8888/ws", null, { transports: ["websocket", "xhr-streaming", "xhr-polling"]});
 
         // socketWeb.onmessage = onMessage;
         socketWeb.onopen = async (req) => {
