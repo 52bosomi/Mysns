@@ -1,9 +1,9 @@
 package com.app.mysns.controller;
 
 
-import org.apache.ibatis.mapping.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,18 +34,13 @@ import java.util.ArrayList;
  */
 @RestController
 public class SMSController {
-    @Value("${spring.nurigo.api}")
-    private String api;
-    @Value("${spring.nurigo.secret}")
-    private String secret;
-
-    private final DefaultMessageService messageService;
+    private DefaultMessageService messageService;
 
     /**
      * 발급받은 API KEY와 API Secret Key를 사용해주세요.
      */
-    public SMSController() {
-        this.messageService = NurigoApp.INSTANCE.initialize(api, secret, "https://api.solapi.com");
+    public SMSController(Environment env) {
+        this.messageService = NurigoApp.INSTANCE.initialize(env.getProperty("spring.nurigo.api"), env.getProperty("spring.nurigo.secret"), "https://api.solapi.com");
     }
 
     /**
@@ -64,8 +59,8 @@ public class SMSController {
     @PostMapping("/sms/send-one")
     public SingleMessageSentResponse sendOne() {
         Message message = new Message();
-        message.setFrom("029302266");
-        message.setTo("01000000000");
+        message.setFrom("01084956428");
+        message.setTo("01097596428");
         message.setText("한글 45자, 영자 90자 이하 입력되면 자동으로 SMS타입의 메시지가 추가됩니다.");
 
         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));

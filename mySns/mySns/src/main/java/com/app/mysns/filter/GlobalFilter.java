@@ -42,6 +42,12 @@ public class GlobalFilter implements Filter  {
                 return;
             }
 
+            // sms or kakao 예외
+            if(requestURI.startsWith("/sms")) {
+                chain.doFilter(request, response);
+                return;
+            }
+
             // 정적 파일은 예외
             if(requestURI.startsWith("/static")) {
                 chain.doFilter(request, response);
