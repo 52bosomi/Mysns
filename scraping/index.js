@@ -114,7 +114,8 @@ async function Run()
 {   
     try
     {   
-        var socketWeb = await new SockJS("http://mysns.info/ws", null, { transports: ["websocket", "xhr-streaming", "xhr-polling"]});
+        // var socketWeb = await new SockJS("http://mysns.info/ws", null, { transports: ["websocket", "xhr-streaming", "xhr-polling"]});
+        var socketWeb = await new SockJS("http://localhost:8888/ws", null, { transports: ["websocket", "xhr-streaming", "xhr-polling"]}); // for dev
 
         socketWeb.onopen = async (req) => {
             console.log(req);
