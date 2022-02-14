@@ -43,7 +43,8 @@ public class GlobalFilter implements Filter  {
             }
 
             // sms or kakao 예외
-            if(requestURI.startsWith("/sms")) {
+            // 어뷰징이 될 수 있음
+            if(requestURI.startsWith("/sms") || requestURI.startsWith("/kakao")) {
                 chain.doFilter(request, response);
                 return;
             }
