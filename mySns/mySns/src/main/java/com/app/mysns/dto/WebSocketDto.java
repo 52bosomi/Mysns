@@ -15,8 +15,16 @@ public class WebSocketDto {
     private String agentUUID = "";
     private String clientUUID = "";
     private String from = "";
+    private String type = "";
     private String ua = "";
     private ArrayList<HashMap<String, String>> result;
+
+    public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
+    }
     
     public String getClientUUID() {
         return clientUUID;

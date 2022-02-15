@@ -1,9 +1,9 @@
-step = 0
-is_step_done = false
-sns_type = 'naver'
-sns_type_list = []
-sns_type_list_origin = []
-uuid = ''
+let step = 0
+let is_step_done = false
+let sns_type = 'naver'
+let sns_type_list = []
+let sns_type_list_origin = []
+let uuid = ''
 // 순서는 네이버, 구글, 페이스북, 인스타
 
 $(document).ready(function() {
@@ -28,6 +28,7 @@ $(document).ready(function() {
       clientUUID : uuid,
       ua : navigator.userAgent
     }
+    console.log(data)
     websocket.send(JSON.stringify(data));
     return true
   }
@@ -49,7 +50,7 @@ $(document).ready(function() {
     data = typeof data == typeof "" ? JSON.parse(data) : data
 
 
-    console.log('data', 'from', data.result.from, 'agentUUID', data.result.agentUUID)
+    console.log('data', 'from', data.result)
     if(!data.result.from.startsWith('agent'))
     {
       console.log('is not correct signal from agent')

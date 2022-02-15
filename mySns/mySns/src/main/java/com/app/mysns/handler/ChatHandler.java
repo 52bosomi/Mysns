@@ -60,7 +60,9 @@ public class ChatHandler extends TextWebSocketHandler {
                     clientList.remove(key);
                     agentList.put(data.getAgentUUID(), session);
                     agentStatus.put(data.getAgentUUID(), false); // 스크래핑 가능
-                    
+                    TextMessage msg = new TextMessage("{ \"cmd\" : \"upgrade\", \"from\" : \"server\" }".getBytes());
+                    session.sendMessage(msg);
+                    logger.info("send to agent about successful agent upgraded");
                     break;
                 }
             }
@@ -91,7 +93,7 @@ public class ChatHandler extends TextWebSocketHandler {
                 for (String key : clientList.keySet().stream().collect(Collectors.toList())) {
 
                     if(key.equals(data.getClientUUID())) { 
-                        TextMessage msg = new TextMessage(MessageFormat.format("'{' \"result\" : {0} '}'", data.ToJson()).getBytes());
+                        TextMessage msg = new TextMessage(MessageFormat.format("'{' \"result\" : {0} '}'", data.ToJson()).getBytes("EUC_KR"));
                         clientList.get(key).sendMessage(msg);
                         break;
                     }
