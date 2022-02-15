@@ -1,4 +1,6 @@
-FROM ubuntu:18.04
+# FROM ubuntu:18.04
+ubuntu:18.04
+FROM harbor.dndev.pw:4443/mysns/springboot
 
 # MAINTANER mysns
 RUN apt-get update -y && \
