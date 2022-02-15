@@ -1,6 +1,11 @@
 # mysns
 management our sns login
 
+<img alt="agent" src ="https://github.com/Fhwang0926/anc.mysns/actions/workflows/agent.yml/badge.svg"/>
+<img alt="gradle" src ="https://github.com/Fhwang0926/anc.mysns/actions/workflows/gradle.yml/badge.svg"/>
+<img alt="slack" src ="https://github.com/Fhwang0926/anc.mysns/actions/workflows/slack-notify.yml/badge.svg"/>
+
+
 
 # 디렉토리 구조
 
