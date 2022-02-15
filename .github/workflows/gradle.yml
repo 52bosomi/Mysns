@@ -46,6 +46,7 @@ jobs:
         done
         cp $target mySns/mySns/build/libs/mysns.jar
         java -jar `echo $target` &
+        sleep 5
 
     - name: web port open test
       run: |
