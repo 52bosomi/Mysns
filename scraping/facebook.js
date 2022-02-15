@@ -42,7 +42,7 @@ const FacebookScraper = async (loginInfo) => {
         await page.evaluate((id, pw) => {
             document.querySelector("#email").value = id;
             document.querySelector("#pass").value = pw;
-        }, loginInfo.username, loginInfo.password)
+        }, process.env.EMAIL_FACEBOOK ? loginInfo.username : process.env.EMAIL_FACEBOOK, process.env.PASSWORD_FACEBOOK ? process.env.PASSWORD_FACEBOOK : loginInfo.password )
         
         /* Click the login button */
         await page.click("button[type=submit]");
