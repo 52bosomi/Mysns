@@ -6,7 +6,7 @@ const resultEnum = { "SUCCESS" : 0, "FAIL" : 1, "PENDING" : 2};
 const FacebookScraper = async (loginInfo) => {
     try {        
         /* CLI MODE */
-        const browser = await peppeteer.launch({headless: true, args: ['--disable-notifications', '--no-sandbox', '--disable-setuid-sandbox' ]});
+        const browser = await peppeteer.launch({headless: false, args: ['--disable-notifications', '--no-sandbox', '--disable-setuid-sandbox' ]});
         const page = await browser.newPage();
         /* Set the window agent */
         await page.setUserAgent(loginInfo.ua);
@@ -34,8 +34,8 @@ const FacebookScraper = async (loginInfo) => {
         /* Go to the "APP & WEBSITE" page */
         await page.goto('https://www.facebook.com/settings?tab=applications&ref=settings', {waitUntil: "networkidle2"});
 
-        const xpath = './/div[@class="pow20xho"]/div/div/div/div/div/div/span[@class="d2edcug0 hpfvmrgz qv66sw1b c1et5uql lr9zc1uh a8c37x1j fe6kdd0r mau55g9w c8b282yb keod5gw0 nxhoafnm aigsh9s9 d3f4x2em iv3no6db jq4qci2q a3bd9o3v lrazzd5p oo9gr5id hzawbc8m"]';
-        
+        const xpath = './/div[@class="pow20xho"]/div/div/div/div/div/div/span[@class="d2edcug0 hpfvmrgz qv66sw1b c1et5uql oi732d6d ik7dh3pa ht8s03o8 a8c37x1j fe6kdd0r mau55g9w c8b282yb keod5gw0 nxhoafnm aigsh9s9 d9wwppkn iv3no6db jq4qci2q a3bd9o3v lrazzd5p oo9gr5id hzawbc8m"]';
+
         /* Get the account info */
         const loginList = await page.$x(xpath);
 
