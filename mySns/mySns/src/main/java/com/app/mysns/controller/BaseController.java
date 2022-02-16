@@ -1,6 +1,7 @@
 package com.app.mysns.controller;
 
 import com.app.mysns.dto.ClientDto;
+import com.app.mysns.dto.SyncSiteDto;
 import com.app.mysns.service.ManageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/") // base is start with root(/)
@@ -21,49 +23,42 @@ public class BaseController {
 
     @RequestMapping("/")
     public String index(Model model){
-        // TODO : 로그인시 인증 여부 검증 필요
-        // boolean isAuth = false;
-        // if(isAuth) {  }
-        // return "index";
         return "redirect:/auth/login";
     }
 
     @RequestMapping("/login")
     public String login(Model model){
-        // TODO : 로그인시 인증 여부 검증 필요
-        // boolean isAuth = false;
-        // if(isAuth) {  }
-        // return "index";
         return "redirect:/auth/login";
     }
 
-
-    @RequestMapping("/db")
-    public void dbTest(Model model){
-        System.out.println("DB 테스트");
-        ArrayList<ClientDto> result =  service.ListClient();
-        logger.info("db 접속"+result);
-    }
-
-    @RequestMapping("/mailLogin")
-    public String mailLogin(Model model){
-        System.out.println("mailLogin 테스트");
-        return "signup";
-    }
-
-
     // 기본 보여주는 페이지
     @RequestMapping("/welcome")
-    public String welcome(){
+    public ModelAndView welcome(@RequestParam String user_id){
         System.out.println("welcome init");
-        return "welcome";
+        ClientDto clientdto = service.findUser(user_id);
+        int facebook = service.summarySyncSite(new SyncSiteDto(clientdto.getIdx(), 1));
+        int google = service.summarySyncSite(new SyncSiteDto(clientdto.getIdx(), 2));
+        int insta = service.summarySyncSite(new SyncSiteDto(clientdto.getIdx(), 3));
+        int naver = service.summarySyncSite(new SyncSiteDto(clientdto.getIdx(), 4));
+
+        logger.info("페이스북 : " + facebook + "/" + google + "/" + insta + "/" + naver);
+
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("facebook",facebook);
+        mav.addObject("google",google);
+        mav.addObject("insta",insta);
+        mav.addObject("naver",naver);
+
+        mav.setViewName("welcome");
+
+        return mav;
     }
 
     // 기본 보여주는 페이지
     @RequestMapping("/about")
     public String about(){
         System.out.println("about init");
-        return "about";
+        return "about_sample";
     }
 
     // 기본 보여주는 페이지
@@ -74,9 +69,9 @@ public class BaseController {
     }
 
     // 기본 보여주는 페이지
-    @RequestMapping("/connect")
-    public String connect(){
-        System.out.println("connect init");
-        return "connect";
-    }
+    // @RequestMapping("/connect")
+    // public String connect(){
+    //     System.out.println("connect init");
+    //     return "connect";
+    // }
 }

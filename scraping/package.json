@@ -8,6 +8,7 @@
     "axios": "^0.25.0",
     "chrome-launcher": "^0.15.0",
     "delay": "^5.0.0",
+    "dotenv": "^16.0.0",
     "process": "^0.11.10",
     "puppeteer": "^13.1.0",
     "puppeteer-core": "^13.1.0",
@@ -16,6 +17,7 @@
     "puppeteer-extra-plugin-stealth": "^2.9.0",
     "socket.io-client": "^4.4.1",
     "sockjs-client": "^1.5.2",
+    "uuid": "^8.3.2",
     "websocket": "^1.0.34",
     "xvfb": "^0.4.0"
   },

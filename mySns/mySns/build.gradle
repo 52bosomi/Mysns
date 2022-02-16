@@ -49,9 +49,30 @@ dependencies {
 	// 구글 존나 사랑함!!!!
 	compile group: 'com.google.code.gson', name: 'gson', version: '2.8.2'
 
-	// 내장 redis  사용
-	// compile 'org.springframework.boot:spring-boot-starter-data-redis:2.3.1.RELEASE'
+	// redis  사용
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+	compile group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.3'
+	// implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2'
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.0")
+	implementation("commons-codec:commons-codec:1.15")
+	implementation("org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.3.1")
+
+	implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.3"))
+
+	implementation("com.squareup.okhttp3:okhttp")
+	implementation("com.squareup.okhttp3:logging-interceptor")
+
+	implementation("com.squareup.retrofit2:retrofit:2.9.0")
+	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
+	implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
+
+	// dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.6.0")
+	// dokkaHtmlPlugin("org.jetbrains.dokka:javadoc-plugin:1.6.0")
+	implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.0")
+	// implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.5.0")
+
+	compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 test {

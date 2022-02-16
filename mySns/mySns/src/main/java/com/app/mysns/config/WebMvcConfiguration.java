@@ -23,7 +23,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/static/css/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/css/");
         registry.addResourceHandler("/static/js/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/js/");
         registry.addResourceHandler("/static/vendor/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/vendor/");
-        registry.addResourceHandler("/favicon.ico").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/images/icons/phodo.ico");
+        registry.addResourceHandler("/favicon.ico").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS+"static/images/icons/favicon.ico");
         // registry.addResourceHandler("/*.html").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
     }
 

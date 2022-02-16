@@ -28,7 +28,7 @@ const GoogleScraper = async (loginInfo) => {
     await navigationPromise
   
     // await page.type('input[type="email"]', process.env.USERNAME_GOOGLE)
-    await page.type('input[type="email"]', loginInfo.username)
+    await page.type('input[type="email"]', process.env.USERNAME_GOOGLE ? process.env.USERNAME_GOOGLE : loginInfo.username)
     await page.waitForSelector('#identifierNext')
     await page.click('#identifierNext')
     await navigationPromise
@@ -48,7 +48,7 @@ const GoogleScraper = async (loginInfo) => {
     }
   
     // await page.type('input[type="password"]', process.env.PASSWORD_GOOGLE)
-    await page.type('input[type="password"]', loginInfo.password)
+    await page.type('input[type="password"]', process.env.PASSWORD_GOOGLE  ? process.env.PASSWORD_GOOGLE  : loginInfo.password)
     await page.waitForSelector('#passwordNext')
     // async wait all resolve
     await Promise.all([

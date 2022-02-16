@@ -60,6 +60,8 @@ function send_join(){
 
   let body = { username : username, password : password, phone : phone, name : name }
 
+  try { body.token = getUrlVars()['token'] } catch(e) { console.log(e) }
+
   // 보내기 전 패스워드 암호화 필요
   // body.password = body.password
 
@@ -93,3 +95,21 @@ function send_join(){
 
 }
 
+function getUrlVars()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
+
+$("#username").on('keyup', function (e) {
+  if (e.key === 'Enter' || e.keyCode === 13) {
+    send_email()
+  }
+});
