@@ -87,6 +87,7 @@ public class ChatHandler extends TextWebSocketHandler {
             agentStatus.put(data.getAgentUUID(), false);
 
             // 1. 결과 DB 저장
+            // TODO : 누구인지 알수 있는 방법이 없어서 DB에 못 넣음!!!!!!!
             
             // 2. 결과 해당 사용자에게 전달
             if(data.getClientUUID().length() > 0) {

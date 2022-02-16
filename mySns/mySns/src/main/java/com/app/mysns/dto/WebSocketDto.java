@@ -7,6 +7,7 @@ import java.util.HashMap;
 import com.google.gson.Gson;
 
 public class WebSocketDto {
+    private Long userId;
     private String username = "";
     private String password = "";
     private String cmd = "";
@@ -18,6 +19,13 @@ public class WebSocketDto {
     private String type = "";
     private String ua = "";
     private ArrayList<HashMap<String, String>> result;
+
+    public Long getUserId() {
+        return userId;
+    }
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getType() {
         return type;

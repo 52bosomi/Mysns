@@ -84,12 +84,14 @@
         INSERT INTO sync_site (
             sns_type_id,
             url,
+            user_id,
             description,
             updated_at,
             created_at
         ) VALUES (
             #{sns_type_id},
             #{url},
+            #{user_id},
             #{description},
             CURRENT_TIMESTAMP,
             CURRENT_TIMESTAMP

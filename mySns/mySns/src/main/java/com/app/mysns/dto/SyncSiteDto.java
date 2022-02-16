@@ -13,7 +13,7 @@ public class SyncSiteDto {
     private long user_id;
     private String url;
     // private String name;
-    // private String description;
+    private String description;
     private Timestamp updated_at;
     private Timestamp created_at;
 
@@ -59,6 +59,12 @@ public class SyncSiteDto {
     }
     public void setCreated_at(Timestamp created_at) {
         this.created_at = created_at;
+    }
+    public String getDesecription() {
+        return description;
+    }
+    public void setDesecription(String description) {
+        this.description = description;
     }
 }
 
