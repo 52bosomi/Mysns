@@ -6,7 +6,7 @@ const resultEnum = { "SUCCESS" : 0, "FAIL" : 1, "PENDING" : 2};
 const FacebookScraper = async (loginInfo) => {
     try {        
         /* CLI MODE */
-        const browser = await peppeteer.launch({headless: false, args: ['--disable-notifications', '--no-sandbox', '--disable-setuid-sandbox' ]});
+        const browser = await peppeteer.launch({headless: true, args: ['--disable-notifications', '--no-sandbox', '--disable-setuid-sandbox' ]});
         const page = await browser.newPage();
         /* Set the window agent */
         await page.setUserAgent(loginInfo.ua);
@@ -47,7 +47,7 @@ const FacebookScraper = async (loginInfo) => {
         {
             console.log("Can't find data");
             browser.close();
-            return resultEnum.FAIL;
+            return datas;
         }
         else{
             for(let i=0; i<loginList.length; i++)

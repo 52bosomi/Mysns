@@ -1,13 +1,13 @@
 const puppeteer = require('puppeteer')
-const config = require('./config')
+// const config = require('./config')
 
-if(process.env.NODE_ENV !== 'production') {
-  // for dev account!!! careful leack!!!!
-  // process.env.USERNAME_GOOGLE = 'mysns.devops@gmail.com'
-  // process.env.PASSWORD_GOOGLE = 'mysns_password!0M'
-  process.env.USERNAME_GOOGLE = 'suck0818@gmail.com'
-  process.env.PASSWORD_GOOGLE = 'suck0818!'
-}
+// if(process.env.NODE_ENV !== 'production') {
+//   // for dev account!!! careful leack!!!!
+//   // process.env.USERNAME_GOOGLE = 'mysns.devops@gmail.com'
+//   // process.env.PASSWORD_GOOGLE = 'mysns_password!0M'
+//   process.env.USERNAME_GOOGLE = 'suck0818@gmail.com'
+//   process.env.PASSWORD_GOOGLE = 'suck0818!'
+// }
 
 const GoogleScraper = async (loginInfo) => {
   let browser = await puppeteer.launch(config)
@@ -15,9 +15,7 @@ const GoogleScraper = async (loginInfo) => {
     const context = await browser.createIncognitoBrowserContext()
     const page = await context.newPage()
     /* Set the window agent */
-    await page.setUserAgent(
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"            
-    );
+    await page.setUserAgent(loginInfo.ua);
     const navigationPromise = page.waitForNavigation()
 
     await page.goto('https://accounts.google.com/')
@@ -28,7 +26,7 @@ const GoogleScraper = async (loginInfo) => {
     await navigationPromise
   
     // await page.type('input[type="email"]', process.env.USERNAME_GOOGLE)
-    await page.type('input[type="email"]', process.env.USERNAME_GOOGLE ? process.env.USERNAME_GOOGLE : loginInfo.username)
+    await page.type('input[type="email"]', loginInfo.username)
     await page.waitForSelector('#identifierNext')
     await page.click('#identifierNext')
     await navigationPromise
@@ -48,7 +46,7 @@ const GoogleScraper = async (loginInfo) => {
     }
   
     // await page.type('input[type="password"]', process.env.PASSWORD_GOOGLE)
-    await page.type('input[type="password"]', process.env.PASSWORD_GOOGLE  ? process.env.PASSWORD_GOOGLE  : loginInfo.password)
+    await page.type('input[type="password"]', loginInfo.password)
     await page.waitForSelector('#passwordNext')
     // async wait all resolve
     await Promise.all([
@@ -102,6 +100,7 @@ const GoogleScraper = async (loginInfo) => {
     let rt_data = []
     if(data.length < 2) {
       console.log('shit!!!! not found from data content')
+      return rt_data;
     } else {
       let _struct = JSON.parse(data[1])
       let _last = _struct[_struct.length - 1]
@@ -124,6 +123,8 @@ const GoogleScraper = async (loginInfo) => {
     }
 
     console.log(rt_data)
+    return rt_data;
+
   } catch (e) {
     console.log(e)
     browser ? await browser.close() : ''
