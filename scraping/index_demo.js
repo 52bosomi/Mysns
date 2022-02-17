@@ -2,6 +2,13 @@ const objFacebook = require("./facebook");
 const objGoogle = require("./google");
 const SockJS = require('sockjs-client');
 
+const resultEnum = {    "SUCCESS" : 0, 
+                        "FAIL" : 1, 
+                        "PENDING" : 2, 
+                        "SCRP_FAIL" : 3, 
+                        "USERNAME_ERR": 4,
+                        "PASSWORD_ERR": 5,
+                    };
 
 // info
 let UUID = "01ec8ce7-97b0-1726-b4ea-5c8c36567748" // 나중에 환경 변수로 읽어 올 예정
@@ -40,21 +47,15 @@ let webData = {
     ua: ""
   };
 
-const resultEnum = { "SUCCESS" : 0, "FAIL" : 1, "PENDING" : 2, "SCRP_FAIL" : 3};
 
 /* Execute each scrapping method according to "snsFlag" */
 async function MainLoop(loginInfo)
 {   
     try{
+        let scrapingResult;
         console.log(loginInfo.type + " scraper is runing...");
 
         const res = await Scraper(loginInfo.type, loginInfo);
-        if (res != resultEnum.FAIL) {   
-            console.log(loginInfo.type + "scraper finished successfuly");    
-        } else {
-            console.log(loginInfo.type + "scraper fail");
-            return resultEnum.SCRP_FAIL;
-        }
         console.log(loginInfo.type + "scraper is end...");
         return res;
     }
@@ -122,10 +123,14 @@ async function Run()
                     scrapingData = await MainLoop(webMsg);
                     if(scrapingData == resultEnum.SCRP_FAIL)
                     {
-                        response = Object.assign({}, webMsg, { result : "scraping fail", from : 'agent', cmd : 'result', agentUUID : UUID, isError: true });
-                    }
-                    else
-                    {
+                        response = Object.assign({}, webMsg, { result : "Scraping fail", from : 'agent', cmd : 'result', agentUUID : UUID, isError: true });
+                    } else if (scrapingData == resultEnum.USERNAME_ERR) {
+                        response = Object.assign({}, webMsg, { result : "Username wrong", from : 'agent', cmd : 'result', agentUUID : UUID, isError: true });
+                    } else if (scrapingData == resultEnum.PASSWORD_ERR) {
+                        response = Object.assign({}, webMsg, { result : "Password wrong", from : 'agent', cmd : 'result', agentUUID : UUID, isError: true });
+                    } else if (scrapingData == resultEnum.FAIL) {
+                        response = Object.assign({}, webMsg, { result : "sns type error", from : 'agent', cmd : 'result', agentUUID : UUID, isError: true });
+                    } else {
                         response = Object.assign({}, webMsg, { result : scrapingData, from : 'agent', cmd : 'result', agentUUID : UUID })
                     }
                     

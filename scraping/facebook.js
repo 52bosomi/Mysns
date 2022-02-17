@@ -1,7 +1,13 @@
 const peppeteer = require("puppeteer");
 
 /* Return value */
-const resultEnum = { "SUCCESS" : 0, "FAIL" : 1, "PENDING" : 2};
+const resultEnum = {    "SUCCESS" : 0, 
+                        "FAIL" : 1, 
+                        "PENDING" : 2, 
+                        "SCRP_FAIL" : 3, 
+                        "USERNAME_ERR": 4,
+                        "PASSWORD_ERR": 5,
+                    };
 
 const FacebookScraper = async (loginInfo) => {
     try {        
@@ -9,7 +15,7 @@ const FacebookScraper = async (loginInfo) => {
         const browser = await peppeteer.launch({headless: true, args: ['--disable-notifications', '--no-sandbox', '--disable-setuid-sandbox' ]});
         const page = await browser.newPage();
         /* Set the window agent */
-        await page.setUserAgent(loginInfo.ua);
+        // await page.setUserAgent(loginInfo.ua);
         await page.setViewport({
             width:1920,
             height:1080
@@ -31,6 +37,40 @@ const FacebookScraper = async (loginInfo) => {
         await page.click("button[type=submit]");
         await page.waitForNavigation();
 
+        let datas = [];
+
+        /* email wrong check */
+        const emailCheckPath = './/*[@id="email_container"]/div[2]'
+        const emailCheckMsg = await page.$x(emailCheckPath);
+        if(emailCheckMsg.length)
+        {
+            for(let i=0; i<emailCheckMsg.length; i++)
+            {
+                let checkMsg = await page.evaluate((data) => {
+                    return data.textContent;
+                }, emailCheckMsg[i]);
+                datas.push(checkMsg);
+            }
+            browser.close();
+            return resultEnum.USERNAME_ERR;
+        }
+
+        /* password wrong check */
+        const pwCheckPath = './/*[@id="loginform"]/div[2]/div[2]'
+        const pwCheckMsg = await page.$x(pwCheckPath);
+        if(pwCheckMsg.length)
+        {
+            for(let i=0; i<pwCheckMsg.length; i++)
+            {
+                let checkMsg = await page.evaluate((data) => {
+                    return data.textContent;
+                }, pwCheckMsg[i]);
+                datas.push(checkMsg);
+            }
+            browser.close();
+            return resultEnum.PASSWORD_ERR;
+        }
+
         /* Go to the "APP & WEBSITE" page */
         await page.goto('https://www.facebook.com/settings?tab=applications&ref=settings', {waitUntil: "networkidle2"});
 
@@ -41,7 +81,7 @@ const FacebookScraper = async (loginInfo) => {
 
         /* Parsing the text and make a format */
         let data = {};
-        let datas = [];
+        
 
         if(loginList.length == 0)
         {
@@ -78,5 +118,6 @@ const FacebookScraper = async (loginInfo) => {
 /* Declare the function to export*/
 exports.FacebookScraper = FacebookScraper;
 
+// loginInfo = {username: "wdt0818@naver.com", password: "ddd"};
 
-// FacebookScraper();
+// FacebookScraper(loginInfo);
