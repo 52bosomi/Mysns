@@ -16,14 +16,8 @@ public class ClientDto {
     private Timestamp updated_at;
     private Timestamp created_at;
     private String token;
+    private String lastAccess;
 
-    // public ClientDto(String username, String password, String name, String phone) {
-    //     this.username = username;
-    //     this.password = password;
-    //     this.name = name;
-    //     this.phone = phone;
-    // }
-    
     public long getIdx() {
         return this.idx;
     }
@@ -73,5 +67,12 @@ public class ClientDto {
     }
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getLastAccess() {
+        return lastAccess;
+    }
+    public void setLastAccess(String lastAccess) {
+        this.lastAccess = lastAccess;
     }
 }

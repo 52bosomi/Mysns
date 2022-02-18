@@ -42,7 +42,7 @@
 
     <!-- more -->
     <select id="login" parameterType="String" resultType="com.app.mysns.dto.ClientDto">
-        SELECT username, password FROM client WHERE username = #{username}
+        SELECT idx, username, password FROM client WHERE username = #{username}
     </select>
 
     <!-- snstype -->

@@ -4,6 +4,8 @@ import com.app.mysns.dao.ManageDao;
 import com.app.mysns.dto.ClientDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+// import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -52,8 +54,12 @@ public class AuthService {
     }
 
     // 쿠키를 저장해야 해서 HttpServletResponse 같이 파라미터로 전달
-    public boolean login (ClientDto client) {
+    public ClientDto login (ClientDto client) {
+        ClientDto rvClientDto = new ClientDto();
+        rvClientDto.setIdx(0);
+        
         try {
+
             System.out.println("요청 비밀번호 : " + client.getUsername());
             System.out.println("요청 비밀번호 : " + client.getPassword());
             System.out.println("요청 비밀번호 암호화 : " + util.getSecurePassword(client.getPassword(), client.getUsername()));
@@ -64,14 +70,25 @@ public class AuthService {
             String password = loginInfo.getPassword();
             System.out.println("DB 이메일 : " + username);
             System.out.println("DB 비밀번호 : " + password);
-
             if(username.equals(client.getUsername()) && password.equals(util.getSecurePassword(client.getPassword(), client.getUsername()))) {
-                return true;
+                return loginInfo;
             }
-            return false;
+            return rvClientDto;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            return false;
+            return rvClientDto;
         }
+    }
+
+
+    public ClientDto findByUsername(String username) {
+        ClientDto userOptional = dao.findUser(username);
+        if(userOptional == null || userOptional.getIdx() < 1) { new ClientDto(); }
+
+        return userOptional;
+
+        // User user = userOptional.orElseThrow(()->new UsernameNotFoundException("user name not found!"));
+        // return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),new ArrayList<>());
+
     }
 }

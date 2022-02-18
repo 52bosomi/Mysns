@@ -16,6 +16,8 @@ import com.app.mysns.dto.Restful;
 import com.app.mysns.service.SecureUtilsService;
 import com.app.mysns.service.MailService;
 import com.app.mysns.service.AuthService;
+import com.app.mysns.service.JwtService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +43,15 @@ public class AuthController {
     private AuthService authService;
     private SecureUtilsService secureUtilsService;
     RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    private JwtService jwtService;
 
-    public AuthController(TemplateEngine htmlTemplateEngine, MailService mailService, SecureUtilsService secureUtilsService, AuthService authService, RedisTemplate<String, String> redisTemplate) {
+    public AuthController(TemplateEngine htmlTemplateEngine, MailService mailService, SecureUtilsService secureUtilsService, AuthService authService, RedisTemplate<String, String> redisTemplate, JwtService jwtservice) {
         this.mailService = mailService;
         this.secureUtilsService = secureUtilsService;
         this.authService = authService;
         this.redisTemplate = redisTemplate;
+        this.jwtService = jwtservice;
     }
 
     @PostMapping("/email/signup")
@@ -91,21 +96,31 @@ public class AuthController {
         // 로그인일경우 새로운 쿠키 생성
         // 쿠키로 로그인 여부는 보안상 좋지 않음, 지향하지 않는 추세
 
-        boolean isLoginSuccess = authService.login(client);
-        if(!isLoginSuccess) {
+        ClientDto clientInfo = authService.login(client);
+        if(clientInfo.getIdx() < 1) {
             return new ResponseEntity<>(new Restful().Error("Login failed"), HttpStatus.OK);
         }
 
         // 필요시 나중에 시간 검증용
-        Instant instant = Instant.now();
-        long timeStampSeconds = instant.getEpochSecond();
-        timeStampSeconds += ttl;
+        // Instant instant = Instant.now();
+        // long timeStampSeconds = instant.getEpochSecond();
+        // timeStampSeconds += ttl;
         // Timestamp timestamp = new Timestamp(timeStampSeconds);
 
         String clientIpAddress = (null != request.getHeader("X-FORWARDED-FOR")) ? request.getHeader("X-FORWARDED-FOR") : request.getRemoteAddr();
+        clientInfo.setLastAccess(clientIpAddress);
+        
 
         // 접속한 곳 기준으로 쿠키 생성
-        String uuid = "mysns." + secureUtilsService.SHA256(clientIpAddress + "." + timeStampSeconds) + "." + timeStampSeconds;
+        // String uuid = "mysns." + secureUtilsService.SHA256(clientIpAddress + "." + timeStampSeconds) + "." + timeStampSeconds;
+        // clientInfo.setPassword("");
+        // clientInfo
+        // ClientDto jwtInfo = new ClientDto();
+        // jwtInfo.setUsername(clientInfo.getUsername());
+        // jwtInfo.setLastAccess(clientInfo.getLastAccess());
+        // jwtInfo.setIdx(clientInfo.getIdx());
+
+        final String uuid = jwtService.generateToken(clientInfo);
 
         System.out.println("쿠키 토큰 UUID : " + uuid);
         Cookie cookie = new Cookie("mysns_uuid", uuid);

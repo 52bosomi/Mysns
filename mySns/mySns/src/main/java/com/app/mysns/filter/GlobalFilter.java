@@ -13,8 +13,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.app.mysns.service.JwtService;
 import com.app.mysns.service.SecureUtilsService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,6 +24,8 @@ public class GlobalFilter implements Filter  {
 
     private static final String[] whiteList = { "/", "/login", "/auth/signup", "/auth/login", "/logout", "/favicon.ico", "/agent" };
     private static SecureUtilsService secureUtilsService = new SecureUtilsService();
+    @Autowired
+    private JwtService jwtService = new JwtService();
 
     // public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
     //     System.out.println("this is filter");
@@ -86,20 +90,22 @@ public class GlobalFilter implements Filter  {
                     if(!c.getName().startsWith("mysns_uuid")) { continue; }
 
                     // 기존 있을 경우, 만료 시간 검증 필요함!!!!!!!!
-                    
                     String[] data = c.getValue().split("\\.");
-                    if(data.length > 2) {
-                        String uuid = secureUtilsService.SHA256(clientIpAddress + "." + data[2].toString()) + "." + data[2].toString();
-                        long timeStampSeconds = Instant.now().getEpochSecond();
+                    // String username = "";
 
-                        if(timeStampSeconds > Integer.parseInt(data[2]) ) {
-                            // 쿠키 생성시 지정한 만료 시간이 현재 시간이 작을 경우 만표료 간주
+                    if(data.length > 2) {
+                        try {
+                            if(!jwtService.isTokenExpired(c.getValue())) {
+                                isLoggedIn = true;
+                            }
+                            // 토큰 갱신 필요할 수 있음
+                            
+                            break;
+                        } catch (Exception e) {
+                            // 토큰 가져오기 실패
                             break;
                         }
-                        if(c.getValue().equals("mysns."+uuid)) {
-                            isLoggedIn = true;
-                            break;
-                        }
+
                     } else {
                         // 길이가 다르면 이 쿠키는 믿으면 안됨
                         // 쿠키 초기화
@@ -127,7 +133,6 @@ public class GlobalFilter implements Filter  {
             // System.out.println("인증 필터 종료 : " + requestURI);
             // System.out.println("=========================================" );
         }
-
     }
 
 

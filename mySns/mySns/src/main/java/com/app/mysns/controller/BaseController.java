@@ -1,7 +1,11 @@
 package com.app.mysns.controller;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 import com.app.mysns.dto.ClientDto;
 import com.app.mysns.dto.SyncSiteDto;
+import com.app.mysns.service.JwtService;
 import com.app.mysns.service.ManageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
 
 @Controller
 @RequestMapping("/") // base is start with root(/)
@@ -20,6 +25,8 @@ public class BaseController {
 
     @Autowired
     private ManageService service;
+    @Autowired
+    private JwtService jwtService;
 
     @RequestMapping("/")
     public String index(Model model){
@@ -33,9 +40,24 @@ public class BaseController {
 
     // 기본 보여주는 페이지
     @RequestMapping("/welcome")
-    public ModelAndView welcome(@RequestParam String user_id){
+    public ModelAndView welcome(HttpServletRequest httpServletRequest){
+        Cookie cookie = WebUtils.getCookie(httpServletRequest, "mysns_uuid");
+        if(cookie == null && cookie.getValue() == null) {
+            ModelAndView mv = new ModelAndView();
+            mv.setViewName("redirect:/auth/login");
+            return mv;
+        };
+        String username = jwtService.getUsernameFromToken(cookie.getValue());
+        String[] data = username.split("\\|");
+
+        if(data.length < 2) {
+            ModelAndView mv = new ModelAndView();
+            mv.setViewName("redirect:/auth/login");
+            return mv;
+        }
+
         System.out.println("welcome init");
-        ClientDto clientdto = service.findUser(user_id);
+        ClientDto clientdto = service.findUser(data[0]);
         int facebook = service.summarySyncSite(new SyncSiteDto(clientdto.getIdx(), 1));
         int google = service.summarySyncSite(new SyncSiteDto(clientdto.getIdx(), 2));
         int insta = service.summarySyncSite(new SyncSiteDto(clientdto.getIdx(), 3));

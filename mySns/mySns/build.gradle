@@ -23,6 +23,7 @@ repositories {
 }
 
 dependencies {
+	// implementation 'org.springframework.boot:spring-boot-starter-security'
 	/*implementation 'org.springframework.boot:spring-boot-starter-security'*/
 	/*testImplementation 'org.springframework.security:spring-security-test'*/
 
@@ -73,6 +74,19 @@ dependencies {
 	// implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.5.0")
 
 	compile fileTree(dir: 'libs', include: ['*.jar'])
+
+	// jwt
+	// implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.2'
+	// https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+
+	// https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-core
+	implementation group: 'com.sun.xml.bind', name: 'jaxb-core', version: '2.3.0.1'
+
+	// https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl
+	implementation group: 'com.sun.xml.bind', name: 'jaxb-impl', version: '2.3.1'
+ 
 }
 
 test {
