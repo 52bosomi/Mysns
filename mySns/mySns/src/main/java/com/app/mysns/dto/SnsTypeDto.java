@@ -4,15 +4,15 @@ import lombok.Data;
 
 @Data
 public class SnsTypeDto {
-    private int id;
+    private int idx;
     private String name;
     private String description;
 
-    public int getId() {
-        return this.id;
+    public int getIdx() {
+        return this.idx;
     }
-    public void setid(int id) {
-        this.id = id;
+    public void setid(int idx) {
+        this.idx = idx;
     }
 
     public String getName() {

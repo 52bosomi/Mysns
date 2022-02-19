@@ -30,6 +30,16 @@ public class JwtService implements Serializable {
      */
     public String getUsernameFromToken(String token){
         try{
+            String[] info = getClaimFromToken(token, Claims::getSubject).split("\\|");
+            return info[0];
+            // return getClaimFromToken(token, Claims::getSubject);
+        }catch(Exception ex){
+            throw ex;
+        }
+    }
+    // 사용이 필요할 수 있음
+    public String getUserIdFromToken(String token){
+        try{
             return getClaimFromToken(token, Claims::getSubject);
         }catch(Exception ex){
             throw ex;

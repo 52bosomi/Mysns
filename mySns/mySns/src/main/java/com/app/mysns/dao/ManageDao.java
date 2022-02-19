@@ -25,7 +25,7 @@ public interface ManageDao {
     // sns_type
     boolean CreateSnsType(SnsTypeDto SnsType);
     SnsTypeDto FindSnsType(Long idx);
-    SnsTypeDto FindSnsTypeByName(String username);
+    SnsTypeDto FindSnsTypeByName(String name);
     boolean UpdateSnsType(SnsTypeDto SnsType);
     boolean DeleteSnsType(Long idx);
     ArrayList<SnsTypeDto> ListSnsType();
