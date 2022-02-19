@@ -1,11 +1,8 @@
 package com.app.mysns.config;
 
 import java.util.Map;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpSession;
 
 import com.app.mysns.handler.ChatHandler;
 // import lombok.RequiredArgsConstructor;
@@ -59,17 +56,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
                 if(request instanceof ServletServerHttpRequest) {
                     ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
-                    // HttpSession session = servletRequest.getServletRequest().getSession();
-
-                    // System.out.println("Request : \n" + servletRequest.getHeaders());
-                    // servletRequest.getHeaders().Split(",")
-                    // Map<String, Object> cookies = servletRequest. .getRequestCookieMap();
-                    // cookies = servletRequest.getRequestCookieMap();
-
                     String line = servletRequest.getHeaders().toString();
                     
-
-                    // Create a Pattern object
                     Pattern r = Pattern.compile(regex);
                     System.out.println(line);
 
