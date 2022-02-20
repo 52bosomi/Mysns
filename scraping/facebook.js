@@ -1,32 +1,21 @@
 const peppeteer = require("puppeteer");
-const dotenv = require('dotenv');
-dotenv.config();
 
 /* Return value */
-const resultEnum = { "SUCCESS" : 0, "FAIL" : 1, "PENDING" : 2};
-
-/* Email and password setting */
-if(process.env.NODE_ENV !== 'production') {
-    // for dev account!!! careful leack!!!!
-    process.env.EMAIL_FACEBOOK = 'wdt0818@naver.com'
-    process.env.PASSWORD_FACEBOOK = 'jeon5376!!'
-    process.env.XPATH_FACEBOOK = './/div[@class="pow20xho"]/div/div/div/div/div/div/span[@class="d2edcug0 hpfvmrgz qv66sw1b c1et5uql lr9zc1uh a8c37x1j fe6kdd0r mau55g9w c8b282yb keod5gw0 nxhoafnm aigsh9s9 d3f4x2em iv3no6db jq4qci2q a3bd9o3v lrazzd5p oo9gr5id hzawbc8m"]'
-}
+const resultEnum = {    "SUCCESS" : 0, 
+                        "FAIL" : 1, 
+                        "PENDING" : 2, 
+                        "SCRP_FAIL" : 3, 
+                        "USERNAME_ERR": 4,
+                        "PASSWORD_ERR": 5,
+                    };
 
 const FacebookScraper = async (loginInfo) => {
-    try {   
-        /* UI MODE */
-        // const browser = await peppeteer.launch({headless: false, args:['--window-size=1920,1080','--disable-notifications']});
-        
+    try {        
         /* CLI MODE */
         const browser = await peppeteer.launch({headless: true, args: ['--disable-notifications', '--no-sandbox', '--disable-setuid-sandbox' ]});
-        // await browser.userAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36');
         const page = await browser.newPage();
         /* Set the window agent */
-        await page.setUserAgent(
-            loginInfo.ua
-            // "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"            
-        );
+        // await page.setUserAgent(loginInfo.ua);
         await page.setViewport({
             width:1920,
             height:1080
@@ -35,38 +24,70 @@ const FacebookScraper = async (loginInfo) => {
         await page.goto('https://facebook.com');
         
         /* Input the email and password */
-        // await page.evaluate((id, pw) => {
-        //     document.querySelector("#email").value = id;
-        //     document.querySelector("#pass").value = pw;
-        // }, process.env.EMAIL_FACEBOOK, process.env.PASSWORD_FACEBOOK)
         await page.evaluate((id, pw) => {
             document.querySelector("#email").value = id;
             document.querySelector("#pass").value = pw;
-        }, process.env.EMAIL_FACEBOOK ? loginInfo.username : process.env.EMAIL_FACEBOOK, process.env.PASSWORD_FACEBOOK ? process.env.PASSWORD_FACEBOOK : loginInfo.password )
+        }, loginInfo.username, loginInfo.password)
+        // await page.evaluate((id, pw) => {
+        //     document.querySelector("#email").value = id;
+        //     document.querySelector("#pass").value = pw;
+        // }, process.env.EMAIL_FACEBOOK ? loginInfo.username : process.env.EMAIL_FACEBOOK, process.env.PASSWORD_FACEBOOK ? process.env.PASSWORD_FACEBOOK : loginInfo.password )
         
         /* Click the login button */
         await page.click("button[type=submit]");
         await page.waitForNavigation();
 
+        let datas = [];
+
+        /* email wrong check */
+        const emailCheckPath = './/*[@id="email_container"]/div[2]'
+        const emailCheckMsg = await page.$x(emailCheckPath);
+        if(emailCheckMsg.length)
+        {
+            for(let i=0; i<emailCheckMsg.length; i++)
+            {
+                let checkMsg = await page.evaluate((data) => {
+                    return data.textContent;
+                }, emailCheckMsg[i]);
+                datas.push(checkMsg);
+            }
+            browser.close();
+            return resultEnum.USERNAME_ERR;
+        }
+
+        /* password wrong check */
+        const pwCheckPath = './/*[@id="loginform"]/div[2]/div[2]'
+        const pwCheckMsg = await page.$x(pwCheckPath);
+        if(pwCheckMsg.length)
+        {
+            for(let i=0; i<pwCheckMsg.length; i++)
+            {
+                let checkMsg = await page.evaluate((data) => {
+                    return data.textContent;
+                }, pwCheckMsg[i]);
+                datas.push(checkMsg);
+            }
+            browser.close();
+            return resultEnum.PASSWORD_ERR;
+        }
+
         /* Go to the "APP & WEBSITE" page */
         await page.goto('https://www.facebook.com/settings?tab=applications&ref=settings', {waitUntil: "networkidle2"});
 
-        // const xpath = './/div[@class="' + process.env.MAIN_CLASS + '"]/div/div/div/div/div/div/span[@class="' + process.env.SPAN_CLASS + '"]';
-        
+        const xpath = './/div[@class="pow20xho"]/div/div/div/div/div/div/span[@class="d2edcug0 hpfvmrgz qv66sw1b c1et5uql oi732d6d ik7dh3pa ht8s03o8 a8c37x1j fe6kdd0r mau55g9w c8b282yb keod5gw0 nxhoafnm aigsh9s9 d9wwppkn iv3no6db jq4qci2q a3bd9o3v lrazzd5p oo9gr5id hzawbc8m"]';
+
         /* Get the account info */
-        const loginList = await page.$x(process.env.XPATH_FACEBOOK);
-        // const loginList = await page.$x(xpath);
-        // const loginList = await page.$('.//pow20xho');
+        const loginList = await page.$x(xpath);
 
         /* Parsing the text and make a format */
         let data = {};
-        let datas = [];
+        
 
         if(loginList.length == 0)
         {
             console.log("Can't find data");
             browser.close();
-            return resultEnum.FAIL;
+            return datas;
         }
         else{
             for(let i=0; i<loginList.length; i++)
@@ -97,5 +118,6 @@ const FacebookScraper = async (loginInfo) => {
 /* Declare the function to export*/
 exports.FacebookScraper = FacebookScraper;
 
+// loginInfo = {username: "wdt0818@naver.com", password: "ddd"};
 
-// FacebookScraper();
+// FacebookScraper(loginInfo);
