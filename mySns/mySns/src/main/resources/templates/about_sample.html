@@ -3,7 +3,14 @@
 	  xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout" xmlns:mailto="http://www.w3.org/1999/xhtml"
 	  layout:decorate="~{layout/private_layout}">
 <th:block layout:fragment="content">
+<script>
+	function mail_send(email){
+		//alert(email);
+		var email=email;
+		window.open("mailto:"+email+"?subject=[문의제목]:","_blank");
 
+	}
+</script>
 	<link rel="stylesheet" type="text/css" href="/static/css/about.css">
 	<div id="main">
 
@@ -40,9 +47,7 @@
 							</div>
 							<div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
 								<div class="bg-light d-flex justify-content-center pt-2 px-1">
-									<a class="btn btn-sm-square btn-primary mx-1" href="mailto:dnd.dev.hdh@gmail.com?subject=[문의]"><i class="fa fa-envelope"></i></a>
-									<a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-									<a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
+									<a class="btn btn-sm-square btn-primary mx-1" href="javascript:mail_send('dnd.dev.hdh@gmail.com');"><i class="fa fa-envelope"></i></a>
 								</div>
 							</div>
 							<div class="text-center p-4">
@@ -64,9 +69,8 @@
 							</div>
 							<div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
 								<div class="bg-light d-flex justify-content-center pt-2 px-1">
-									<a class="btn btn-sm-square btn-primary mx-1" href="mailto:anc.janekim@gmail.com?subject=안녕하세요."><i class="fa fa-envelope"></i></a>
-									<a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-									<a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
+									
+									<a class="btn btn-sm-square btn-primary mx-1" href="javascript:mail_send('anc.janekim@gmail.com');"><i class="fa fa-envelope"></i></a>
 								</div>
 							</div>
 							<div class="text-center p-4">
@@ -84,9 +88,7 @@
 							</div>
 							<div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
 								<div class="bg-light d-flex justify-content-center pt-2 px-1">
-									<a class="btn btn-sm-square btn-primary mx-1" href="mailto:anc.summer22@gmail.com?subject=안녕하세요."><i class="fa fa-envelope"></i></a>
-									<a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-									<a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
+									<a class="btn btn-sm-square btn-primary mx-1" href="javascript:mail_send('anc.summer22@gmail.com');"><i class="fa fa-envelope"></i></a>
 								</div>
 							</div>
 							<div class="text-center p-4">
@@ -104,9 +106,7 @@
 							</div>
 							<div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
 								<div class="bg-light d-flex justify-content-center pt-2 px-1">
-									<a class="btn btn-sm-square btn-primary mx-1" href="mailto:suck0818@gmail.com?subject=안녕하세요."><i class="fa fa-envelope"></i></a>
-									<a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-									<a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
+									<a class="btn btn-sm-square btn-primary mx-1" href="javascript:mail_send('suck0818@gmail.com');"><i class="fa fa-envelope"></i></a>
 								</div>
 							</div>
 							<div class="text-center p-4">
