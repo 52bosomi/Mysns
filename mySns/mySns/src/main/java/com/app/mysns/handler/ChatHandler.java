@@ -8,10 +8,16 @@ import java.util.stream.Collectors;
 import javax.websocket.OnError;
 import javax.websocket.Session;
 
+import com.app.mysns.dao.ManageDao;
+import com.app.mysns.dto.ClientDto;
+import com.app.mysns.dto.SnsTypeDto;
+import com.app.mysns.dto.SyncSiteDto;
 import com.app.mysns.dto.WebSocketDto;
+import com.app.mysns.service.AuthService;
 import com.app.mysns.service.SecureUtilsService;
 import com.google.gson.Gson;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -38,6 +44,16 @@ public class ChatHandler extends TextWebSocketHandler {
     Map<String, WebSocketSession> agentList = new HashMap<String, WebSocketSession>();
     private static SecureUtilsService secureUtilsService = new SecureUtilsService();
     private final Logger logger = LoggerFactory.getLogger(ChatHandler.class);
+    @Autowired
+    private AuthService authService;
+    @Autowired
+    private ManageDao dao;
+
+
+    public ChatHandler(AuthService authService, ManageDao dao) {
+        this.authService = authService;
+        this.dao = dao;
+    }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -88,6 +104,19 @@ public class ChatHandler extends TextWebSocketHandler {
 
             // 1. 결과 DB 저장
             // TODO : 누구인지 알수 있는 방법이 없어서 DB에 못 넣음!!!!!!!
+            // ClientDto clientdto = this.authService.findByUsername(data.getUsername());
+            if(data.getUserId() > 0) {
+                for (HashMap<String, String> site : data.getResult()) {
+
+                    // 여기서 정보 받아야 함
+                    SnsTypeDto siteTypeDto = this.dao.FindSnsTypeByName(data.getType());
+                    SyncSiteDto syncSiteDto = new SyncSiteDto(data.getUserId(), siteTypeDto.getIdx());
+                    
+                    syncSiteDto.setDesecription(site.get("title"));
+                    syncSiteDto.setUrl(site.get("url"));
+                }
+                
+            }
             
             // 2. 결과 해당 사용자에게 전달
             if(data.getClientUUID().length() > 0) {
@@ -117,10 +146,21 @@ public class ChatHandler extends TextWebSocketHandler {
         List<String> keyList = clientList.keySet().stream().collect(Collectors.toList());
         for (String key : keyList) {
             if(clientList.get(key) == session) {
+
+                Map<String, Object> info = session.getAttributes();
+                if(info.size() < 1) { break; }
+
+                String username = info.get("username").toString();
+                ClientDto clientDto = dao.FindClientByUsername(username);
+                if(clientDto.getIdx() < 1) {
+                    break;
+                }
+
                 // 작업 빌드
                 data.setCmd("scraping");
                 data.setFrom("client");
                 data.setClientUUID(key); // 나중에 회신 줘야 함
+                data.setUserId(clientDto.getIdx());
 
                 taskQueue.add(data);
                 break;

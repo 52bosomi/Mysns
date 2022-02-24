@@ -2,6 +2,13 @@ const objFacebook = require("./facebook");
 const objGoogle = require("./google");
 const SockJS = require('sockjs-client');
 
+const resultEnum = {    "SUCCESS" : 0, 
+                        "FAIL" : 1, 
+                        "PENDING" : 2, 
+                        "SCRP_FAIL" : 3, 
+                        "USERNAME_ERR": 4,
+                        "PASSWORD_ERR": 5,
+                    };
 
 // info
 let UUID = "01ec8ce7-97b0-1726-b4ea-5c8c36567748" // 나중에 환경 변수로 읽어 올 예정
@@ -40,20 +47,15 @@ let webData = {
     ua: ""
   };
 
-const resultEnum = { "SUCCESS" : 0, "FAIL" : 1, "PENDING" : 2};
 
 /* Execute each scrapping method according to "snsFlag" */
 async function MainLoop(loginInfo)
 {   
     try{
-        console.log(loginInfo.type + " scraper is running...");
+        let scrapingResult;
+        console.log(loginInfo.type + " scraper is runing...");
 
         const res = await Scraper(loginInfo.type, loginInfo);
-        if (res != resultEnum.FAIL) {   
-            console.log(loginInfo.type + "scraper finished successfully");
-        } else {
-            console.log(loginInfo.type + "scraper fail");
-        }
         console.log(loginInfo.type + "scraper is end...");
         return res;
     }
@@ -93,8 +95,8 @@ async function Run()
 {   
     try
     {   
-        // var socketWeb = await new SockJS("http://mysns.info/ws", null, { transports: ["websocket", "xhr-streaming", "xhr-polling"]});
-        var socketWeb = await new SockJS("http://localhost:8888/ws", null, { transports: ["websocket", "xhr-streaming", "xhr-polling"]}); // for dev
+        var socketWeb = await new SockJS("http://mysns.info/ws", null, { transports: ["websocket", "xhr-streaming", "xhr-polling"]});
+        // var socketWeb = await new SockJS("http://localhost:8888/ws", null, { transports: ["websocket", "xhr-streaming", "xhr-polling"]}); // for dev
 
         socketWeb.onopen = async (req) => {
             // console.log(req);
@@ -103,6 +105,7 @@ async function Run()
         };
 
         socketWeb.onmessage = async (msg) => {
+            let response;
             let scrapingData = {}
             try {
                 webMsg = JSON.parse(msg.data);
@@ -118,11 +121,22 @@ async function Run()
                 // task work
                 if(webMsg.cmd == 'scraping' && webMsg.from == 'client') {
                     scrapingData = await MainLoop(webMsg);
-                    let response = Object.assign({}, webMsg, { result : scrapingData, from : 'agent', cmd : 'result', agentUUID : UUID })
+                    if(scrapingData == resultEnum.SCRP_FAIL)
+                    {
+                        response = Object.assign({}, webMsg, { result : "Scraping fail", from : 'agent', cmd : 'result', agentUUID : UUID, isError: true });
+                    } else if (scrapingData == resultEnum.USERNAME_ERR) {
+                        response = Object.assign({}, webMsg, { result : "Username wrong", from : 'agent', cmd : 'result', agentUUID : UUID, isError: true });
+                    } else if (scrapingData == resultEnum.PASSWORD_ERR) {
+                        response = Object.assign({}, webMsg, { result : "Password wrong", from : 'agent', cmd : 'result', agentUUID : UUID, isError: true });
+                    } else if (scrapingData == resultEnum.FAIL) {
+                        response = Object.assign({}, webMsg, { result : "sns type error", from : 'agent', cmd : 'result', agentUUID : UUID, isError: true });
+                    } else {
+                        response = Object.assign({}, webMsg, { result : scrapingData, from : 'agent', cmd : 'result', agentUUID : UUID })
+                    }
+                    
                     socketWeb.send(JSON.stringify(response))
 
                     console.log('done', response)
-
 
                     setTimeout(() => {
                         socketWeb.close();
@@ -132,8 +146,8 @@ async function Run()
 
             } catch (e) {
                 // TODO : 예외 처리 해야 함, 에러일 경우 전송하는 메세지에 isError : true 세팅 필요
-                // await ErrorProcesss("data length not match");
-                // await console.log(webData);
+                response = Object.assign({}, webMsg, { result : e, from : 'agent', cmd : 'result', agentUUID : UUID, isError: true });
+                socketWeb.send(JSON.stringify(response));
                 console.log("e", e)
             }
         }

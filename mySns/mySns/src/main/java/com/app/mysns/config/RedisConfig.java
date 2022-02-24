@@ -32,6 +32,7 @@ public class RedisConfig {
         // 어글리하지만 설정 파일이 제대로 먹지 않아서 이렇게 사용!!! shit!!
         RedisStandaloneConfiguration redisConf = new RedisStandaloneConfiguration();
         redisConf.setHostName(env.getProperty("spring.redis.host"));
+        // redisConf.setUsername(env.getProperty("spring.redis.username"));
         redisConf.setPort(Integer.parseInt(env.getProperty("spring.redis.port")));
         redisConf.setPassword(RedisPassword.of(env.getProperty("spring.redis.password")));
 

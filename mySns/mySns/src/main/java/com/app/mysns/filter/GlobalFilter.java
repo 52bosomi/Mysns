@@ -87,7 +87,7 @@ public class GlobalFilter implements Filter  {
                 for(Cookie c : cookies) {
                     System.out.println(c.getName());
 
-                    if(!c.getName().startsWith("mysns_uuid")) { continue; }
+                    if(!c.getName().startsWith("mysns_token")) { continue; }
 
                     // 기존 있을 경우, 만료 시간 검증 필요함!!!!!!!!
                     String[] data = c.getValue().split("\\.");
@@ -103,13 +103,14 @@ public class GlobalFilter implements Filter  {
                             break;
                         } catch (Exception e) {
                             // 토큰 가져오기 실패
+                            System.out.println(e.getMessage());
                             break;
                         }
 
                     } else {
                         // 길이가 다르면 이 쿠키는 믿으면 안됨
                         // 쿠키 초기화
-                        Cookie cookie = new Cookie("mysns_uuid", null);
+                        Cookie cookie = new Cookie("mysns_token", null);
                         cookie.setMaxAge(-1);
                         cookie.setSecure(true);
                         cookie.setHttpOnly(true);

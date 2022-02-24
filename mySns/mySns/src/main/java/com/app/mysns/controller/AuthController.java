@@ -123,7 +123,7 @@ public class AuthController {
         final String uuid = jwtService.generateToken(clientInfo);
 
         System.out.println("쿠키 토큰 UUID : " + uuid);
-        Cookie cookie = new Cookie("mysns_uuid", uuid);
+        Cookie cookie = new Cookie("mysns_token", uuid);
 
         System.out.println("쿠키 : " + cookie);
 
@@ -149,7 +149,7 @@ public class AuthController {
             for(Cookie c : cookies) {
                 System.out.println(c.getName());
 
-                if(c.getName().startsWith("mysns.")) {
+                if(c.getName().startsWith("mysns_token")) {
                     c.setValue(null);
                     c.setSecure(true);
                     c.setHttpOnly(true);
@@ -160,7 +160,7 @@ public class AuthController {
         }
 
         // 쿠키 삭제
-        Cookie cookie = new Cookie("mysns_uuid", null);
+        Cookie cookie = new Cookie("mysns_token", null);
         cookie.setMaxAge(-1);
         cookie.setSecure(true);
         cookie.setHttpOnly(true);

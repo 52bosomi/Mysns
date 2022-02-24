@@ -41,23 +41,23 @@ public class BaseController {
     // 기본 보여주는 페이지
     @RequestMapping("/welcome")
     public ModelAndView welcome(HttpServletRequest httpServletRequest){
-        Cookie cookie = WebUtils.getCookie(httpServletRequest, "mysns_uuid");
+        Cookie cookie = WebUtils.getCookie(httpServletRequest, "mysns_token");
         if(cookie == null && cookie.getValue() == null) {
             ModelAndView mv = new ModelAndView();
             mv.setViewName("redirect:/auth/login");
             return mv;
         };
         String username = jwtService.getUsernameFromToken(cookie.getValue());
-        String[] data = username.split("\\|");
+        // String[] data = username.split("\\|");
 
-        if(data.length < 2) {
-            ModelAndView mv = new ModelAndView();
-            mv.setViewName("redirect:/auth/login");
-            return mv;
-        }
+        // if(data.length < 2) {
+        //     ModelAndView mv = new ModelAndView();
+        //     mv.setViewName("redirect:/auth/login");
+        //     return mv;
+        // }
 
         System.out.println("welcome init");
-        ClientDto clientdto = service.findUser(data[0]);
+        ClientDto clientdto = service.findUser(username);
         int facebook = service.summarySyncSite(new SyncSiteDto(clientdto.getIdx(), 1));
         int google = service.summarySyncSite(new SyncSiteDto(clientdto.getIdx(), 2));
         int insta = service.summarySyncSite(new SyncSiteDto(clientdto.getIdx(), 3));

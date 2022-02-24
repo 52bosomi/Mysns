@@ -46,8 +46,22 @@ function login() {
   });
 }
 
+$.fn.enterKey = function (fnc) {
+  return this.each(function () {
+      $(this).keypress(function (ev) {
+          var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+          if (keycode == '13') {
+              fnc.call(this, ev);
+          }
+      })
+  })
+}
+
 $('#spinner').hide();
 $('#checker').hide();
+
+$("#username").enterKey(() => $("#password").focus())
+$("#password").enterKey(() => login())
 
 
 // for dev

@@ -3,9 +3,12 @@ const objGoogle = require("./google");
 const SockJS = require('sockjs-client');
 
 const sample_data = {
-    username: "wdt0818@naver.com",
-    password: "jeon5376!!",
-    type: "facebook",
+    // username: "wdt0818@naver.com",
+    // password: "jeon5376!!",
+    // type: "facebook",
+    username: "suck0818@gmail.com",
+    password: "suck0818!!",
+    type: "google",
     cmd: 'scraping',
     description: '',
     name: '',

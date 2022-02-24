@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
+// @NoArgsConstructor
 public class SyncSiteDto {
     private long idx;
     private long sns_type_id;

@@ -7,6 +7,7 @@ let uuid = ''
 // 순서는 네이버, 구글, 페이스북, 인스타
 
 $(document).ready(function() {
+
   // 로드 완료되고 연결 실시
   websocket = new SockJS("/ws", null, { transports : ["websocket", "xhr-streaming", "xhr-polling"]});
   // window['x'] = websocket
@@ -49,18 +50,24 @@ $(document).ready(function() {
     // convert
     data = typeof data == typeof "" ? JSON.parse(data) : data
 
-
-    console.log('data', 'from', data.result)
-    if(!data.result.from.startsWith('agent'))
-    {
-      console.log('is not correct signal from agent')
+    if(!data.from) {
+      location.hostname == 'localhost' ? console.log(data) : ''
       return
     }
 
-    if(!data.result.agentUUID)
-    {
-      console.log('is not correct agent uuid')
-      return
+    console.log('data', 'from', data.result)
+    if(data.result) {
+      if(!data.result.from.startsWith('agent'))
+      {
+        console.log('is not correct signal from agent')
+        return
+      }
+
+      if(!data.result.agentUUID)
+      {
+        console.log('is not correct agent uuid')
+        return
+      }
     }
 
     console.log(data)
