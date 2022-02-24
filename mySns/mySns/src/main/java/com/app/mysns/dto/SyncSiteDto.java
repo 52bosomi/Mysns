@@ -10,12 +10,14 @@ import lombok.NoArgsConstructor;
 public class SyncSiteDto {
     private long idx;
     private long sns_type_id;
+    private String typeBox;
     private long user_id;
     private String url;
     // private String name;
     private String description;
     private Timestamp updated_at;
     private Timestamp created_at;
+    private String name;
 
     public SyncSiteDto (long user_id, long sns_type_id) {
         this.sns_type_id = sns_type_id;

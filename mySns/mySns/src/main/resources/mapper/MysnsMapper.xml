@@ -148,4 +148,79 @@
     <select id="summarySyncSite" parameterType="com.app.mysns.dto.SyncSiteDto" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM sync_site WHERE sns_type_id=#{sns_type_id} AND user_id=#{user_id};
     </select>
+
+  <!--  <select id="getProfile" parameterType="Long" resultType="com.app.mysns.dto.SyncSiteDto">
+        SELECT url FROM sync_site WHERE user_id=#{username} GROUP BY url ;
+    </select>-->
+
+    <select id="getProfile" parameterType="Long" resultType="com.app.mysns.dto.SyncSiteDto">
+        SELECT url, array_agg(sns_type_id) AS typeBox
+        FROM sync_site WHERE user_id = #{username}
+        GROUP BY url;
+    </select>
+
+
+  <!--  <select id="getProfile" parameterType="Long" resultType="com.app.mysns.dto.SyncSiteDto">
+        SELECT ss.url, ss.description, st.name FROM sync_site AS ss JOIN sns_type AS st ON st.idx = ss.sns_type_id WHERE ss.user_id = #{username}
+    </select>-->
+
+  <!--  <select id="getSnsType" parameterType="String" resultType="com.app.mysns.dto.SyncSiteDto">
+        SELECT sns_type_id,url FROM sync_site WHERE url=#{url} ;
+    </select>-->
+
+    <insert id="writeForm" parameterType="com.app.mysns.dto.QnaDto" >
+        INSERT INTO qna (
+            title,
+            content,
+            username,
+            password,
+            disclosure,
+            created_at
+        ) VALUES (
+            #{title},
+            #{content},
+            #{username},
+            #{password},
+            #{disclosure},
+            #{created_at}
+        )
+    </insert>
+
+    <select id="getQna" resultType="com.app.mysns.dto.QnaDto">
+
+        SELECT * FROM qna;
+    </select>
+
+
+    <select id="getQnaDetail" parameterType="Long" resultType="com.app.mysns.dto.QnaDto">
+
+        SELECT * FROM qna WHERE idx=#{data};
+    </select>
+
+
+    <delete id="detailDelete" parameterType="Long">
+        DELETE FROM qna WHERE idx=#{idx};
+
+    </delete>
+
+    <delete id="detailUpdate" parameterType="com.app.mysns.dto.QnaDto">
+
+        UPDATE qna SET title = #{title}, content = #{content}
+        WHERE idx=#{idx};
+    </delete>
+
+    <insert id="writeComment" parameterType="com.app.mysns.dto.CommentDto" >
+        INSERT INTO comment (
+            idx,
+            comment,
+            writer,
+            date
+        ) VALUES (
+            #{idx},
+            #{comment},
+            #{writer},
+            #{date}
+        )
+    </insert>
+
 </mapper>

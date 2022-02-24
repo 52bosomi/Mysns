@@ -21,19 +21,19 @@
 							</div>
 						</div>
 						<hr>
-						<div class="flex-c p-2 w-100">
-							<input type="text" class="form-control search float-left" placeholder="google.com">
+					<!--	<div class="flex-c p-2 w-100">
+							&lt;!&ndash;<input type="text" class="form-control search float-left" placeholder="google.com">
 							<button type="button" class="btn btn-primary btn-lg float-left btn_search">
 								Search
 							</button>
-							<button id="btn_connect" type="button" class="btn btn-primary float-right btn_add" style="padding: 0 !important;">
+							<button id="btn_connect" type="button" class="btn btn-primary float-right btn_add" style="padding: 0 !important;">&ndash;&gt;
 								<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
 									<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
 								</svg>
 							</button>
-						</div>
+						</div>-->
 		
-						<div class="flex-c p-2 w-100">
+						<!--<div class="flex-c p-2 w-100">
 							<table class="table table-striped mt-3">
 								<thead>
 								<tr>
@@ -69,6 +69,27 @@
 							</table>
 		
 		
+						</div>-->
+
+						<div>
+							<table id="profileTable" class="table table-bordered">
+								<thead>
+								<tr>
+									<th>#</th>
+									<th>Site</th>
+									<th>Sync SNS Login</th>
+								</tr>
+								</thead>
+<!--								<tbody>-->
+								<!--<tr th:each="profile : ${profile}">
+									<td th:text="${profile.idx}"></td>
+									<td th:text="${profile.url}"></td>
+									<td  th:text="${profile.typeBox}" th:value="${profile.typeBox}"></td>
+									&lt;!&ndash;<input id="sns_type" type="hidden" value="${profile.typeBox}">&ndash;&gt;
+
+								</tr>-->
+<!--								</tbody>-->
+							</table>
 						</div>
 					</form>
 				</div>
@@ -77,5 +98,6 @@
 		<!-- js -->
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 		<script src="/static/js/profile.js"></script>
+
 	</th:block>
 </html>

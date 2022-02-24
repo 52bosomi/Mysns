@@ -46,11 +46,11 @@ const resultEnum = { "SUCCESS" : 0, "FAIL" : 1, "PENDING" : 2};
 async function MainLoop(loginInfo)
 {   
     try{
-        console.log(loginInfo.type + " scraper is runing...");
+        console.log(loginInfo.type + " scraper is running...");
 
         const res = await Scraper(loginInfo.type, loginInfo);
         if (res != resultEnum.FAIL) {   
-            console.log(loginInfo.type + "scraper finished successfuly");    
+            console.log(loginInfo.type + "scraper finished successfully");
         } else {
             console.log(loginInfo.type + "scraper fail");
         }

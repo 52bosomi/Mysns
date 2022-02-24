@@ -17,10 +17,10 @@
 					</div>
 					<hr>
 					<div class="flex-c p-2 w-100">
-						<input type="text" class="form-control search float-left" placeholder="google.com">
+					<!--	<input type="text" class="form-control search float-left" placeholder="google.com">
 						<button type="button" class="btn btn-primary btn-lg float-left btn_search">
 							Search
-						</button>
+						</button>-->
 						<!-- <button type="button" class="btn btn-primary float-right btn_add" style="padding: 0 !important;">
 							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
 								<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -29,18 +29,20 @@
 						<!-- <button type="button" class="btn btn-primary btn-lg float-left btn_search">
 							Show [mine|all]
 						</button> -->
+						<a href="/qna/form" class="btn btn-primary btn-block">글쓰기</a>
 					</div>
 
 
 					<hr>
 					<!-- 연동중인 로고 표시 -->
-					<div class="flex-c p-2 w-100">
+					<!--<div class="flex-c p-2 w-100">
 						<table class="table table-striped">
 							<thead>
 							<tr>
 								<th scope="col">#</th>
-								<th scope="col">Question</th>
-								<th scope="col">Written</th>
+								<th scope="col">제목</th>
+								<th scope="col">작성일</th>
+								<th scope="col">공개여부</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -61,9 +63,32 @@
 							</tr>
 							</tbody>
 						</table>
+					</div>-->
+					<div>
+						<table id="qnaTable" class="table table-bordered">
+							<thead>
+							<tr>
+								<th>#</th>
+								<th>제목</th>
+								<th>작성자</th>
+								<th>작성일</th>
+								<th>공개여부</th>
+							</tr>
+							</thead>
+							<!--								<tbody>-->
+							<!--<tr th:each="profile : ${profile}">
+                                <td th:text="${profile.idx}"></td>
+                                <td th:text="${profile.url}"></td>
+                                <td  th:text="${profile.typeBox}" th:value="${profile.typeBox}"></td>
+                                &lt;!&ndash;<input id="sns_type" type="hidden" value="${profile.typeBox}">&ndash;&gt;
+
+                            </tr>-->
+							<!--								</tbody>-->
+						</table>
 					</div>
+
 					<hr>
-					<div class="flex-c p-2 w-100">
+				<!--	<div class="flex-c p-2 w-100">
 						<nav aria-label="Page navigation example">
 							<ul class="pagination">
 								<li class="page-item">
@@ -83,13 +108,13 @@
 								</li>
 							</ul>
 						</nav>
-					</div>
+					</div>-->
 				</form>
 			</div>
 		</div>
 	</div>
-	<!-- js -->
-	<!-- <script src="/js/signin.js"></script> -->
+		<!-- js -->
+		<script src="/static/js/qna.js"></script>
 </th:block>
 
 </html>

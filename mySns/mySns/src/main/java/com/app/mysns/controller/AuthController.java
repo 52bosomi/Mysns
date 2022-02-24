@@ -61,12 +61,12 @@ public class AuthController {
         try {
             // 중복 체크
             if(authService.checkDuplicate(client.getUsername()) != null) {
-                return new ResponseEntity<>(new Restful().Error("Exising user"), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new Restful().Error("Existing user"), HttpStatus.BAD_REQUEST);
             }
 
             // 이메일 발송
             boolean rs = this.mailService.sendEmailSignup(client.getUsername());
-            return rs ? new ResponseEntity<>(new Restful().Data("Sucessful send email"), HttpStatus.OK) : new ResponseEntity<>(new Restful().Data("Sending failed"), HttpStatus.BAD_REQUEST);
+            return rs ? new ResponseEntity<>(new Restful().Data("Successful send email"), HttpStatus.OK) : new ResponseEntity<>(new Restful().Data("Sending failed"), HttpStatus.BAD_REQUEST);
 
         } catch (Exception e) {
             // TODO : 로깅 남겨야 함
@@ -239,7 +239,7 @@ public class AuthController {
 
         // 중복 체크
         if(authService.checkDuplicate(client.getUsername()) != null) {
-            return new ResponseEntity<>(new Restful().Error("Exising user"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Restful().Error("Existing user"), HttpStatus.BAD_REQUEST);
         }
 
         // 회원 가입 성공 후, redis 정보 삭제
@@ -250,7 +250,7 @@ public class AuthController {
         // 회원가입성공 여부 리턴
         if(authService.emailJoin(client)) {
             // 생성된 패스워드는 초기화
-            return new ResponseEntity<>(new Restful().Data("Create Sucessful"), HttpStatus.OK);
+            return new ResponseEntity<>(new Restful().Data("Create Successful"), HttpStatus.OK);
         }
 
         return new ResponseEntity<>(new Restful().Error("create user failed"), HttpStatus.BAD_REQUEST);

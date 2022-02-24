@@ -52,6 +52,6 @@ $('#checker').hide();
 
 // for dev
 if(location.hostname == 'localhost') {
-  $('#username').val('hdh0926@naver.com')
-  $('#password').val('hdh')
+  $('#username').val('52bosomi@gmail.com')
+  $('#password').val('1234')
 }

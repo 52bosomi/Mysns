@@ -1,12 +1,11 @@
 package com.app.mysns.dao;
 
-import com.app.mysns.dto.ClientDto;
-import com.app.mysns.dto.SnsTypeDto;
-import com.app.mysns.dto.SyncSiteDto;
+import com.app.mysns.dto.*;
 
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 //매퍼 xml 과 연동해주는 인터페이스 제공
 // @Mapper
@@ -54,9 +53,22 @@ public interface ManageDao {
     int countNaver(long user_id, long sns_type_id);
 
     int summarySyncSite(SyncSiteDto syncSiteDto);
+
+    ArrayList<SyncSiteDto> getProfile(Long username);
+
+    ArrayList<SyncSiteDto> getSnsType(String url);
+
+    int writeForm(QnaDto writeQna);
+
+    List<QnaDto> getQna();
+
+    QnaDto getQnaDetail(long data);
+
+    int detailDelete(long idx);
+
+    int detailUpdate(QnaDto idx);
+
+    int writeComment(CommentDto comments);
 }
 
 
-// public interface ManageDao {
-
-// }

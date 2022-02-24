@@ -13,5 +13,8 @@ public class QnaDto {
     private String content;
     private String password;
     private boolean disclosure;
+    private String created_at;
+
+    private String userId;
 
 }

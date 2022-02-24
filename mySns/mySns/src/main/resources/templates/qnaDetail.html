@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net/nz/thymeleaf/layout"
+      layout:decorate="~{layout/private_layout}">
+	<!-- custom css -->
+	<th:block layout:fragment="content">
+	<link rel="stylesheet" type="text/css" href="/static/css/qnaDetail.css">
+
+		<div id="main">
+			<div class="container-login100">
+				<div class="wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30 qna">
+
+
+							<p class="h1 m-4">
+								QNA
+							</p>
+
+
+							<br>
+
+							<input id="board_idx" type="hidden" th:value="${detail.idx}" />
+
+							<table class="table" style="height:350px;">
+
+								<tr >
+									<th style="padding:13px 0 0 15px;">제목</th>
+									<td id="board_title" th:text="${detail.title}" class="col-md-30 form-control input-sm"></td>
+								</tr>
+
+								<tr >
+									<th style="padding:13px 0 0 15px;">내용</th>
+									<td >
+										<textarea id="board_content" class="col-md-30 form-control input-sm" maxlength="1000" readonly
+										style="height: 280px;resize:none;width:300px;" th:text="${detail.content}"></textarea><span class="help-block"></span>
+									</td>
+								</tr>
+								<tr>
+									<th>작성자</th>
+									<td th:text="${detail.username}"></td>
+									<th>작성일</th>
+									<td th:text="${detail.created_at}"></td>
+								</tr>
+
+							</table>
+							<div class="pull-left">
+								<a href="/qna" class="btn btn-default">목록</a>
+							</div>
+
+							<div class="pull-right" th:if="${isAuth} == true">
+
+								<button  type="button" class="btn btn-info" id="update">수정</button>
+								<button  type="button" class="btn btn-danger" id="delete">삭제</button>
+
+							</div>
+
+					<!-- Comments Form --><!--관리자한테만 보임-->
+					<div class="card my-4">
+						<h5 class="card-header">Leave a Comment:</h5>
+						<div class="card-body">
+							<form name="comment-form" action="/qna/writeComment" method="post" autocomplete="off">
+								<div class="form-group">
+									<input type="hidden" name="idx" th:value="${detail.idx}" /><!--해당 글의 idx-->
+									<textarea name="comment" class="form-control" rows="3"></textarea>
+								</div>
+								<button type="submit" class="btn btn-primary">Submit</button>
+							</form>
+						</div>
+					</div>
+
+
+
+
+
+
+				</div>
+			</div>
+		</div>
+		<!-- js -->
+
+		<script src="/static/js/qnaDetail.js"></script>
+</th:block>
+
+</html>
